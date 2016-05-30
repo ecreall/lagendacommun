@@ -1,0 +1,26 @@
+<div tal:condition="not one_page" class="periodic-preview double-page">
+    <div class="page page-1" style="">
+        <div tal:condition="'page_1' in pages" class="position"
+        	 style="width: ${pages['page_1']['width']};
+                    float: ${pages['page_1']['float']};
+                    height: ${pages['page_1']['height']};
+                    ${'margin-top:'+ '25%' and pages['page_1']['center'] or '0'}"></div>
+    </div>
+   <div class="page page-2" style="">
+   	<div tal:condition="'page_2' in pages" class="position" 
+   		 style="width: ${pages['page_2']['width']};
+                float: ${pages['page_2']['float']};
+                height: ${pages['page_2']['height']};
+                ${'margin-top:'+ '25%' and pages['page_2']['center'] or '0'}"></div>
+   </div>
+</div>
+
+<div tal:condition="one_page" class="periodic-preview one-page">
+    <div class="page page-1">
+        <div class="position" 
+        	 style="width: ${pages['page_1']['width']};
+                    float: ${pages['page_1']['float']};
+                    height: ${pages['page_1']['height']};
+                    ${'margin-top:'+ '25%' and pages['page_1']['center'] or '0'}"></div>
+    </div>
+</div>

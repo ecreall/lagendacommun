@@ -1,0 +1,27 @@
+<div class="right-caption span4"  i18n:domain="lac"
+  tal:define="icon getattr(object, 'icon', '');
+              sections object.sections;">
+  <div class="media-body cultural-event-body">
+    <div class="footer-picture illustration-picture">
+      <div class="footer-message" i18n:translate="">All rights reserved</div>
+        <img tal:condition="object.picture" src="${getattr(object.picture, 'medium', object.picture).url}" class="pull-left img-thumbnail illustration" width="84" style="margin-right: 10px"/>
+    </div>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h4><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title.upper()}
+     </h4>
+     </a>
+     <a class="rout-map-btn pull-right btn btn-info btn-xs" onclick="javascript:$('#map_canvas').trigger('route', '${schedule.object_id}')">
+      <span class="glyphicon glyphicon-road"></span> <span i18n:translate="">Rout</span>
+     </a>
+     <div class="map-sections-container">
+       <small tal:condition="sections" class="content-sections"><span class="glyphicon glyphicon-tag"></span> ${', '.join(sections)}</small>
+     </div>
+    <div tal:omit-tag="">
+        <div tal:condition="schedule.venue" class="slick-schedule-item schedule-item-data schedule-item" >
+         <span tal:condition="not getattr(schedule.venue, 'addresses', [])" class="schedule-venue-title"><span class="venue-title">${schedule.venue.title}</span></span>
+         <span tal:condition="getattr(schedule.venue, 'addresses', [])" class="schedule-venue-title">
+          <a class="venue-title" tal:attributes="href request.resource_url(schedule.venue, '@@index')">${schedule.venue.title}</a> (${schedule.venue.addresses[0]['city']})</span>: <span class="schedule-dates">${schedule.dates}</span>
+        </div>
+    </div>
+    <div>${object.description}</div>
+  </div>
+</div>

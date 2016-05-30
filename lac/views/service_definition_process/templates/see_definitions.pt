@@ -1,0 +1,7 @@
+<div class="right-caption span4"  i18n:domain="lac">
+       <div class="row" tal:repeat="row_index range(row_len_services)">
+        <div  class="col-md-3" tal:repeat="service services[(row_index*4): (row_index*4)+4]">
+         <div tal:omit-tag="">${structure:service}</div>
+        </div>
+      </div>
+</div>

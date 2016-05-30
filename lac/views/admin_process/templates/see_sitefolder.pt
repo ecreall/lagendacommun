@@ -1,0 +1,62 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption">
+    <h3 class="content-title">${object.title} <small style="color:gray">${', '.join(getattr(object, 'urls_ids', []))}</small></h3> 
+    <div class="object-description">
+      ${getattr(object, 'description', '')}
+    </div>
+    <div class="object-nav-tabs">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Detail</span></a></li>
+        <li role="presentation"><a href="#filters" aria-controls="filters" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filters</span></a></li>
+        <li tal:condition="services_body" role="presentation"><a href="#services" aria-controls="services" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-wrench"></span> <span i18n:translate="">Services</span></a></li>
+        <li role="presentation"><a href="#applications" aria-controls="applications" role="tab" data-toggle="tab" ><span class="fa fa-share-alt-square"></span> <span i18n:translate="">Social applications</span></a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="details">
+          <div tal:repeat="contact getattr(object, 'contacts', [])">
+            <blockquote >
+                 <h4><span class="md md-headset-mic"></span> ${contact.get('title', '')}</h4>
+                 <small tal:condition="contact.get('address', None)"><span class="glyphicon glyphicon-map-marker"></span>  ${contact['address']}</small>
+                 <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+                   <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+                   <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+                 </small>
+                 <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+                 <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
+                  <span class="glyphicon glyphicon-earphone"></span>  ${layout.deserialize_phone(contact['phone'])} 
+                  <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+                 <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${layout.deserialize_phone(contact['fax'])}</small>
+            </blockquote>
+          </div>
+          <h4 class="section-title"><span class="lac-icon icon-file"></span> <span i18n:translate="">Site informations</span></h4>
+          <div tal:replace='structure files'/>
+
+        </div>
+        <div role="tabpanel" class="tab-pane" id="filters">
+          <div class="registered-filter-container">
+            <div class="registered-filter" id="filter_data">
+                ${structure:filter}
+            </div>
+          </div>
+        </div>
+        <div tal:condition="services_body" role="tabpanel" class="tab-pane" id="services">
+          <div tal:replace="structure services_body"/>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="applications">
+          <div tal:omit-tag="" tal:repeat="application object.applications">
+              <a href="${request.resource_url(application, '@@index')}" class="btn btn-block btn-social btn-${application.application_id}">
+                <span class="fa fa-${application.application_id}"></span>
+                    ${application.application_title}
+              </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

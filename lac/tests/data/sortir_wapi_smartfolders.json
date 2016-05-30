@@ -1,0 +1,446 @@
+[{"type":"smartfolder",
+	"title": "Brèves",
+	"description": "Les brèves",
+	"add_as_a_block": true,
+	"view_type": "bloc",
+	"style":{"usual_color": "white, #3a2714", "hover_color": "white, #3a2714"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["brief"],
+	    "tree": {"Rubrique": {}}, 
+		"states": ["published"]
+		}}],
+	"children": []
+
+	}, {"type":"smartfolder",
+	"title": "Cinéma",
+	"description": "Les annonces cinéma",
+	"add_as_a_block": true,
+	"view_type": "bloc",
+	"style":{"usual_color": "white, #57bcf1", "hover_color": "white, #57bcf1"},
+	"filters":[{"metadata_filter": {
+		    "negation": false,
+		    "content_types": ["review", "interview", "brief", "cinema_review"], 
+			"tree": {"Rubrique": {"Cinéma": {}}}, 
+			"states": ["published"]
+			}}],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles cinéma",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["review", "interview", "brief", "cinema_review"], 
+							"tree": {"Rubrique": {"Cinéma": {}}}, 
+							"states": ["published"]
+							}}],
+					"children": [],
+					"style":{"usual_color": "white, #57bcf1", "hover_color": "white, #57bcf1"}
+					},
+					{"title": "Séances",
+					"description": "Les articles cinéma",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["film_schedule"], 
+							"tree": {"Rubrique": {}}, 
+							"states": ["published"]
+							}}],
+					"children": [],
+					"classifications": ["city_classification", "venue_classification"],
+					"style":{"usual_color": "white, #57bcf1", "hover_color": "white, #57bcf1"}
+					},
+					{"title": "Résumés",
+					"description": "Les résumés cinéma",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["film_synopses"], 
+							"tree": {"Rubrique": {"Cinéma": {}}}, 
+							"states": ["published"]
+							}}],
+					"children": [],
+					"style":{"usual_color": "white, #57bcf1", "hover_color": "white, #57bcf1"}
+					}
+	           ]
+
+	},
+    {"type":"smartfolder",
+	"title": "Spectacles",
+	"description": "Les annonces spectacles",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #c70579", "hover_color": "white, #c70579"},
+	"filters":[{"metadata_filter": {
+						    "negation": false,
+		    "content_types": ["cultural_event"], 
+			"tree": {"Rubrique": {"Spectacles": {}}}, 
+			"states": ["published"]
+			}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles spectacles",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+					    "content_types": ["review"], 
+						"tree": {"Rubrique": {"Spectacles": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #c70579", "hover_color": "white, #c70579"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda spectacles",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Spectacles": {}}}, 
+						"states": ["published"]
+						}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #c70579", "hover_color": "white, #c70579"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Jeunesse",
+	"description": "Les annonces jeunesse",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #e29d33", "hover_color": "white, #e29d33"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Jeunesse": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles jeunesse",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Jeunesse": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #e29d33", "hover_color": "white, #e29d33"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda jeunesse",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["cultural_event"], 
+							"tree": {"Rubrique": {"Jeunesse": {}}}, 
+							"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #e29d33", "hover_color": "white, #e29d33"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Musique",
+	"description": "Les annonces musique",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #0093d6", "hover_color": "white, #0093d6"},
+	"filters":[{"metadata_filter": {
+						    "negation": false,
+		    "content_types": ["cultural_event"], 
+			"tree": {"Rubrique": {"Musique": {}}}, 
+			"states": ["published"]
+			}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles musique",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+					    "content_types": ["review"], 
+						"tree": {"Rubrique": {"Musique": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #0093d6", "hover_color": "white, #0093d6"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda musique",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Musique": {}}}, 
+						"states": ["published"]
+						}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #0093d6", "hover_color": "white, #0093d6"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Expos",
+	"description": "Les annonces expositions",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #725b9f", "hover_color": "white, #725b9f"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Expos": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles expositions",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Expos": {}}}, 
+						"states": ["published"]
+							}}],
+					"style":{"usual_color": "white, #725b9f", "hover_color": "white, #725b9f"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda expositions",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Expos": {}}}, 
+						"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #725b9f", "hover_color": "white, #725b9f"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Loisirs",
+	"description": "Les annonces loisirs",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #81b951", "hover_color": "white, #81b951"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Loisirs": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles loisirs",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Loisirs": {}}}, 
+						"states": ["published"]
+							}}],
+					"style":{"usual_color": "white, #81b951", "hover_color": "white, #81b951"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda loisirs",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Loisirs": {}}}, 
+						"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #81b951", "hover_color": "white, #81b951"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Balades",
+	"description": "Les annonces Balades",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #f3cf32", "hover_color": "white, #f3cf32"},
+	"filters":[{"metadata_filter": {
+						    "negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Balades": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles Balades",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+					    "content_types": ["review"], 
+						"tree": {"Rubrique": {"Balades": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #f3cf32", "hover_color": "white, #f3cf32"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda Balades",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["cultural_event"], 
+							"tree": {"Rubrique": {"Balades": {}}}, 
+							"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #f3cf32", "hover_color": "white, #f3cf32"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Brocantes",
+	"description": "Les annonces brocantes",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #d16e8a", "hover_color": "white, #d16e8a"},
+	"filters":[{"metadata_filter": {
+						    "negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Brocantes": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles brocantes",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+					    "content_types": ["review"], 
+						"tree": {"Rubrique": {"Brocantes": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #d16e8a", "hover_color": "white, #d16e8a"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda brocantes",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["cultural_event"], 
+							"tree": {"Rubrique": {"Brocantes": {}}}, 
+							"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #d16e8a", "hover_color": "white, #d16e8a"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Conférences",
+	"description": "Les annonces conférences",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #ced852", "hover_color": "white, #ced852"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Conférence": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles conférences",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Conférence": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #ced852", "hover_color": "white, #ced852"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda conférences",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Conférence": {}}}, 
+						"states": ["published"]
+						}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #ced852", "hover_color": "white, #ced852"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Lire",
+	"description": "Lire",
+	"add_as_a_block": true,
+	"view_type": "bloc",
+	"style":{"usual_color": "white, #5f7f35", "hover_color": "white, #5f7f35"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["review", "interview", "brief"],
+	    "tree": {"Rubrique": {"Lire": {}}}, 
+		"states": ["published"]
+		}}],
+	"children": []
+
+	}
+]

@@ -1,0 +1,11 @@
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+	<p>
+		Le service suivant permet d'activer les processus de modération afin de pouvoir modérer les contenus du site. Ce service est expiré. En cliquant sur Continuer vous prolongez la validité de ce service de 30 jours.
+	</p>
+    <p>
+	Vous pouvez, aussi, modifier l'organisation de modération ou le titre de votre service.
+    </p>
+    <p>
+	  Une organisation de modération est composée des membres ayant les rôles nécessaires pour modérer les contenus créés sur ce site.
+    </p>
+</div>

@@ -1,0 +1,5 @@
+<div class="httperror-container"
+	  i18n:domain="lac">
+	<img class="httperror-img" src="${request.static_url('lac:static/images/red_cross.svg')}">
+	<div class="httperror-title" i18n:translate="">Une erreur inattendue s'est produite. Un rapport d'erreur est envoyé aux administrateurs du site.</div> 
+</div>

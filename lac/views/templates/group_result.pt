@@ -1,0 +1,9 @@
+<div class="thumbnail right-caption span4 search-item result-item" i18n:domain="lac"
+  tal:define="icon getattr(object, 'icon', '')">
+  <div  id="person-image" class="content-image">
+    <span  class="hidden-xs icon ${icon}"></span>
+  </div>
+  <div class="media-body" style="width:auto;">
+      <a tal:attributes="href request.resource_url(object, '@@index')"><h3><span class="visible-xs-inline-block icon ${icon}"></span> ${getattr(object, 'title', object.name)} </h3></a>
+  </div>
+</div>

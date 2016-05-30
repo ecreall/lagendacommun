@@ -1,0 +1,26 @@
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="lac"
+  tal:define="icon getattr(object, 'icon', '')">
+  <div id="film-schedule-image" class="content-image">
+    <span class="hidden-xs icon ${icon}"></span>
+  </div>
+  <div class="media-body cultural-event-body">
+  <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h4 class="content-title content-title-review" style="display: block"><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title}</h4></a>
+    <div tal:condition="object.improved_venue" tal:define="original object.improved_venue" class="associated-review">
+        <strong i18n:translate="">Is an improvement of</strong> 
+        <a tal:attributes="href request.resource_url(original, '@@index')"><span class="${original.icon}"></span> ${original.title}</a>
+      </div>
+    <div tal:omit-tag="" tal:condition="getattr(object, 'addresses', [])">
+      <div class="object-description" style="margin-bottom: 15px"
+             tal:define="address getattr(object, 'addresses', [])[0];
+                         address_str object.address_str(address)">
+        <small  style="color: gray;">
+           ${address_str}
+        </small>
+      </div>
+    </div>
+    <div class="heterogeneous-content article-content">
+      ${object.presentation_text(400)}
+    </div>
+  </div>
+</div>

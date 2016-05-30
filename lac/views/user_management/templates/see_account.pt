@@ -1,0 +1,35 @@
+<div tal:replace="structure navbar_body"/>
+<div i18n:domain="lac">
+	<h3><span class="glyphicon glyphicon-shopping-cart" ></span> <span i18n:translate="">Customer account</span></h3>
+	<p class="text-muted">
+		<span  i18n:translate="">This account belongs to </span>
+        <small  ><a href="${request.resource_url(context.user, '@@index')}">${context.user.title}</a></small>
+        <span class="date">
+        <span  i18n:translate="">member since</span> <span tal:replace="layout.to_localized_time(context.user.created_at, date_only=True)"/>
+        </span>
+    </p>
+	<div tal:omit-tag="" tal:condition="sites">
+	   <h4 class="section-title"><span class="glyphicon glyphicon-globe"></span> <span i18n:translate="">Sites</span></h4>
+	   <div class="row" tal:repeat="row_index range(row_len_sites)">
+	    <div  class="col-md-2" tal:repeat="site sites[(row_index*6): (row_index*6)+6]">
+	     <div tal:omit-tag="">${structure:site}</div>
+	    </div>
+	  </div>
+	</div>
+	<div tal:omit-tag="" tal:condition="services">
+   <h4 class="section-title"><span class="glyphicon glyphicon-wrench"></span> <span i18n:translate="">Services</span></h4>
+   <div class="row" tal:repeat="row_index range(row_len_services)">
+    <div  class="col-md-3" tal:repeat="service services[(row_index*4): (row_index*4)+4]">
+     <div tal:omit-tag="">${structure:service}</div>
+    </div>
+  </div>
+  </div>
+  <div tal:omit-tag="" tal:condition="context.orders">
+    <h4 class="section-title"><span class="glyphicon glyphicon-barcode"></span> <span i18n:translate="">Commands</span></h4>
+   <div class="row">
+    <div  class="col-md-12" tal:repeat="order orders">
+     <div tal:omit-tag="">${structure:order}</div>
+    </div>
+  </div>
+  </div>    	
+</div>

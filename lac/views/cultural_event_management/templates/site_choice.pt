@@ -1,0 +1,23 @@
+<div style="margin-left: 20px">
+  <div style="margin-bottom: 10px" tal:condition="moderations_data" tal:repeat="moderation moderations_data">
+    ${moderation[0]} ${moderation[1]}
+  </div>
+   <div tal:omit-tag="" tal:condition="is_cultural_event and has_extraction" i18n:domain="lac">
+   	    <div tal:condition="can_publish" class="alert alert-info alert-publication" >
+   	    	<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+   	    	<p>
+   	    	    En cas de publication de votre annonce sur notre site, votre annonce sera visible dans le magazine papier <strong>${site.title}</strong> du <strong><span tal:replace="layout.to_localized_time(publication_date, date_only=True)"/></strong>.
+   	        </p>
+   	    </div>
+		<div tal:condition="not can_publish" class="alert alert-warning alert-publication">
+		    <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+		    <p >
+			 	Votre annonce est en retard pour la publication dans le magazine papier <strong>${site.title}</strong>.
+			    La prochaine date de publication dans le magazine papier est prévue le <strong><span tal:replace="layout.to_localized_time(publication_date, date_only=True)"/></strong><span tal:omit-tag="" tal:condition="end_date"> alors que la date de fin de votre annonce est fixée le <strong><span tal:replace="layout.to_localized_time(end_date, date_only=True)"/></strong></span>.
+		 	</p>
+		 	<p>
+        Pour avoir la possibilité de voir votre annonce publiée dans notre magazine papier, après la publication de celle-ci sur notre site, la date de fin de votre annonce doit être postérieure à la prochaine date de publication <strong>(<span tal:replace="layout.to_localized_time(publication_date, date_only=True)"/>)</strong>.
+			 </p>
+		</div>
+   </div>
+</div>

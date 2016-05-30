@@ -1,0 +1,235 @@
+<script src="//maps.googleapis.com/maps/api/js?v=3&amp;sensor=false"
+             type="text/javascript"></script>
+<script src="${request.static_url('lac:static/js/map_management.js')}"
+          type="text/javascript"></script>
+
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption" tal:define="sections object.sections; not_published 'published' not in object.state">
+  	<div tal:condition="actions_bodies" tal:repeat="action_body actions_bodies" >
+  		${structure:action_body}
+    </div>
+    <div tal:condition="'to pay' in object.state" class="alert alert-warning">
+    	<span class="glyphicon glyphicon-info-sign"></span> <span i18n:translate="">Your announcement has not yet been submitted. You must pay the different registered services.</span>
+    </div>
+    <div tal:condition="is_expired" class="alert alert-danger">
+    	<span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">The announcement has expired, you cannot submit it. You must change scheduled dates.</span>
+    </div>
+    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
+    <span tal:condition="sections" class="content-sections"><span class="glyphicon glyphicon-tag"></span> ${', '.join(sections)}</span>
+    <h3 class="content-title"><span class="lac-icon icon-bullhorn"></span> ${object.title.upper()} </h3>
+    <div tal:condition="is_portalmanager and object.author" class="content-author">
+    	<span i18n:translate="">Announced by</span> 
+    	<span>
+    		<a target="_blank" tal:attributes="href request.resource_url(object.author, '@@index')">${getattr(object.author, 'title', object.author.name)}</a>
+    	</span>
+    </div>
+    <div tal:condition="not_published and object.improved_cultural_event" tal:define="original object.improved_cultural_event" class="associated-review">
+        <strong i18n:translate="">Is an improvement of</strong> 
+        <a tal:attributes="href request.resource_url(original, '@@index')"><span class="${original.icon}"></span> ${original.title}</a>
+        <a class="btn btn-info btn-xs" tal:attributes="href request.resource_url(request.root, '@@diffview', query={'source': get_oid(original), 'targets':[get_oid(object)]})" target="_blank" i18n:translate="" style="display: inline-block">
+	                       	<span class="glyphicon glyphicon-tasks"></span> <span i18n:translate="">See differences</span>
+	    </a>
+    </div>
+	<div class="object-description">
+	<small>
+		${structure:getattr(object, 'description', '')}
+	</small>
+	</div>
+	<div tal:condition="getattr(object, 'artists', [])" class="arttists-block">
+      <div class="artist-item" tal:repeat="artist object.artists">
+        <div  
+             class="artist-item-title"
+             data-id="${artist.get_id()}"
+             data-url="${request.resource_url(request.root, 'creationculturelapi')}">
+            <a target="_blank" tal:attributes="href request.resource_url(artist, '@@index')">
+              <span class="glyphicon glyphicon-star"></span> <span title="${artist.description}">${artist.title}</span>
+            </a>
+        </div>
+        
+    </div>
+	</div>
+
+
+    <div class="object-nav-tabs">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist" tal:condition="services_body">
+        <li role="presentation" class="active"><a href="#read" aria-controls="read" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Event</span></a></li>
+        <li role="presentation" ><a href="#services" aria-controls="services" role="tab" data-toggle="tab"> <span class="glyphicon glyphicon-wrench"></span> <span i18n:translate="">Services</span></a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content" tal:omit-tag="not services_body">
+        <div tal:omit-tag="not services_body" role="tabpanel" class="tab-pane active" id="read">
+			<div  class="content-keywords" tal:condition="not_published">
+			      <div class="read-tree"
+			      	   data-source_tree="${object.json_tree}"
+			      	   data-diff_tree="${tree_diff}"
+			      	   data-is_diff="true"
+			      	   data-diff_marker="${diff_marker}"></div>
+				</div>
+				<div class=" heterogeneous-content article-content">
+			     <div class="footer-picture article-picture">
+			      <div class="footer-message" i18n:translate="">All rights reserved</div>
+			      <img  width="300" height="253" tal:condition="object.picture" src="${getattr(object.picture, 'large', object.picture).url}" class="pull-right img-thumbnail illustration" />
+			    </div>
+				  <div >
+				     ${structure:getattr(object, 'details', '')}
+				  </div>
+				</div>
+			    <h4 class="section-title"><span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">Schedules</span></h4>
+			    <div class="row" tal:repeat="row_index range(len(object.schedules))">
+			      <div class="col-md-6" tal:repeat="schedule object.schedules[(row_index*2): (row_index*2)+2]">
+				   <div tal:condition="schedule.venue" class="thumbnail right-caption venue-caption span4 search-item ${(('archived' in schedule.state) and 'schedule-deprecated')}"
+				   	 tal:define="venue schedule.venue">
+				   	<div tal:condition="'archived' in schedule.state" class="ribbon-wrapper">
+						<div class="ribbon-front">
+							<h4 ><span class="glyphicon glyphicon-warning-sign"></span> <span i18n:translate="">Schedule expired</span></h4>
+						</div>
+						<div class="ribbon-edge-topleft"></div>
+						<div class="ribbon-edge-topright"></div>
+						<div class="ribbon-edge-bottomleft"></div>
+						<div class="ribbon-edge-bottomright"></div>
+						<div class="ribbon-back-right"></div>
+					</div>
+
+
+				    <dl class="dl-horizontal" tal:define="addresses venue.addresses;
+				    	                                  department addresses[0].get('department',  None)">
+				        <dt  i18n:translate="">Date</dt>
+					    <dd class="content-description">${schedule.dates}</dd>
+					    <dt  i18n:translate="" tal:condition="addresses">City</dt>
+					    <dd class="content-description" tal:condition="addresses">${addresses[0].get('city', '')} <span tal:condition="department not in ('None', None)">(${department})</span></dd>
+				        <dt i18n:translate="">Venue</dt>
+				        <dd tal:define="accessibility getattr(venue, 'handicapped_accessibility', False)">
+				        	<a tal:attributes="href request.resource_url(venue, '@@index')"> ${venue.title}</a>
+				        	<span tal:condition="accessibility" class="map-icon-wheelchair icon-tag"></span>
+				        	<span class="venue-detail-btn glyphicon ${not_published and 'glyphicon-minus-sign open' or 'glyphicon-info-sign closed'}"></span>
+				        	<div class="venue-detail" style="${not not_published and 'display: none'}">
+				        		<div 
+				        			 tal:condition="is_portalmanager or not_published"
+				        			 tal:omit-tag=""
+				        			 tal:define="duplicates find_duplicates_venue(venue, ('published',))">
+			                        <div tal:condition="venue.improved_venue" tal:define="original venue.improved_venue"
+			                        	 class="alert alert-info">
+								        <strong i18n:translate="">Is an improvement of</strong> 
+								        <a tal:attributes="href request.resource_url(original, '@@index')"><span class="${original.icon}"></span> ${original.title}</a>
+								        <a class="btn btn-info btn-xs" tal:attributes="href request.resource_url(request.root, '@@diffview', query={'source': get_oid(original), 'targets':[get_oid(venue)]})" target="_blank" i18n:translate="" style="display: inline-block">
+				                       	<span class="glyphicon glyphicon-tasks"></span> <span i18n:translate="">See differences</span>
+				                       </a>
+								     </div>
+					        		<div tal:condition="duplicates" class="alert alert-danger">
+					        			<strong i18n:translate="">This venue has duplicates</strong>
+					        			<a class="btn btn-danger btn-xs" tal:attributes="href request.resource_url(venue, '@@potentialduplicatesvenue')" target="_blank" i18n:translate="" style="display: inline-block">
+				                       	<span class="octicon octicon-git-compare"></span> <span i18n:translate="">Manage duplicates</span>
+				                       </a>
+					        		</div>
+				        	     </div>
+						         <div>
+								    <div tal:omit-tag=""
+								        tal:define="capacity getattr(venue, 'capacity', None);
+								                    kind getattr(venue, 'kind_str', []);">
+								        <dl tal:condition="kind or capacity or accessibility"
+							            class="dl-horizontal well well-sm film-data">
+							            <dt tal:condition="kind" ><span class="glyphicon glyphicon-qrcode"></span> <span i18n:translate="">kind</span></dt>
+							            <dd tal:condition="kind">
+							              <tal:loop repeat="k kind">
+							                 ${k}
+							              <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+							            </tal:loop></dd>
+							            <dt tal:condition="capacity" ><span class="glyphicon glyphicon-th"></span> <span i18n:translate="">Capacity</span></dt>
+							            <dd tal:condition="capacity"> ${capacity}</dd>
+							            <dt tal:condition="accessibility"><span class="map-icon-wheelchair"></span> <span i18n:translate="">Accessibility</span></dt>
+							            <dd tal:condition="accessibility" i18n:translate="">
+							              Accessible for handicapped
+							            </dd>
+							        </dl>
+								    </div>
+							    </div>
+						         <div>
+						         ${structure:venue.presentation_text(200)}
+						         </div>
+						         <h4 class="section-title" ><span class="glyphicon glyphicon-map-marker"></span> <span i18n:translate="">Addresses</span></h4>
+						         <div>
+					         	   <blockquote tal:repeat="address getattr(venue, 'addresses', [])">
+					         	   	<div tal:omit-tag="" tal:define="address_str venue.address_str(address)">
+						         	   	${address['title']}
+									   	 <small> ${address_str}.</small>
+				                    </div>
+				                   </blockquote>
+				                   <h4 tal:condition="getattr(venue, 'contacts', [])" class="section-title" ><span class="md md-headset-mic"></span> <span i18n:translate="">Contacts</span></h4>
+				                    <div tal:repeat="contact getattr(venue, 'contacts', [])">
+								      <blockquote >
+								      	   <h4>${contact.get('title', '')}</h4>
+								           <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+								             <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+								             <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+								           </small>
+								           <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+								           <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
+								            <span class="glyphicon glyphicon-earphone"></span>  ${layout.deserialize_phone(contact['phone'])} 
+								            <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+								           <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${layout.deserialize_phone(contact['fax'])}</small>
+								      </blockquote>
+								    </div>
+
+								</div>
+						    </div>
+			            </dd>
+				        <dt  i18n:translate="">Ticket type</dt>
+				        <dd> <span tal:content="schedule.ticket_type" i18n:translate=""></span><span tal:condition="schedule.ticket_type!= 'Free admission'">: ${schedule.price}</span></dd>
+				        
+				    </dl>
+				    <div tal:condition="getattr(venue, 'addresses', [])" 
+				    	 tal:define="address venue.addresses[0];
+				    	             address_str venue.address_str(address)" 
+				    	 class="map-container"
+				    	 data-context_oid="${get_oid(schedule)}"
+				    	 data-address_title="${address['title']}"
+				    	 data-sync_operation="${sync_operation}"
+				    	 data-url="${url}" >
+				       <input tal:condition="'coordinates' in address" type="text" id="coordinatesmap" tal:attributes="value address.get('coordinates', '')" style="display:none;" />
+			           <input type="text" id="addressmap" tal:attributes="value address_str" style="display:none;" />
+			           <div id="nomap" style="display:none" class="alert alert-danger">
+				           	<button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+				             <strong i18n:translate="">Map not available</strong><br /><br />
+				             <span i18n:translate="">Imprecise Address: thank you to check and correct venue coordinates.</span>
+			           </div>
+			           <div id="map" class="block-map" style="width: 100%; height: 150px; position: relative; background-color: rgb(229, 227, 223);" style="display:none">
+			           </div>
+			        </div>
+			        <a tal:define="ticketing_url schedule.get_ticketing_url()" 
+			           tal:condition="ticketing_url" 
+			           href="${ticketing_url}" 
+			           class="btn btn-primary ticket-btn-detail"
+			           target="_blank"><span class="glyphicon glyphicon-credit-card"></span> <span i18n:translate="">Buy tickets</span></a>
+				</div>
+				</div>
+				</div>
+				<h4 class="section-title"><span class="glyphicon glyphicon-user"></span> <span i18n:translate="">Contacts</span></h4>
+				<div>
+				   <blockquote tal:repeat="contact object.get_contacts()">
+				   	   <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+					   	   <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+					   	   <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+				   	   </small>
+				   	   <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+				   	   <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)"><span class="glyphicon glyphicon-earphone"></span>  ${layout.deserialize_phone(contact['phone'])} 
+				   	   <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+				   	   <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${layout.deserialize_phone(contact['fax'])}</small>
+			      </blockquote>
+			    </div>
+
+        </div>
+        <div tal:condition="services_body" role="tabpanel" class="tab-pane" id="services">
+            <div tal:replace="structure services_body"/>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div tal:replace="structure footer_body"/>
+${panel('promotions_panel')}
+${panel('social_share_toggle')}
+${panel('labels', context=object)}

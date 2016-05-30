@@ -1,0 +1,79 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption" tal:define="sections object.sections;">
+    <div tal:condition="'to pay' in context.state" class="alert alert-warning">
+      <span class="glyphicon glyphicon-info-sign"></span> <span i18n:translate="">Your interview has not yet been submitted. You must pay the different registered services.</span>
+    </div>
+    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
+    <span tal:condition="sections" class="content-sections"><span class="glyphicon glyphicon-tag"></span> ${', '.join(sections)}</span>
+    <h3 class="content-title content-title-review"><span class="lac-icon icon-interview"></span> ${object.title} </h3>
+    <div tal:condition="is_portalmanager and object.author" class="content-author">
+        <span i18n:translate="">Added by</span> 
+        <span>
+          <a target="_blank" tal:attributes="href request.resource_url(object.author, '@@index')">${getattr(object.author, 'title', object.author.name)}</a>
+        </span>
+    </div>
+    <div tal:condition="object.review" class="associated-review">
+      <strong i18n:translate="">Associated with the following review</strong> 
+      <a tal:attributes="href request.resource_url(object.review, '@@index')"><span class="${object.review.icon}"></span> ${object.review.title}</a>
+    </div>
+    <div class="object-description"></div>
+    <div tal:condition="getattr(object, 'artists', [])" class="arttists-block">
+      <div class="artist-item" tal:repeat="artist object.artists">
+        <div  
+             class="artist-item-title"
+             data-id="${artist.get_id()}"
+             data-url="${request.resource_url(request.root, 'creationculturelapi')}">
+            <a target="_blank" tal:attributes="href request.resource_url(artist, '@@index')">
+              <span class="glyphicon glyphicon-star"></span> <span title="${artist.description}">${artist.title}</span>
+            </a>
+        </div>
+    </div>
+    </div>
+
+    <div class="object-nav-tabs">
+
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist" tal:condition="services_body">
+        <li role="presentation" class="active"><a href="#read" aria-controls="read" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Interview</span></a></li>
+        <li role="presentation" ><a href="#services" aria-controls="services" role="tab" data-toggle="tab"> <span class="glyphicon glyphicon-wrench"></span> <span i18n:translate="">Services</span></a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content" tal:omit-tag="not services_body">
+        <div tal:omit-tag="not services_body" role="tabpanel" class="tab-pane active" id="read">
+              <div  class="content-keywords" tal:condition="'published' not in object.state">
+                <div class="read-tree"
+                     data-source_tree="${object.json_tree}"
+                     data-diff_tree="${tree_diff}"
+                     data-is_diff="true"
+                     data-diff_marker="${diff_marker}"></div>
+              </div>
+              <div class="heterogeneous-content article-content">
+               <div class="footer-picture article-picture">
+                <div class="footer-message" i18n:translate="">All rights reserved</div>
+                <img  width="300" height="253" tal:condition="object.picture" src="${getattr(object.picture, 'large', object.picture).url}" class="pull-right img-thumbnail illustration" />
+              </div>
+                ${structure:getattr(object, 'article', '')}
+              </div>
+              <div class="article-signature">
+                ${getattr(object, 'signature', '')}
+              </div>
+            <div tal:condition="getattr(object, 'informations', '')">
+              <blockquote >
+                <h4 style="color: #8d8d8d"><span class="glyphicon glyphicon-info-sign"></span> <span i18n:translate="">Informations</span></h4>
+                 <div class="article-informations"> ${structure:getattr(object, 'informations', '')}</div>
+              </blockquote>
+            </div>
+          </div>
+        <div tal:condition="services_body" role="tabpanel" class="tab-pane" id="services">
+            <div tal:replace="structure services_body"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div tal:replace="structure footer_body"/>
+${panel('promotions_panel')}
+${panel('social_share_toggle')}
+${panel('labels', context=object)}

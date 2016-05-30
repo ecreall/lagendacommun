@@ -1,0 +1,44 @@
+<ul class="dropdown-menu" role="menu">
+	<tal:loop repeat="node nodes" >
+	  	<div tal:omit-tag="" tal:define=" node_name  node.title;
+                              children view.get_folder_children(node, site_id);
+                              usual_color node.style['usual_color'].split(',');
+                              hover_color node.style['hover_color'].split(',');
+                              class_name (view.get_folder_name(view.get_folder_parent(node))+view.get_folder_name(node)).replace(' ','-')+'-folder-style'">
+          <style>
+                .${class_name}, 
+                .dropdown-menu > li.${class_name} > a {
+                    color:${usual_color[0]} !important;
+                    background-image: none;
+                    background-color:${usual_color[1]} !important;
+                }
+
+                .${class_name}:hover,
+                .${class_name}:focus,
+                .${class_name}.open,
+                .${class_name}.opened,
+                .dropdown-menu > li.${class_name}.open > a,
+                .dropdown-menu > li.${class_name} > a:hover,
+                .dropdown-menu > li.${class_name} > a:focus,
+                .dropdown-menu > li.${class_name}.opened > a {
+                    color:${hover_color[0]} !important;
+                    background-image: none;
+                    background-color:${hover_color[1]} !important;
+                }
+
+          </style>
+		  		<li tal:condition="not children" class="menu-item ${class_name} ${node.contains(active_folder) and 'opened'}">
+            <a href="${request.resource_url(request.root, 'open', query={'folderid': view.get_folder_id(node)})}">${node_name}</a>
+		  		</li>
+		  		<li tal:condition="children"
+		  		 	tal:define="issubmenu current_level+1 <= maxi_level"
+		  		 	class="submenu-item menu-item ${(issubmenu and 'dropdown') or ''} ${class_name} ${node.contains(active_folder) and 'opened'}">
+			          <a href="${request.resource_url(request.root, 'open', query={'folderid': view.get_folder_id(node)})}" 
+                  class="${(issubmenu and 'dropdown-toggle') or ''}"  
+                  role="button" 
+                  aria-expanded="false">${node_name}</a>
+	              <div tal:condition="issubmenu" tal:replace="structure view.get_sub_menu(children, parent_name+'/'+node_name, (current_level+1), active_folder, site_id)"/>
+			    </li>
+	  	</div>
+    </tal:loop>
+</ul>

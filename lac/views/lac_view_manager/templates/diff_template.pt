@@ -1,0 +1,55 @@
+<div tal:condition="contents"  i18n:domain="lac">
+	    	<div class="panel panel-success">
+					  <div class="panel-heading" style="padding: 1px; text-align: center">
+					  	<h5>
+                          <span i18n:translate="">Current version</span>
+					      (<div tal:define="author getattr(context, 'author', None)" style="display: inline;">
+					        <span i18n:translate="" tal:condition="author">Added by</span> 
+					        <span tal:condition="author">
+					          <a target="_blank" tal:attributes="href request.resource_url(author, '@@index')">${getattr(author, 'title', author.name)}</a>
+					        </span>
+					        <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(context.modified_at, date_only=True)"/>
+					      </div>)
+					      <a class="alert-link" tal:attributes="href request.resource_url(context, '@@index')" target="_blank">
+					      	<h5 style="font-weight: bold; display: inline;">
+						      <span class="glyphicon glyphicon-plus-sign"></span>
+						    </h5>
+						   </a>
+					    </h5>
+					  </div>
+					  <div class="panel-body">
+					    ${structure:context_view}
+					  </div>
+					</div>
+
+	<div id="legend" style="margin-bottom: 20px">
+	    <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Text added by the version</span></div>
+	    <div><div class="legend-carre-del"></div> : <span i18n:translate="">Text removed by the version</span></div>
+	 </div>
+	 <div class="row" tal:repeat="row_index range(len(contents))">
+		    <div class="col-md-12" tal:repeat="(obj, data) list(contents.items())[(row_index*1): (row_index*1)+1]">
+		    	<div tal:define="body data[0]; obj_oid data[1]" class="panel panel-primary">
+					  <div class="panel-heading" style="padding: 1px; text-align: center">
+					  	<h5>
+                          <div tal:define="author getattr(obj, 'author', None)" style="display: inline;">
+					        <span tal:condition="author" i18n:translate="">Added by</span> 
+					        <span tal:condition="author">
+					          <a style="color: white" target="_blank" tal:attributes="href request.resource_url(author, '@@index')">${getattr(author, 'title', author.name)}</a>
+					        </span>
+					        <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(obj.modified_at, date_only=True)"/>
+					      </div>
+					      <a style="color: white" tal:attributes="href request.resource_url(obj, '@@index')" target="_blank">
+					      	<h5 style="font-weight: bold; display: inline;">
+				    	      <span class="glyphicon glyphicon-plus-sign"></span>
+				    	    </h5>
+				    	   </a>
+					      
+					    </h5>
+					  </div>
+					  <div class="panel-body">
+					    ${structure:body}
+					  </div>
+					</div>
+		  </div>
+	</div>
+</div>

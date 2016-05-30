@@ -1,0 +1,183 @@
+/**
+ * BlankPlate | Yet another HTML5 Starter Kit
+ *
+ * BlankPlate Main stylesheet
+ *
+ * @copyright	Copyright 2013, Dimitris Krestos
+ * @license		Apache License, Version 2.0 (http://www.opensource.org/licenses/apache2.0.php)
+ * @link		http://vdw.staytuned.gr/html5-starter-kit-blankplate/
+ * @package		BlankPlate
+ * @version		v1.3.2
+ */
+
+/**
+ * WORLD
+ *
+ * -------------------------------------------------------------------------------------------------
+ */
+BODY {
+	font-size: 13px; /* Override typography */
+	/*font-family: 'Yanone Kaffeesatz', sans-serif;*/
+	font-family: 'Nunito', sans-serif;
+}
+
+#wrapper {
+	margin: 0 auto;
+	max-width: 100%;
+}
+
+/**
+ * HEADER
+ * Your header rules
+ * -------------------------------------------------------------------------------------------------
+ */
+#header_wrapper {
+	background: white;
+	width: 100%;
+}
+
+HEADER {
+	color: #333;
+	height: 206px;
+	margin: 0 auto;
+	max-width: 940px;
+}
+
+HEADER H1 {
+	color: inherit;
+	font-size: 66px;
+	font-weight: 700;
+	letter-spacing: 4px;
+	line-height: 78px;
+	margin-left: -5px;
+	padding-top: 40px;
+	text-transform: uppercase;
+}
+
+HEADER H2 {
+	color: inherit;
+	/*font-family: 'Yanone Kaffeesatz', sans-serif;*/
+	font-weight: 300;
+	font-size: 18px;
+	letter-spacing: 6px;
+	margin-bottom: 4px;
+	text-transform: uppercase;
+}
+
+H3 {
+	background: #eee;
+	height: 64px;
+	text-align: center;
+
+	line-height: 64px;
+	vertical-align: middle;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0 5px;
+	text-transform: uppercase;
+}
+
+/**
+ * NAVIGATION
+ * Your horizontal (global) navigation rules
+ * -------------------------------------------------------------------------------------------------
+ */
+#nav_wrapper {
+
+}
+
+NAV {
+
+}
+
+NAV UL {
+	background: #39a9a4;
+	background: rgb(57,169,164);
+	background: rgba(57,169,164, 0.95);
+	color: #fff;
+	margin: 4em 5em !important;
+	padding: 1.5em;
+	position: absolute;
+	right: 0;
+	text-align: left;
+	width: 400px;
+	z-index: 99;
+}
+
+NAV UL LI STRONG {
+	display: block;
+	font-size: 18px;
+	margin-top: 20px;
+}
+
+NAV UL LI A {
+	color: white;
+	font-size: 16px;
+	font-weight: 300;
+	letter-spacing: 2px;
+	line-height: 14px;
+	margin-left: -4px;
+	padding: 0 5px;
+	vertical-align: middle;
+}
+
+NAV UL LI A:hover {
+	color: #e1704b;
+	text-decoration: none;
+}
+
+/**
+ * ASIDE
+ * Your side bar rules
+ * -------------------------------------------------------------------------------------------------
+ */
+ASIDE {
+	float: left
+}
+
+/**
+ * BODY
+ * Your content rules
+ * -------------------------------------------------------------------------------------------------
+ */
+SECTION#body {
+	float: left;
+	width: 100%;
+}
+
+ARTICLE {}
+
+#map_canvas {
+	height: 800px;
+	width: 100%;
+}
+
+/**
+ * CONTACT
+ * Your form rules
+ * -------------------------------------------------------------------------------------------------
+ */
+.contact FORM {}
+
+.contact FORM INPUT[type="text"] {
+	padding: 0 10px;
+}
+
+.contact FORM INPUT[type="submit"] {
+	margin: 0;
+}
+
+/**
+ * FOOTER
+ * Your footer rules
+ * -------------------------------------------------------------------------------------------------
+ */
+FOOTER {
+	width: 100%
+}
+
+.footer_wrapper {
+	color: #888;
+	margin: 20px auto;
+	width: 940px;
+}

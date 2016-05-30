@@ -1,0 +1,10 @@
+<div tal:condition="services" class="well well-sm services-well" >
+   <h4 i18n:translate="" >Registered services</h4>
+   <div tal:omit-tag=""  tal:repeat="servicekey services">
+       <div class="row" tal:repeat="row_index range(math.ceil(len(services[servicekey])/4))">
+        <div  class="col-md-3" tal:repeat="service services[servicekey][(row_index*4): (row_index*4)+4]">
+           <div tal:omit-tag="">${structure:service}</div>
+        </div>
+      </div>
+  </div>
+</div>

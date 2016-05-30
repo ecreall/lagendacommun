@@ -1,0 +1,6 @@
+<div class="thumbnail search-item result-item folder-item ${('private' in object.state) and 'folder-private'}">
+      <span class="${object.icon}" ></span>
+      <div class="caption">
+        <h4 title="${object.description}"><a tal:attributes="href request.resource_url(object, '@@index')" >${object.title}</a></h4>
+      </div>
+</div>

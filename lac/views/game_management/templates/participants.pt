@@ -1,0 +1,17 @@
+<div>Nombre de participants ${len(game.participants)}.</div>
+<table class="table table-condensed table_hover">
+ <thead>
+   <th>Pr&eacute;nom</th>
+   <th>Nom</th>
+   <th>Mail</th>
+ </thead>
+ <tbody tal:define="participants game.participants">
+  <tr tal:repeat="(email, participant) participants.items()">
+   <tal:block >
+    <td tal:content="participant['first_name']" />
+    <td tal:content="participant['last_name']" />
+    <td tal:content="email" />
+   </tal:block>
+  </tr>
+ </tbody>
+</table>

@@ -1,0 +1,116 @@
+<script src="//maps.googleapis.com/maps/api/js?v=3&amp;sensor=false"
+             type="text/javascript"></script>
+<script src="${request.static_url('lac:static/js/map_management.js')}"
+          type="text/javascript"></script>
+<div tal:replace="structure navbar_body"/>
+<div tal:omit-tag="" i18n:domain="lac">
+  <div class="right-caption span4">
+    <div class="caption">
+      <div tal:condition="actions_bodies" tal:repeat="action_body actions_bodies" >
+        ${structure:action_body}
+      </div>
+      <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
+      <h3 class="content-title"><span class="${object.icon}"></span> ${object.title} </h3>
+      <div tal:condition="is_portalmanager and object.author" class="content-author">
+        <span i18n:translate="">Added by</span> 
+        <span>
+          <a target="_blank" tal:attributes="href request.resource_url(object.author, '@@index')">${getattr(object.author, 'title', object.author.name)}</a>
+        </span>
+      </div>
+      <div tal:condition="object.improved_venue" tal:define="original object.improved_venue" class="associated-review">
+        <strong i18n:translate="">Is an improvement of</strong> 
+        <a tal:attributes="href request.resource_url(original, '@@index')"><span class="${original.icon}"></span> ${original.title}</a>
+        <a class="btn btn-info btn-xs" tal:attributes="href request.resource_url(request.root, '@@diffview', query={'source': get_oid(original), 'targets':[get_oid(object)]})" target="_blank" i18n:translate="" style="display: inline-block">
+                          <span class="glyphicon glyphicon-tasks"></span> <span i18n:translate="">See differences</span>
+      </a>
+      </div>
+      <div tal:omit-tag=""
+        tal:define="capacity getattr(object, 'capacity', None);
+                    kind getattr(object, 'kind_str', []);
+                    accessibility getattr(object, 'handicapped_accessibility', False)">
+        <dl tal:condition="kind or capacity or accessibility"
+            class="dl-horizontal well well-sm film-data">
+            <dt tal:condition="kind" ><span class="glyphicon glyphicon-qrcode"></span> <span i18n:translate="">kind</span></dt>
+            <dd tal:condition="kind">
+              <tal:loop repeat="k kind">
+                 ${k}
+              <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+            </tal:loop></dd>
+            <dt tal:condition="capacity" ><span class="glyphicon glyphicon-th"></span> <span i18n:translate="">Capacity</span></dt>
+            <dd tal:condition="capacity"> ${capacity}</dd>
+            <dt tal:condition="accessibility"><span class="map-icon-wheelchair"></span> <span i18n:translate="">Accessibility</span></dt>
+            <dd tal:condition="accessibility" i18n:translate="">
+              Accessible for handicapped
+            </dd>
+        </dl>
+      </div>
+      <a tal:condition="related_events" href="#events" class="right-link pull-right">
+        <small>
+            <span class="glyphicon glyphicon-paperclip"></span> <span i18n:translate="">Related contents</span>
+        </small>
+      </a>
+      <div style="margin-bottom: 15px">
+        <div tal:omit-tag="" tal:condition="object" 
+             tal:define="address getattr(object, 'addresses', [])[0];
+                         address_str object.address_str(address)">
+          <small class="object-description" style="color: gray;">
+             ${address_str}
+          </small>
+          <div class="map-container" style="width: 50%"
+             data-context_oid="${object.get_id()}"
+             data-address_title="${address['title']}"
+             data-sync_operation="${sync_operation}"
+             data-url="${url}" >
+             <input tal:condition="'coordinates' in address" type="text" id="coordinatesmap" tal:attributes="value address.get('coordinates', '')" style="display:none;" />
+               <input type="text" id="addressmap" tal:attributes="value address_str" style="display:none;" />
+               <div id="nomap" style="display:none" class="alert alert-danger">
+                  <button data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                   <strong i18n:translate="">Map not available</strong><br /><br />
+                   <span i18n:translate="">Imprecise Address: thank you to check and correct venue coordinates.</span>
+               </div>
+               <div id="map" class="block-map" style="width: 100%; height: 150px; position: relative; background-color: rgb(229, 227, 223);" style="display:none">
+               </div>
+            </div>
+        </div>
+    </div>
+    <div class="heterogeneous-content" >
+           ${structure:getattr(object, 'description', '')}
+    </div>
+    <div tal:repeat="contact getattr(object, 'contacts', [])">
+      <blockquote >
+           <h4><span class="md md-headset-mic"></span> ${contact.get('title', '')}</h4>
+           <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+             <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+             <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+           </small>
+           <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+           <small tal:condition="contact.get('phone', {})" tal:define="surtax contact.get('surtax', None)">
+            <span class="glyphicon glyphicon-earphone"></span>  ${layout.deserialize_phone(contact['phone'])} 
+            <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+           <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${layout.deserialize_phone(contact['fax'])}</small>
+      </blockquote>
+    </div>
+  </div>
+  </div>
+  <div tal:omit-tag="" tal:condition="related_events">
+    <h4 tal:condition="len_events" id="events" class="section-title"><span class="icon lac-icon icon-bullhorn"></span> <span i18n:translate="">Cultural events</span> <span class="pull-right badge hidden-xs">${len_events} 
+    <span tal:condition="len_events > 1" i18n:translate="">events</span>
+    <span tal:condition="len_events == 1" i18n:translate="">event</span>
+  </span></h4>
+    <div class="other-result-contents" tal:condition="len_events">
+      ${structure:related_events}
+    </div>
+  </div>
+  <div tal:omit-tag="" tal:condition="related_schedules">
+    <h4 tal:condition="len_schedules" class="section-title"><span class="glyphicon glyphicon-film"></span> <span i18n:translate="">Film schedules</span> <span class="pull-right badge hidden-xs">${len_schedules} 
+    <span tal:condition="len_schedules > 1" i18n:translate="">schedules</span>
+    <span tal:condition="len_schedules == 1" i18n:translate="">schedule</span>
+  </span></h4>
+    <div class="other-result-contents" tal:condition="len_schedules">
+      ${structure:related_schedules}
+    </div>
+  </div>
+  <div tal:replace="structure footer_body"/>
+  ${panel('social_share_toggle')}
+  ${panel('labels', context=object)}
+</div>

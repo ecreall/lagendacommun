@@ -1,0 +1,12 @@
+<div i18n:domain="lac"
+     tal:condition="object.subjects"
+     tal:define="icon 'glyphicon glyphicon-inbox';
+                 alert_kind getattr(object, 'alert_kind', '')">
+  <div tal:define="subject object.subjects[0]">
+    <h4><span class="icon ${icon}"></span> <span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)</h4>
+    <span tal:condition="alert_kind == 'replaced'">
+    	Votre contenu "${getattr(object, 'replaced_title', '')}" a été remplacé par 
+        <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a>
+    </span>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<!-- cinema -->
+<div class="contextual-help-item cinema-help hide-bloc">
+    <p>Pour ajouter les séances d'un autre cinéma, cliquez sur le signe plus, situé en bas à droite du formulaire.</p>
+</div>
+
+<!-- schedules -->
+<div class="contextual-help-item schedules-help hide-bloc">
+    <p>Laissez une ligne vide entre deux entrées. Exemple:</p>
+    <p>Les Minions<br/>Mar 14h00 – 16h15 – 19h00 (en 3D)- 21h15 </p>
+    <p>Vice versa<br/>Dim 11h15 ; Tlj 13h30 – 15h30 (sauf mar) – 19h30 </p>
+</div>

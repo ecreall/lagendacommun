@@ -1,0 +1,7 @@
+<div>
+  <tal:loop repeat="contributor contributors">
+    <a tal:attributes="href request.resource_url(contributor, '@@index')">
+      ${getattr(contributor, 'title', contributor.name)}</a>
+      <tal:separator condition="not: repeat['contributor'].end">, </tal:separator> 
+ </tal:loop>
+</div>

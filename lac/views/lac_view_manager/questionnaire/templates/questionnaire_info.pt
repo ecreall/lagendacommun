@@ -1,0 +1,15 @@
+<div class="questionnaire-alert" i18n:domain="lac" i18n:translate="">
+	<div type="button" class="close" data-dismiss="modal" aria-label="Close"><div aria-hidden="true">&times;</div></div>
+ Votre avis nous intéresse ! Aidez-nous à améliorer notre offre en répondant à deux questions.
+</div>
+<div class="alert alert-danger alert-email hide-bloc">
+  Veuillez saisir votre adresse électronique.
+</div>
+
+<div class="alert alert-danger alert-explanation hide-bloc">
+  Dites-nous ce que vous n'aimez pas dans la version actuelle.
+</div>
+
+<div class="alert alert-success hide-bloc">
+  Merci pour votre participation.
+</div>

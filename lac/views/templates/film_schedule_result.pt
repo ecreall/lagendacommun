@@ -1,0 +1,17 @@
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="lac"
+  tal:define="icon getattr(object, 'icon', '')">
+  <div id="film-schedule-image" class="content-image">
+  	<span class="hidden-xs icon ${icon}"></span>
+  </div>
+  <div class="media-body cultural-event-body">
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h4><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title} </h4></a>
+    <div class="footer-picture illustration-picture">
+      <div class="footer-message" i18n:translate="">All rights reserved</div>
+        <img tal:condition="object.picture" src="${getattr(object.picture, 'medium', object.picture).url}" class="pull-right img-thumbnail illustration" width="84"/>
+    </div>
+    <h5 tal:condition="object.venue" style="color: gray">${object.venue.title}</h5>
+   <div style="font-weight: bold; color: #d5781a;margin-bottom: 10px !important">
+    ${object.description}
+   </div>
+  </div>
+</div>

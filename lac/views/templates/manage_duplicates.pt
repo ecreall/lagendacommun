@@ -1,0 +1,10 @@
+<div class="alert alert-danger" i18n:domain="lac" i18n:translate="">
+Le système a détecté des doublons potentiels. Veuillez prendre en compte ces doublons potentiels en cliquant sur le bouton suivant.
+	<div style="
+		    text-align: center;
+		    margin-top: 5px;
+		"><a tal:attributes="href action.url" 
+	   class="btn btn-danger btn-xs">
+	    <span class="${getattr(action.action, 'style_picto', 'octicon octicon-git-compare')}"></span> ${action.action.title}        
+	</a></div>
+</div>

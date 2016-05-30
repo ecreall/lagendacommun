@@ -1,0 +1,10 @@
+<div class="row" tal:repeat="row_index range(row_len)">
+    <div class="col-md-2" tal:repeat="folder folders[(row_index*6): (row_index*6)+6]">
+	    <div class="thumbnail search-item folder-item ${('private' in folder.state) and 'folder-private'}">
+	      <span class="${folder.icon}" ></span>
+	      <div class="caption">
+	        <h4 title="${folder.description}"><a tal:attributes="href request.resource_url(folder, '@@index')" >${folder.title}</a></h4>
+	      </div>
+	    </div>
+  </div>
+</div>

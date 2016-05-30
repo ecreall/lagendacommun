@@ -1,0 +1,49 @@
+<div tal:replace="structure navbar_body"/>
+<div tal:omit-tag="" i18n:domain="lac">
+  <div>
+    <img tal:condition="object.picture is not None" tal:attributes="src object.picture.url"  width="150" class="pull-left img-thumbnail" style="margin-right: 10px"/>
+    <div>
+      <div tal:condition="actions_bodies" tal:repeat="action_body actions_bodies" >
+        ${structure:action_body}
+      </div>
+      <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
+      <h3 class="content-title">${getattr(object, 'title')}</h3>
+      <div tal:condition="is_portalmanager and object.author" class="content-author">
+        <span i18n:translate="">Added by</span> 
+        <span>
+          <a target="_blank" tal:attributes="href request.resource_url(object.author, '@@index')">${getattr(object.author, 'title', object.author.name)}</a>
+        </span>
+      </div>
+      <div tal:condition="object.improved_artist" tal:define="original object.improved_artist" class="associated-review">
+        <strong i18n:translate="">Is an improvement of</strong> 
+        <a tal:attributes="href request.resource_url(original, '@@index')"><span class="${original.icon}"></span> ${original.title}</a>
+        <a class="btn btn-info btn-xs" tal:attributes="href request.resource_url(request.root, '@@diffview', query={'source': get_oid(original), 'targets':[get_oid(object)]})" target="_blank" i18n:translate="" style="display: inline-block">
+                          <span class="glyphicon glyphicon-tasks"></span> <span i18n:translate="">See differences</span>
+        </a>
+      </div>
+      <div class="object-description">
+        <small style="color: gray;">
+           ${object.description}
+        </small>
+        <a tal:condition="related_contents" href="#contents" class="pull-right right-link" style="z-index: 1000">
+          <small>
+            <span class="icon lac-icon icon-bullhorn"></span> <span i18n:translate="">Related contents</span></small>
+        </a>
+    </div>
+    
+      <div tal:condition="getattr(object, 'biography', None)" class="">
+         ${structure:getattr(object, 'biography')}
+      </div>
+    </div>
+  </div>
+  <h4 tal:condition="len_contents" id="contents" class="section-title"><span class="icon lac-icon icon-bullhorn"></span> <span i18n:translate="">Related contents</span> <span class="pull-right badge hidden-xs">${len_contents} 
+    <span tal:condition="len_contents > 1" i18n:translate="">contents</span>
+    <span tal:condition="len_contents == 1" i18n:translate="">content</span>
+   </span></h4>
+  <div class="other-result-contents" tal:condition="len_contents">
+    ${structure:related_contents}
+  </div>
+  <div tal:replace="structure footer_body"/>
+  ${panel('social_share_toggle')}
+  ${panel('labels', context=object)}
+</div>

@@ -1,0 +1,37 @@
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="lac">
+  <div >
+    <img tal:condition="object.logo" tal:attributes="src object.logo.url"  width="300"/>
+  </div>
+  <div class="caption">
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h3>${object.title} </h3></a>
+    <p class="text-muted" tal:condition="object.description">
+             <small  >${object.description}</small>
+    </p>
+    <dl tal:define="managers object.managers">
+      <dd tal:condition="getattr(object, 'phone', None)">
+        <span class="glyphicon glyphicon-phone-alt"></span> ${object.phone}
+      </dd>
+      <dd tal:condition="getattr(object, 'fax', None)">
+        <span class="glyphicon glyphicon-print"></span> ${object.fax}
+      </dd>
+      <dd tal:condition="getattr(object, 'email', None)">
+        <span class="glyphicon glyphicon-envelope"></span> ${object.email}
+      </dd>
+      <dt tal:condition="object.members"  i18n:translate="">Members</dt>
+      <dd tal:condition="object.members">
+        <tal:loop repeat="member object.members">
+          <a tal:attributes="href request.resource_url(member, '@@index')">${member.title}</a>
+            <tal:separator condition="not: repeat['member'].end">, </tal:separator> 
+        </tal:loop>
+      </dd>
+      <dt tal:condition="managers and len(managers)>1"  i18n:translate="">Managers</dt>
+      <dt tal:condition="managers and len(managers)==1"  i18n:translate="">The manager</dt>
+      <dd tal:condition="managers">
+        <tal:loop repeat="member managers">
+          <a tal:attributes="href request.resource_url(member, '@@index')">${member.title}</a>
+            <tal:separator condition="not: repeat['member'].end">, </tal:separator> 
+        </tal:loop>
+      </dd>
+    </dl>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="lac"
+  tal:define="icon getattr(object, 'icon', '')">
+    <div id="advertisting-image" class="content-image">
+    <span  class="hidden-xs icon ${icon}"></span>
+  </div>
+  <div class="media-body cultural-event-body">
+    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h4 class="content-title"><span class="visible-xs-inline-block icon ${icon}"></span> ${object.title}</h4></a>
+    <div class="heterogeneous-content article-content">
+      <div class="footer-picture illustration-picture">
+        <div class="footer-message" i18n:translate="">All rights reserved</div>
+          <img tal:condition="object.picture" src="${getattr(object.picture, 'medium', object.picture).url}" class="pull-right img-thumbnail illustration" width="84"/>
+      </div>
+      ${object.presentation_text(400)}
+    </div>
+    <dl>
+        <dt i18n:translate="">Dates</dt>
+        <dd><span tal:replace="layout.to_localized_time(object.start_date)"/> -> <span tal:replace="layout.to_localized_time(object.end_date)"/></dd>
+    </dl>
+  </div>
+</div>

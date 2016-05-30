@@ -1,0 +1,127 @@
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption" tal:define="sections object.sections; not_published 'published' not in object.state">
+    <span tal:condition="sections" class="content-sections"><span class="glyphicon glyphicon-tag"></span> ${', '.join(sections)}</span>
+    <h3 class="content-title"><span class="lac-icon icon-bullhorn"></span> ${object.title.upper()} </h3>
+	<div class="object-description">
+	<small>
+		${structure:getattr(object, 'description', '')}
+	</small>
+	</div>
+	<div tal:condition="getattr(object, 'artists', [])" class="arttists-block">
+      <div class="artist-item" tal:repeat="artist object.artists">
+        <div  
+             class="artist-item-title"
+             data-id="${artist.get_id()}"
+             data-url="${request.resource_url(request.root, 'creationculturelapi')}">
+            <a target="_blank" tal:attributes="href request.resource_url(artist, '@@index')">
+              <span class="glyphicon glyphicon-star"></span> <span title="${artist.description}">${artist.title}</span>
+            </a>
+        </div>
+       </div>
+	</div>
+	<div  class="content-keywords">
+      <div class="read-tree"
+      	   data-source_tree="${object.json_tree}"></div>
+	</div>
+	<div class="article-content">
+       <img  width="300" height="253" tal:condition="object.picture" src="${getattr(object.picture, 'large', object.picture).url}" class="pull-right img-thumbnail illustration"/>
+	  <div >
+	     ${structure:getattr(object, 'details', '')}
+	  </div>
+	</div>
+    <h4 class="section-title"><span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">Schedules</span></h4>
+    <div class="row" tal:repeat="row_index range(len(object.schedules))">
+      <div class="col-md-6" tal:repeat="schedule object.schedules[(row_index*2): (row_index*2)+2]">
+	   <div tal:condition="schedule.venue" class="thumbnail right-caption venue-caption span4 search-item"
+	   	 tal:define="venue schedule.venue">
+
+	    <dl class="dl-horizontal" tal:define="addresses venue.addresses;
+	    	                                  department addresses[0].get('department',  None)">
+	        <dt  i18n:translate="">Date</dt>
+		    <dd class="content-description">${schedule.dates}</dd>
+		    <dt  i18n:translate="" tal:condition="addresses">City</dt>
+		    <dd class="content-description" tal:condition="addresses">${addresses[0].get('city', '')} <span tal:condition="department not in ('None', None)">(${department})</span></dd>
+	        <dt i18n:translate="">Venue</dt>
+	        <dd tal:define="accessibility getattr(venue, 'handicapped_accessibility', False)">
+	        	<a tal:attributes="href request.resource_url(venue, '@@index')"> ${venue.title}</a>
+	        	<span tal:condition="accessibility" class="map-icon-wheelchair icon-tag"></span>
+	        	<span class="venue-detail-btn glyphicon glyphicon-minus-sign open"></span>
+	        	<div class="venue-detail" >
+			         <div>
+					    <div tal:omit-tag=""
+					        tal:define="capacity getattr(venue, 'capacity', None);
+					                    kind getattr(venue, 'kind_str', []);">
+					        <dl tal:condition="kind or capacity or accessibility"
+				            class="dl-horizontal well well-sm film-data">
+				            <dt tal:condition="kind" ><span class="glyphicon glyphicon-qrcode"></span> <span i18n:translate="">kind</span></dt>
+				            <dd tal:condition="kind">
+				              <tal:loop repeat="k kind">
+				                 ${k}
+				              <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+				            </tal:loop></dd>
+				            <dt tal:condition="capacity" ><span class="glyphicon glyphicon-th"></span> <span i18n:translate="">Capacity</span></dt>
+				            <dd tal:condition="capacity"> ${capacity}</dd>
+				            <dt tal:condition="accessibility"><span class="map-icon-wheelchair"></span> <span i18n:translate="">Accessibility</span></dt>
+				            <dd tal:condition="accessibility" i18n:translate="">
+				              Accessible for handicapped
+				            </dd>
+				        </dl>
+					    </div>
+				    </div>
+			         <div>
+			         ${structure:venue.description}
+			         </div>
+			         <h4 class="section-title" ><span class="glyphicon glyphicon-map-marker"></span> <span i18n:translate="">Addresses</span></h4>
+			         <div>
+		         	   <blockquote tal:repeat="address getattr(venue, 'addresses', [])">
+		         	   	<div tal:omit-tag="" tal:define="address_str venue.address_str(address)">
+			         	   	${address['title']}
+						   	 <small> ${address_str}.</small>
+	                    </div>
+	                   </blockquote>
+	                   <h4 tal:condition="getattr(venue, 'contacts', [])" class="section-title" ><span class="md md-headset-mic"></span> <span i18n:translate="">Contacts</span></h4>
+	                    <div tal:repeat="contact getattr(venue, 'contacts', [])">
+					      <blockquote >
+					      	   <h4>${contact.get('title', '')}</h4>
+					           <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+					             <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+					             <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+					           </small>
+					           <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+					           <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
+					            <span class="glyphicon glyphicon-earphone"></span>  ${layout.deserialize_phone(contact['phone'], True)} 
+					            <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+					           <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${contact['fax']}</small>
+					      </blockquote>
+					    </div>
+
+					</div>
+			    </div>
+            </dd>
+	        <dt  i18n:translate="">Ticket type</dt>
+	        <dd> <span tal:content="schedule.ticket_type" i18n:translate=""></span><span tal:condition="schedule.ticket_type!= 'Free admission'">: ${schedule.price}</span></dd>
+	        
+	    </dl>
+        <a tal:define="ticketing_url schedule.get_ticketing_url()" 
+           tal:condition="ticketing_url" 
+           href="${ticketing_url}" 
+           class="btn btn-primary ticket-btn-detail"
+           target="_blank"><span class="glyphicon glyphicon-credit-card"></span> <span i18n:translate="">Buy tickets</span></a>
+	</div>
+	</div>
+	</div>
+	<h4 class="section-title"><span class="glyphicon glyphicon-user"></span> <span i18n:translate="">Contacts</span></h4>
+	<div>
+	   <blockquote tal:repeat="contact object.get_contacts()">
+	   	   <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+		   	   <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+		   	   <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+	   	   </small>
+	   	   <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+	   	   <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)"><span class="glyphicon glyphicon-earphone"></span>  ${layout.deserialize_phone(contact['phone'], True)} 
+	   	   <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span></small>
+	   	   <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${layout.deserialize_phone(contact['fax'], True)}</small>
+      </blockquote>
+    </div>
+  </div>
+</div>

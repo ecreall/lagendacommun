@@ -1,0 +1,42 @@
+<form
+     tal:define="style style|field.widget.style;
+              css_class css_class|string:${field.widget.css_class or field.css_class or ''};
+              item_template item_template|field.widget.item_template;
+              autocomplete autocomplete|field.autocomplete;
+              title title|field.title;
+              errormsg errormsg|field.errormsg;
+              description description|field.description;
+              buttons buttons|field.buttons;
+              use_ajax use_ajax|field.use_ajax;
+              ajax_options ajax_options|field.ajax_options;
+              formid formid|field.formid;
+              action action|field.action or None;
+              method method|field.method;
+              ajax_button ajax_button|getattr(field.widget,'ajax_button', None) "
+  tal:attributes="autocomplete autocomplete;
+                  style style;
+                  class css_class;
+                  action action;"
+  id="${formid}"
+  method="${method}"
+  enctype="multipart/form-data"
+  accept-charset="utf-8"
+  i18n:domain="creationcultrelle"
+  >
+    <div tal:repeat="child field"
+         tal:replace="structure child.render_template(item_template)"/>
+    <input
+          name="payer"
+          type="submit"
+          class="btn btn-primary"
+          value="Pay"
+          i18n:attributes="value">
+    </input>
+    <a
+          class="btn btn-default"
+          href="${field.widget.cancel_url}"
+          i18n:translate=""
+          >Cancel
+    </a>
+</form>
+

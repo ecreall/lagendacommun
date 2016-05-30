@@ -1,0 +1,17 @@
+
+ <section tal:condition="condition|True" class="calendar-section">
+    <div class="custom-calendar-wrap">
+      <div class="custom-inner" id="custom-inner">
+        <div class="custom-header clearfix">
+          <nav>
+            <span class="custom-prev" id="custom-prev"></span>
+            <span class="custom-next" id="custom-next"></span>
+          </nav>
+          <h2 class="custom-month" id="custom-month">January</h2>
+          <h3 class="custom-year" id="custom-year">2017</h3>
+        </div>
+        <div class="fc-calendar-container" id="calendar" data-url="${url}"></div>
+      </div>
+    </div>
+
+</section>

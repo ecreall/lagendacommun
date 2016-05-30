@@ -1,0 +1,21 @@
+stages:
+  - test
+
+test_python:
+  stage: test
+  script:
+    - docker -v
+    - docker info
+    - docker-compose -f test.yml down || true
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - options="-f test.yml" ./run.sh rebuild || kill $SSH_AGENT_PID
+    - kill $SSH_AGENT_PID
+    - timelimit -t 580 -T 600 docker-compose -f test.yml run lac bin/test -s dace
+    - timelimit -t 580 -T 600 docker-compose -f test.yml run lac bin/test -s lac -t lac
+    - timelimit -t 580 -T 600 docker-compose -f test.yml run lac bin/test -s html_diff_wrapper -t html_diff_wrapper
+    - timelimit -t 580 -T 600 docker-compose -f test.yml run lac bin/test -s deform_treepy -t deform_treepy
+    - docker-compose -f test.yml run lac bin/test_hypatia
+  cache:
+    paths:
+      - cache

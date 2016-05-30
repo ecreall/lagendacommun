@@ -1,0 +1,27 @@
+ <div class="container-fluid">
+    <div class="row clearfix">
+      <div class="${'col-md-2'}">
+      </div>
+      <div class="${'col-md-7'}">   
+            <div id="footer">
+              <div tal:replace="structure navbar_body"/>
+                <div id="custom-footer">
+                  <div id="portal-colophon">
+                    <div class="colophonWrapper">
+                      <span>
+                        <a id="logo" href="${request.resource_url(request.virtual_root, '')}"></a>
+                         <a href="${request.resource_url(request.get_site_folder['ml_file'], '@@index')}">Mentions légales</a>
+                        - 
+                        <a href="http://www.pylonsproject.org/" title="">Réalisé avec Pyramid &amp; Python</a>
+                        -  Copyright © 2015-2016
+                          <a href="http://www.ecreall.com">Ecréall</a>
+                      </span>
+                   </div>
+                  </div>
+                </div>
+            </div>
+      </div>
+      <div class="${'col-md-2'} column ui-sortable lac-left">
+      </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+<div>
+     <div>
+        <div tal:omit-tag=""
+            tal:define="capacity getattr(object, 'capacity', None);
+                        kind getattr(object, 'kind_str', []);
+                        accessibility getattr(object, 'handicapped_accessibility', False)">
+            <dl tal:condition="kind or capacity or accessibility"
+            class="dl-horizontal well well-sm film-data">
+            <dt tal:condition="kind" ><span class="glyphicon glyphicon-qrcode"></span> <span i18n:translate="">kind</span></dt>
+            <dd tal:condition="kind">
+              <tal:loop repeat="k kind">
+                 ${k}
+              <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+            </tal:loop></dd>
+            <dt tal:condition="capacity" ><span class="glyphicon glyphicon-th"></span> <span i18n:translate="">Capacity</span></dt>
+            <dd tal:condition="capacity"> ${capacity}</dd>
+            <dt tal:condition="accessibility"><span class="map-icon-wheelchair"></span> <span i18n:translate="">Accessibility</span></dt>
+            <dd tal:condition="accessibility" i18n:translate="">
+              Accessible for handicapped
+            </dd>
+        </dl>
+        </div>
+    </div>
+     <div>
+     ${structure:object.description}
+     </div>
+     <h4  ><span class="glyphicon glyphicon-map-marker"></span> <span i18n:translate="">Addresses</span></h4>
+     <div>
+       <blockquote tal:repeat="address getattr(object, 'addresses', [])">
+        <div tal:omit-tag="" tal:define="address_str object.address_str(address)">
+            ${address['title']}
+             <small> ${address_str}.</small>
+        </div>
+       </blockquote>
+       <h4 tal:condition="getattr(object, 'contacts', [])"  ><span class="md md-headset-mic"></span> <span i18n:translate="">Contacts</span></h4>
+        <div tal:repeat="contact getattr(object, 'contacts', [])">
+          <blockquote >
+               <h4>${contact.get('title', '')}</h4>
+               <small tal:condition="contact.get('website', None)"><span class="glyphicon glyphicon-globe"></span>  
+                 <a target="_blank" tal:condition="contact['website'].startswith('http')" href="${contact['website']}">${contact['website']}</a>
+                 <a target="_blank" tal:condition="not contact['website'].startswith('http')" href="http://${contact['website']}">${contact['website']}</a>
+               </small>
+               <small tal:condition="contact.get('email', None)"><span class="glyphicon glyphicon-envelope"></span>  <a href="mailto:${contact['email']}"> ${contact['email']}</a></small>
+              <small tal:condition="contact.get('phone', None)" tal:define="surtax contact.get('surtax', None)">
+                <span class="glyphicon glyphicon-earphone"></span>  ${layout.deserialize_phone(contact['phone'], True)} 
+                <span tal:condition="surtax and surtax not in (0, '0')">(<span i18n:translate="">Surtax</span>: ${surtax})</span>
+              </small>
+              <small tal:condition="contact.get('fax', None)"><span class="glyphicon glyphicon-print"></span>  ${layout.deserialize_phone(contact['fax'], True)}
+              </small>
+          </blockquote>
+        </div>
+
+    </div>
+</div>

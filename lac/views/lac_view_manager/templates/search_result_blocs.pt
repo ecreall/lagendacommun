@@ -1,0 +1,21 @@
+<div tal:omit-tag="" tal:define="filterbody filter_body|nothing" i18n:domain="lac">
+	<div tal:omit-tag="" tal:condition="filterbody">
+		${structure: filterbody}
+    </div>
+</div>
+<div class="row scroll-able result-scroll" tal:define="batch_value batch|nothing">
+  <div tal:condition="bodies" id="${(batch_value and batch_value.target.replace('#', '')) or 'results'}" class="results">
+    <div tal:condition="batch_value" metal:use-macro="request.sdiapi.get_macro('lac:views/templates/batching.pt', 'batching')"/>
+	  <div class="container-fluid result-container" data-nex_url="${batch.next_url}">
+    	  <div class="row" tal:repeat="row_index range(row_len)">
+    	    <div class="col-md-6" tal:repeat="body bodies[(row_index*2): (row_index*2)+2]" style="padding-top: 10px">
+              ${structure:body}
+    	    </div>
+    	  </div>
+    </div>
+  </div>
+  <script>
+    init_result_search();
+  </script>
+</div>
+

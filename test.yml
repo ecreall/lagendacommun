@@ -1,0 +1,21 @@
+version: '2'
+services:
+  lac:
+    build:
+      context: .
+      args:
+        userid: '1015'
+    environment:
+      - SECRET=mybigsecret
+      - APPLICATION_URL=https://www.lagendacommun.org
+      - MAIL_DEFAULT_SENDER=noreply@example.com
+      - TIMEOUT=600
+      - WORKERS=1
+      - ARANGO_PORT=arango:8529
+      - ARANGO_ROOT_PASSWORD=very_secret
+    links:
+      - arango
+  arango:
+    image: arangodb
+    environment:
+      - ARANGO_ROOT_PASSWORD=very_secret

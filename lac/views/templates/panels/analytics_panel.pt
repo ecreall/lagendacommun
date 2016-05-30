@@ -1,0 +1,9 @@
+ <div tal:omit-tag="" tal:define="analytics getattr(request.get_site_folder, 'analytics', None)">
+	 	<script type="text/javascript">
+			var piwik_userid = "${userid}";
+			var piwik_contributor = "${is_contributor}";
+		</script>
+      <script tal:condition="analytics" type="text/javascript">
+        ${analytics}
+      </script>
+  </div>

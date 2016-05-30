@@ -1,0 +1,12 @@
+<div tal:condition="not_published_contents" class="alert alert-warning" i18n:domain="lac" i18n:translate="">
+     <p><strong>Des fiches artistes et\ou lieux non publiées!</strong> Des fiches artistes et\ou lieux sont enregistrées et ne sont pas encore publiées. La publication de l'annonce engendre la publication, automatique, des fiches non publiées. La publication d'une fiche engendre le remplacement définitif de la fiche originale par la nouvelle fiche. Les fiches concernées sont:</p>
+     <ul class="list-unstyled">
+     	<li tal:repeat="content not_published_contents">
+          <a target="_blank" tal:attributes="href request.resource_url(content, '@@index')" class="alert-link"><span class="${content.icon}"></span> ${content.title}</a>
+     	</li>
+     </ul>
+     Nous vous invitons à vérifier et compléter les différentes fiches afin d'avoir l'information la plus complète possible.
+</div>
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+ Cette action est irréversible. En cliquant sur Continuer, l'annonce sera visible par tous les utilisateurs du site. Un courriel sera envoyé à l'auteur de l'annonce afin de l'avertir de votre décision.
+</div>

@@ -1,0 +1,18 @@
+<div tal:condition="not_published_artists" class="alert alert-warning" i18n:domain="lac" i18n:translate="">
+     <p><strong>Des fiches artistes non publiées!</strong> Des fiches artistes sont enregistrées et ne sont pas encore publiées. La soumission de votre critique engendre la soumission, automatique, à modération des fiches non publiées. Les fiches artistes concernées sont:</p>
+     <ul class="list-unstyled">
+     	<li tal:repeat="artist not_published_artists">
+          <a target="_blank" tal:attributes="href request.resource_url(artist, '@@index')" class="alert-link"><span class="glyphicon glyphicon-star"></span> ${artist.title}</a>
+     	</li>
+     </ul> 
+</div>
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+ En cliquant sur Continuer, votre critique sera soumise sur les sites suivants. Selon la configuration du site, votre annonce sera visible ou non.
+</div>
+
+<div tal:omit-tag="" tal:repeat="data sites_data">
+	<div style="margin-bottom: 15px" tal:condition="data[1]" tal:define="site data[0]; body data[1]">
+		<h4><span class="${site.icon}"></span> ${site.title}</h4>
+		${structure:body}
+	</div>
+</div>

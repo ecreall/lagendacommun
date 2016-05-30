@@ -1,0 +1,11 @@
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+	<p>
+		Le service suivant permet d'activer les processus de modération afin de pouvoir modérer les contenus du site. La modération inclut généralement l'amélioration des contenues avant publication. La durée de validité de ce service et de 30 jours renouvelable.
+	</p>
+    <p>
+	Afin de compléter l'enregistrement du service sur votre site, il vous suffit de saisir un titre et choisir l'organisation de modération.
+    </p>
+    <p>
+	  Une organisation de modération est composée des membres ayant les rôles nécessaires pour modérer les contenus créés sur ce site.
+    </p>
+</div>

@@ -1,0 +1,21 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac"
+    tal:define="expire getattr(object, 'end_date', None);
+               expired 'expired' in object.state">
+  <div class="caption" tal:define="organization object.delegate">
+    <h3>
+      ${object.title} 
+      <small tal:condition="expire" class="service-date">(
+        <span tal:condition="not expired" i18n:translate="">Expire on</span>
+        <span tal:condition="expired" i18n:translate="">Expired on</span> 
+        <span tal:replace="layout.to_localized_time(expire)"/>)
+      </small>
+    </h3>
+    <p class="text-muted" >
+       ${object.service_description} <span class="service-price" style="">${object.price_str}</span>
+    </p>
+    <div tal:omit-tag="" tal:condition="organization">
+    <h4><span i18n:translate="">This service is delegated to</span> <a href="${request.resource_url(organization, '@@index')}">${organization.title}</a></h4>
+  </div>
+  </div>
+</div>

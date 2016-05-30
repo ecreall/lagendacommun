@@ -1,0 +1,15 @@
+<div class="smart-folder-well result-item">
+    <div class="bloc-title">
+       <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+       <h4 class='content-surtitle'><a href="${request.resource_url(object, '@@index')}"><span class="${object.icon}"></span> ${object.title}</a></h4>
+    </div>
+    <hr style="margin-bottom: 12px; margin-top: 6px;" class="soften">
+    <p  class="critique_text">
+        <img tal:condition="object.picture" tal:define="picture object.picture" alt="" src="${getattr(picture, 'small', picture).url}" class="critique_vignette img-thumbnail" style="width: 128px">
+                    ${object.presentation_text(300)}
+        <a href="${request.resource_url(object, '@@index')}">Lire&nbsp;la&nbsp;suite...</a>
+    </p>
+    <div class="article-signature" style=" margin-bottom: 0;">
+      ${getattr(object, 'signature', '')}
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<div tal:condition="object.is_published"
+	 class="social-share-contaier"
+	 i18n:domain="lac"
+   >
+  <div id="collapse-social-share">
+    <div tal:condition="shortner_url">
+      <button
+        class="shorten-url btn btn-xs btn-primary"
+        data-shortner_url="${shortner_url}"
+        data-modal="#shortner_url_modal"
+        data-url="${request.url.replace('https://ssl', 'http://www')}">
+        <span class="glyphicon glyphicon-link"></span> <span i18n:translate="">Get a shortened link</span></button>
+      <div id="shortner_url_modal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-body">
+              <h4><a class="alert-link" href="#"></a></h4>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
+  </div>
+    <div class="social-share"
+       data-social-share-privacy="true">
+    </div>
+  </div>
+</div>

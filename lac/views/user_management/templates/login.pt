@@ -1,0 +1,60 @@
+<div class="row" i18n:domain="lac">
+  <div class="col-sm-12">
+      <div class="form-signin-alert alert alert-danger hide-bloc">
+          <h4 i18n:translate="">Failed login</h4>
+          <p i18n:translate="">Verify your login or password</p>
+          <p style="margin-top: 20px; margin-bottom: -10px">
+            <span i18n:translate="">You do not have an account?</span> <a href="${request.resource_url(request.root, '@@registration')}" class="alert-link " id="registration" >
+              <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>
+           </a>
+         </p>
+      </div>
+       <div class="row" tal:omit-tag="not applications">
+          <h2 class="form-signin-heading" ><p class="text-center" i18n:translate="">Log In</p></h2>
+          <div class="col-md-6" tal:omit-tag="not applications">
+             <form action="${url}" method="post"
+                   class="form-signin form-signin-principal"
+                   metal:define-macro="login-form">
+
+               <input type="hidden" name="csrf_token"
+                      value="${request.session.get_csrf_token()}" />
+              <input type="hidden" name="__formid__"
+                      value="${form_id}" />
+
+               <input type="text" name="email" class="form-control"
+                      autofocus="autofocus" placeholder="Login (email)" i18n:attributes="placeholder"
+                      value="${login}" />
+
+               <input type="password" name="password" class="form-control"
+                      placeholder="Password" i18n:attributes="placeholder"
+                      value="${password}" />
+
+               <input type="submit" name="login_form.submitted"
+                      class="btn btn-primary btn-block login-form-submit" i18n:attributes="value"
+                      value="Log In"
+                      data-check_url="${check_url}"/>
+
+               <p id="password-reset-link"
+                    metal:define-macro="password-reset-link">
+                 <a href="${request.resource_url(request.virtual_root, '@@resetpassword')}" i18n:translate=""
+                      >Forgot your password?</a>
+               </p>
+             </form>
+          </div>
+          <div class="col-md-6" tal:omit-tag="not applications">
+             <div tal:omit-tag="" tal:repeat="application applications">
+                <div tal:omit-tag="" tal:define=" site_id getattr(application, 'application_site_id', '')">
+                  <form class="form-signin" tal:condition="site_id" id="${site_id}" method="post" action="${velruse_login_url(request, site_id)}">
+                      <button type="submit" class="btn btn-block btn-social btn-${application.application_id}">
+                      <span class="fa fa-${application.application_id}"></span>
+                          <span i18n:translate="">Login with</span> ${application.application_title}
+                    </button>
+                  </form>
+                  </div>
+              </div>
+          </div>
+        </div>
+  </div>
+</div>
+
+

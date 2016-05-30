@@ -1,0 +1,26 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption">
+    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
+    <h2 class="content-title"><span class="${object.icon}"></span> ${object.title}</h2>
+    <div class="object-description">
+      <small>Du <span tal:replace="layout.to_localized_time(object.start_date)"/> au <span tal:replace="layout.to_localized_time(object.end_date)"/>
+     </small>
+    </div>
+    <div tal:condition="add_participants_view" class="alert alert-info">
+      <span i18n:translate="">To access the list of participants click</span> 
+      <a target="_blank" href="${request.resource_url(object, '@@gameparticipants')}" class="alert-link" i18n:translate="">here</a>
+    </div>
+    <div >
+        <div class=" heterogeneous-content article-content">
+           <div class="footer-picture article-picture">
+            <div class="footer-message" i18n:translate="">All rights reserved</div>
+            <img  width="300" height="253" tal:condition="object.picture" src="${getattr(object.picture, 'large', object.picture).url}" class="pull-right img-thumbnail illustration" />
+          </div>
+          <div >
+             ${structure:getattr(object, 'description', '')}
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

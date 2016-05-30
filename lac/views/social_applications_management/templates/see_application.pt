@@ -1,0 +1,15 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+	<div type="submit" class="btn btn-block btn-social btn-${object.application_id}">
+      <span class="fa fa-${object.application_id}"></span>
+          ${object.application_title}
+    </div>
+
+    <div class="list-group">
+		<div tal:repeat="(title, value) data" class="list-group-item">
+			<h4 class="list-group-item-heading">${title}</h4>
+			<p class="list-group-item-text">${value}</p>
+		</div>
+	</div>
+
+</div>

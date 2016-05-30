@@ -1,0 +1,17 @@
+<div tal:omit-tag="" tal:condition="condition|True">
+  <div tal:condition="request.view_name in ('', 'index', '@@index') and len(items) >= 1" id="carousel-captions" class="gallery">
+  <div class="home-slick slick-well" i18n:domain="lac">
+    <div class="home-carousel">
+          <div tal:repeat="(i, item) enumerate(items)" class="item" >
+            <img tal:condition="item.picture" data-holder-rendered="true" src="${getattr(item.picture, 'xlarge', item.picture).url}" class="item-img" width="400">
+            <div class="carousel-caption">
+              <h3 class="carousel-item-title">${item.title}</h3>
+              <p class="hidden-xs hidden-sm">${structure:item.presentation_text(130)}</p>
+              <p class="visible-sm">${structure:item.presentation_text(70)}</p>
+              <a type="button" href="${request.resource_url(item, '@@index')}" class="btn btn-primary btn-xs">En savoir  plus</a>
+            </div>
+          </div>
+    </div>
+  </div>
+  </div>
+</div>

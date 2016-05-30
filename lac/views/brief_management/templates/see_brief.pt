@@ -1,0 +1,36 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption" tal:define="is_published object.is_published">
+    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
+    <h2 class="content-title"><span class="lac-icon icon-brief"></span> ${object.title} </h2>
+    <div tal:condition="is_portalmanager and object.author" class="content-author">
+        <span i18n:translate="">Added by</span> 
+        <span>
+          <a target="_blank" tal:attributes="href request.resource_url(object.author, '@@index')">${getattr(object.author, 'title', object.author.name)}</a>
+        </span>
+    </div>
+    <div  tal:condition="not is_published">
+      <div class="read-tree"
+           data-source_tree="${object.json_tree}"
+           data-diff_tree="${tree_diff}"
+           data-is_diff="true"
+           data-diff_marker="${diff_marker}"></div>
+    </div>
+    <div class="heterogeneous-content article-content">
+     <div class="footer-picture article-picture">
+      <div class="footer-message" i18n:translate="">All rights reserved</div>
+      <img  width="300" height="253" tal:condition="object.picture" src="${getattr(object.picture, 'large', object.picture).url}" class="pull-right img-thumbnail illustration" />
+    </div>
+      ${structure:getattr(object, 'details', '')}
+    </div>
+  <div tal:condition="getattr(object, 'informations', '')">
+    <blockquote >
+      <h4 style="color: #8d8d8d"><span class="glyphicon glyphicon-info-sign"></span> <span i18n:translate="">Informations</span></h4>
+       <div class="article-informations"> ${structure:getattr(object, 'informations', '')}</div>
+    </blockquote>
+  </div>
+  </div>
+</div>
+<div tal:replace="structure footer_body"/>
+${panel('social_share_toggle')}
+${panel('labels', context=object)}

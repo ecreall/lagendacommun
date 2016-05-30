@@ -1,0 +1,109 @@
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+Le système a détecté des doublons potentiels. Afin d'éviter la redondance des données, nous vous invitons à modifier une des fiches artiste proposées. Le fait de modifier une fiche artiste existante entraine la suppression définitive de votre fiche artiste. 
+Vous pouvez aussi remplacer votre fiche artiste par une des fiches artistes proposées, Enfin, vous pouvez abandonner la gestion des doublons.
+</div>
+
+<div tal:condition="contents"  i18n:domain="lac">
+	    	<div class="panel panel-success">
+					  <div class="panel-heading" style="padding: 1px; text-align: center">
+					  	<h5>
+                          <span i18n:translate="">Current version</span>
+					      (<div tal:define="author context.author" style="display: inline;">
+					        <span i18n:translate="" tal:condition="author">Added by</span> 
+					        <span tal:condition="author">
+					          <a target="_blank" tal:attributes="href request.resource_url(author, '@@index')">${getattr(author, 'title', author.name)}</a>
+					        </span>
+					        <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(context.modified_at, date_only=True)"/>
+					      </div>)
+					      <a class="alert-link" tal:attributes="href request.resource_url(context, '@@index')" target="_blank">
+					      	<h5 style="font-weight: bold; display: inline;">
+						      <span class="glyphicon glyphicon-plus-sign"></span>
+						    </h5>
+						   </a>
+					    </h5>
+					  </div>
+					  <div class="panel-body">
+					    ${structure:context_view}
+					  </div>
+					  <div tal:condition="is_manager"  class="panel-footer" style="text-align: center;">
+	                        <div class="btn-group" role="group" aria-label="...">
+		                       <a class="btn btn-danger btn-xs pull-right" 
+								 	 tal:attributes="href request.resource_url(request.root, '@@mergeartist', query={'source': oid, 'targets': [e[1] for e in contents.values()]})" i18n:translate="">
+									  <span class="octicon octicon-git-pull-request"></span> <span i18n:translate="">Replace all by the current version</span>
+							    </a>
+	                        </div>
+					  </div>
+					</div>
+
+	<div id="legend" style="margin-bottom: 20px">
+	    <div><div class="legend-carre-ins"></div> : <span i18n:translate="">Text added by the version</span></div>
+	    <div><div class="legend-carre-del"></div> : <span i18n:translate="">Text removed by the version</span></div>
+	 </div>
+	 <div class="row" tal:repeat="row_index range(row_len)">
+		    <div class="col-md-6" tal:repeat="(obj, data) list(contents.items())[(row_index*2): (row_index*2)+2]">
+		    	<div tal:define="body data[0]; obj_oid data[1]" class="panel panel-primary">
+					  <div class="panel-heading" style="padding: 1px; text-align: center">
+					  	<h5>
+                          <div tal:define="author obj.author" style="display: inline;">
+					        <span tal:condition="author" i18n:translate="">Potential duplicate:</span> <span tal:condition="author" i18n:translate="">Added by</span> 
+					        <span tal:condition="author">
+					          <a style="color: white" target="_blank" tal:attributes="href request.resource_url(author, '@@index')">${getattr(author, 'title', author.name)}</a>
+					        </span>
+					        <span i18n:translate="">the</span> <span tal:replace="layout.to_localized_time(obj.modified_at, date_only=True)"/>
+					      </div>
+					      <a style="color: white" tal:attributes="href request.resource_url(obj, '@@index')" target="_blank">
+					      	<h5 style="font-weight: bold; display: inline;">
+				    	      <span class="glyphicon glyphicon-plus-sign"></span>
+				    	    </h5>
+				    	   </a>
+					      
+					    </h5>
+					  </div>
+					  <div class="panel-body">
+					    ${structure:body}
+					  </div>
+					  <div class="panel-footer" style="text-align: center;">
+	                    <div class="btn-group" role="group">
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						      <span class="glyphicon glyphicon-pencil"></span> <span i18n:translate="">Improve</span>
+						      <span class="caret"></span>
+						    </button>
+						    <ul class="dropdown-menu">
+						    	<li>
+									<a tal:attributes="href request.resource_url(obj, '@@improveartistinformationsheet', query={'source': oid})" i18n:translate="">
+								        <span i18n:translate="">Continue to improve this version</span>
+								    </a>
+							    </li>
+							    <li tal:condition="'published' not in context.state">
+									<a tal:attributes="href request.resource_url(obj, '@@improvementofartist', query={'improvement': oid})" i18n:translate="">
+								        <span i18n:translate="">Consider as an improvement of this version</span>
+								    </a>
+							    </li>
+						    </ul>
+						  </div>
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						      <span class="octicon octicon-git-pull-request"></span> <span i18n:translate="">Replace</span>
+						      <span class="caret"></span>
+						    </button>
+						    <ul class="dropdown-menu">
+						    	<li>
+						    		<a tal:attributes="href request.resource_url(request.root, '@@mergeartist', query={'source': obj_oid, 'targets': [oid]})" i18n:translate="">
+						       			<span i18n:translate="">The current version by this version</span>
+						       		</a>
+						       </li>
+						       <li>
+						       	<a tal:condition="is_manager"
+								 	 tal:attributes="href request.resource_url(request.root, '@@mergeartist', query={'source': obj_oid, 'targets': view.get_adapted_target([e[1] for e in contents.values()], obj_oid, oid)})" i18n:translate="">
+									  <span i18n:translate="">All by this version</span>
+							     </a>
+							    </li>
+						    </ul>
+						  </div>
+						</div>
+					  </div>
+					</div>
+		  </div>
+	</div>
+</div>

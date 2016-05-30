@@ -1,0 +1,4 @@
+
+<pre id="result">
+${ result|n }
+</pre>

@@ -1,0 +1,8 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption">
+    <h3>${getattr(user, 'title', user.name)}</h3>
+    <h4 class="section-title"><span class="ion-person-stalker"></span> <span i18n:translate="">Members</span></h4>
+     ${structure:contents}
+  </div>
+</div>

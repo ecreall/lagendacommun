@@ -1,0 +1,11 @@
+<nav tal:condition="condition" class="navbar lac-contents" i18n:domain="lac">
+        <div class="container">
+            <div class="lac-contents-list">
+                    <ul>
+                        <div tal:omit-tag="">
+                           <li><strong>0</strong> <span i18n:translate="">TODO</span></li>
+                        </div>                       
+                    </ul>
+            </div>
+        </div>
+</nav>

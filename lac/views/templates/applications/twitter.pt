@@ -1,0 +1,12 @@
+<div i18n:domain="lac" i18n:translate="">
+	<div style="
+		    text-align: center;
+		    margin-top: 5px;
+		">
+        <a tal:attributes="href action.url"  class="btn btn-block btn-social btn-lg btn-twitter">
+		  <span class="fa fa-twitter"></span>
+		  <span i18n:translate=""> Add a Twitter application</span>
+		</a>
+
+    </div>
+</div>

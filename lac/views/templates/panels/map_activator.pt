@@ -1,0 +1,9 @@
+ <div tal:condition="condition|True" tal:omit-tag="" i18n:domain="lac">
+	<div class="btn-group-vertical lateral-menu" role="group">
+	    <a class="map-activator-btn btn" role="button" data-toggle="collapse" href="#collapse-map" aria-expanded="false" aria-controls="collapse-map">
+		    <span class="glyphicon glyphicon-map-marker"></span> <span i18n:translate="">See today's events on the map</span>
+		    <img src="${request.static_url('lac:static/images/map.png')}" style="">
+		</a>
+	</div>
+</div>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="lac"
+      metal:define-macro="web_services_layout"
+      tal:define="mp request.sdiapi.mgmt_path;
+      su request.static_url;
+      sdititle request.sdiapi.sdi_title()">
+  <head>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      <title>File Manager</title>
+      <link rel="stylesheet" type="text/css" href="${request.static_url('lac:static/Filemanager/styles/reset.css')}" />
+      <link rel="stylesheet" type="text/css" href="${request.static_url('lac:static/Filemanager/scripts/jquery.filetree/jqueryFileTree.css')}" />
+      <link rel="stylesheet" type="text/css" href="${request.static_url('lac:static/Filemanager/scripts/jquery.contextmenu/jquery.contextMenu-1.01.css')}" />
+      <link rel="stylesheet" type="text/css" href="${request.static_url('lac:static/Filemanager/scripts/custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css')}" />
+      <style type="text/css">
+        #loading-wrap {
+          position:fixed;
+          height:100%;
+          width:100%;
+          overflow:hidden;
+          top:0;
+          left:0;
+          display:block;
+          background: white url(${request.static_url('lac:static/Filemanager/images/wait30trans.gif')}) no-repeat center center;
+          z-index:999;
+        }
+      </style>
+      <script type="text/javascript">
+        var static_url = '${request.resource_url(request.root,'lacstatic')}';
+      </script>
+      <!-- CSS dynamically added using 'config.options.theme' defined in config file -->
+  </head>
+  <body>
+    <div metal:define-slot="main"></div>
+  </body>
+</html>

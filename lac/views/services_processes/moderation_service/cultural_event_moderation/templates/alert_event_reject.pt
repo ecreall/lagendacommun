@@ -1,0 +1,3 @@
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+ Cette action est irréversible. En cliquant sur Continuer, l'annonce sera rejetée. Un courriel sera envoyé à l'auteur de l'annonce afin de l'avertir de votre décision.
+</div>

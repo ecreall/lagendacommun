@@ -1,0 +1,14 @@
+<div class="improve-alert" i18n:domain="lac" i18n:translate="">
+ Votre avis nous intéresse ! Aidez-nous à améliorer notre site en nous faisant part de vos suggestions.
+</div>
+<div class="alert alert-danger hide-bloc email-alert">
+  Veuillez saisir votre adresse électronique.
+</div>
+
+<div class="alert alert-danger hide-bloc improvement-alert">
+  Veuillez saisir vos suggestions.
+</div>
+
+<div class="alert alert-success hide-bloc">
+  Merci pour votre participation.
+</div>

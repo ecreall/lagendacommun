@@ -1,0 +1,44 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption">
+  	<h3 tal:define="parents object.parents"><a tal:condition="parents" tal:attributes="href request.resource_url(parents[0], '@@index')" >${parents[0].title}</a> <span tal:condition="parents">/</span> ${object.title} </h3>
+    <div id="contenttext" class="content-text">
+      ${getattr(object, 'description', '')}
+    </div>
+  </div>
+
+<div class="object-nav-tabs">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#details" aria-controls="details" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Detail</span></a></li>
+        <li role="presentation"><a href="#filters" aria-controls="filters" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-filter"></span> <span i18n:translate="">Filters</span></a></li>
+        <li tal:condition="subfolders" role="presentation"><a href="#contents" aria-controls="contents" role="tab" data-toggle="tab" ><span class="glyphicon glyphicon-folder-open"></span> <span i18n:translate="">Contents</span></a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="details">
+           <strong style="font-size:14px" i18n:translate="">This folder is shared by following sites:</strong>
+           <tal:loop repeat="k access_control">
+                ${k}
+              <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+           </tal:loop>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="filters">
+          <div class="registered-filter-container">
+            <div class="registered-filter" id="filter_data">
+                ${structure:filter}
+            </div>
+          </div>
+        </div>
+        <div tal:condition="subfolders" role="tabpanel" class="tab-pane" id="contents">
+          <div tal:condition="actions_bodies" tal:repeat="action_body actions_bodies" >
+              ${structure:action_body}
+          </div>
+          <div tal:replace="structure subfolders_body"/>
+        </div>
+      </div>
+
+    </div>
+
+</div>

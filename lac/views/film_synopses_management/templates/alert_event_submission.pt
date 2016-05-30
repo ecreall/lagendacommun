@@ -1,0 +1,11 @@
+<div tal:condition="not_published_artists" class="alert alert-warning" i18n:domain="lac" i18n:translate="">
+     <p><strong>Des fiches artistes non publiées!</strong> Des fiches artistes sont enregistrées et ne sont pas encore publiées. La mise en attente de votre résumé de filme engendre la soumission, automatique, à modération des fiches non publiées. Les fiches artistes concernées sont:</p>
+     <ul class="list-unstyled">
+     	<li tal:repeat="artist not_published_artists">
+          <a target="_blank" tal:attributes="href request.resource_url(artist, '@@index')" class="alert-link"><span class="glyphicon glyphicon-star"></span> ${artist.title}</a>
+     	</li>
+     </ul> 
+</div>
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+ En cliquant sur Continuer...
+</div>

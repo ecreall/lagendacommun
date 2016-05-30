@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="lac"
+      tal:define="mp request.sdiapi.mgmt_path;
+      su request.static_url;
+      sdititle request.sdiapi.sdi_title()">
+  <head>
+
+    <!-- Styles -->
+    <link href="${su('lac:static/css/bootstrap.css')}"
+          rel="stylesheet"/>
+    <link href="${su('daceui:static/css/dace_ui.css')}"
+          rel="stylesheet"/>
+
+
+    <!-- Fav icons -->
+    <link rel="shortcut icon"
+          href="${su('lac:static/images/favicon.ico')}"/>
+
+
+    <!-- Scripts -->
+    <script type="text/javascript">
+      function lac_get_language(){
+        return  '<tal:block >${request.locale_name}</tal:block>'
+      };
+    </script>
+    <script src="${su('lac:static/js/main.js')}"
+            type="text/javascript"></script>
+    <script src="${su('daceui:static/js/dace_ui.js')}"
+            type="text/javascript"></script>
+    <script src="${su('daceui:static/jquery.infinitescroll.js')}"
+            type="text/javascript"></script>
+    <script src="${su('daceui:static/jquery-endless-scroll/js/jquery.endless-scroll.js')}"
+            type="text/javascript"></script>
+    <script src="${su('lac:static/js/lac_langs.js')}"
+          type="text/javascript"></script>
+    <script src="${su('lac:static/js/lac.js')}"
+          type="text/javascript"></script>
+    <script src="${su('lac:static/js/filter.js')}"
+          type="text/javascript"></script>
+    <link rel="stylesheet" 
+          href="${request.static_url('deform:static/css/form.css')}"
+          type="text/css"/>
+    <tal:block repeat="reqt list(set(css_links))|[]">
+      <link rel="stylesheet" 
+            href="${request.static_url(reqt)}" 
+            type="text/css" />
+     </tal:block>
+
+    <!-- JavaScript -->
+    <tal:block tal:define="set_js_links []" repeat="reqt request.resources['js_links']|[]">
+      <tal:if condition="reqt not in set_js_links">
+      <script type="text/javascript"
+              src="${request.static_url(reqt)}"
+       ></script>
+        <tal:block tal:define="set_js_links set_js_links.append(reqt)"></tal:block>
+     </tal:if>
+    </tal:block>
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div class="" style="background-color: white !important; padding: 11px; box-shadow: 0 3px 10px #888888">
+            <h1 i18n:translate="">Find entities</h1>
+            <tal:block replace="structure form" />
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </body>
+</html>

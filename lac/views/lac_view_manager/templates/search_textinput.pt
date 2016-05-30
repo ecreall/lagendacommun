@@ -1,0 +1,40 @@
+<span tal:define="name name|field.name;
+                  css_class css_class|field.widget.css_class;
+                  button_type button_type|getattr(field.widget,'button_type', 'submit');
+                  oid oid|field.oid;
+                  description description|getattr(field.widget, 'description', '');
+                  mask mask|field.widget.mask;
+                  mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                  style style|field.widget.style;
+                  url url|getattr(field.widget, 'url', '');
+                  advanced_search_url advanced_search_url|getattr(field.widget, 'advanced_search_url', '');
+                  placeholder placeholder|field.widget.placeholder;
+"
+      tal:omit-tag="">
+      <div id="searchsection" class="input-group input-group-sm" i18n:domain="lac">
+       <input type="text" name="${name}" value="${cstruct}"
+           tal:attributes="class string: deform-dont-focus search-text-input form-control ${css_class};
+                           style style"
+           id="${oid}" placeholder="${placeholder}"
+           data-url="${url}"
+           autocomplete="off">
+        <span class="input-group-btn">
+           <button class="btn btn-warning" type="${button_type}" name="Search"  i18n:translate=""><span class="glyphicon glyphicon-search"></span></button>
+           <a class="btn btn-default" href="${advanced_search_url}" i18n:translate=""><span class="glyphicon glyphicon-zoom-in"></span> <span class="hidden-sm hidden-xs" i18n:translate="">Advanced search</span></a>
+        </span>
+      </div>
+   <p class="help-block" >
+    <small tal:condition='description'>${description}</small>
+   </p>
+    <script type="text/javascript">
+       $("#req-${oid}").hide()
+    </script>
+    <script tal:condition="mask" type="text/javascript">
+      deform.addCallback(
+         '${oid}',
+         function (oid) {
+            $("#" + oid).mask("${mask}",
+                 {placeholder:"${mask_placeholder}"});
+         });
+    </script>
+</span>

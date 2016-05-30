@@ -1,0 +1,6 @@
+<div class="panel panel-default pontus-main-view" >
+     <div class="panel-heading"><div tal:condition="title" class="panel-title">${title}</div></div>
+     <div class="panel-body">
+     	<div tal:replace="structure body">
+     </div>
+</div>

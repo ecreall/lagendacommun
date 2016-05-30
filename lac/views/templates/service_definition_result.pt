@@ -1,0 +1,15 @@
+<div class="thumbnail search-item result-item folder-item ${object.style}">
+	<div style="height: 15px">
+	    <div style="padding:0px 5px; margin-top: -8px;" class=" pull-right">${state}</div>
+	</div>
+  <span class="${object.icon}" ></span>
+  <div class="caption">
+    <h4 title="${object.type_title}">
+      <a  style="margin-top: 10px; display: inline-block" class="alert-link" tal:attributes="href request.resource_url(object, '@@index')" >${object.title}
+        <span style="display: block">${object.price_str}</span>
+      </a>
+    </h4>
+    <small style="color: gray">${object.description}</small>
+
+  </div>
+</div>

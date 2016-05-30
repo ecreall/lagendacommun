@@ -1,0 +1,7 @@
+<div tal:condition="not accept" class="navbar navbar-fixed-bottom navbar-cookies">
+	<p >
+		<span >
+			<span>Utilisation des cookies:</span> En poursuivant votre navigation, vous acceptez l'utilisation des cookies sur notre site. <button type="button" class="accept-cookies-btn btn btn-default btn-xs">J'accepte</button>
+		</span>
+	</p>
+</div>

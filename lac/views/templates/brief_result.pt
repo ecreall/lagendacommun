@@ -1,0 +1,21 @@
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="lac">
+  <div id="brief-image" class="content-image" >
+  	<span class="hidden-xs icon lac-icon icon-brief"></span>
+  </div>
+  <div class="media-body cultural-event-body" tal:define="appreciation getattr(object, 'appreciation', None)">
+  <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+    <a tal:attributes="href request.resource_url(object, '@@index')"><h4 class="content-title content-title-review" style="display: ${(appreciation and 'inline-flex') or 'block'}">${object.title}</h4></a>
+    <div class="heterogeneous-content article-content">
+    <div class="footer-picture illustration-picture">
+      <div class="footer-message" i18n:translate="">All rights reserved</div>
+        <img tal:condition="object.picture" src="${getattr(object.picture, 'medium', object.picture).url}" class="pull-right img-thumbnail illustration" width="84"/>
+    </div>
+      ${structure:object.presentation_text(400)}
+    </div>
+    <div class="article-signature" style=" margin-bottom: 0;">
+      <span style="color: gray" >
+        <span tal:replace="layout.to_localized_time(object.get_release_date(), date_only=True)"/>
+      </span>
+    </div>
+  </div>
+</div>

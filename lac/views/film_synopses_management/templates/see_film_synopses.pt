@@ -1,0 +1,104 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption">
+    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3>
+    <h3 class="content-title"><span class="lac-icon icon-film-synopses"></span> ${object.title} </h3>
+    <div tal:condition="is_portalmanager and object.author" class="content-author">
+        <span i18n:translate="">Added by</span> 
+        <span>
+          <a target="_blank" tal:attributes="href request.resource_url(object.author, '@@index')">${getattr(object.author, 'title', object.author.name)}</a>
+        </span>
+    </div>
+
+    <div class="object-nav-tabs">
+
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist" tal:condition="services_body">
+        <li role="presentation" class="active"><a href="#read" aria-controls="read" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-eye-open"></span> <span i18n:translate="">Schedule</span></a></li>
+        <li role="presentation" ><a href="#services" aria-controls="services" role="tab" data-toggle="tab"> <span class="glyphicon glyphicon-wrench"></span> <span i18n:translate="">Services</span></a></li>
+      </ul>
+
+      <!-- Tab panes -->
+      <div class="tab-content" tal:omit-tag="not services_body">
+        <div tal:omit-tag="not services_body" role="tabpanel" class="tab-pane active" id="read">
+		    <dl class="dl-horizontal well well-sm film-data" 
+		    tal:define="artists getattr(object, 'artists', []);
+		                directors getattr(object, 'directors', []);
+		                duration getattr(object, 'duration', None);
+		                nationality getattr(object, 'nationality', None);
+		                film_release_date getattr(object, 'film_release_date', None);">
+		        <dt tal:condition="film_release_date" i18n:translate="">Release date</dt>
+			    <dd tal:condition="film_release_date">
+			    	<strong style="color: #a94442;"><span tal:replace="layout.to_localized_time(film_release_date, format_id='defined_literal', date_only=True, add_day_name=True)"/></strong>
+			    </dd>
+			    <dt tal:condition="duration" i18n:translate="">Duration</dt>
+			    <dd tal:condition="duration"> ${duration}
+			    </dd>
+			    <dt tal:condition="directors" i18n:translate="">Directed by</dt>
+		        <dd tal:condition="directors">
+		            <div >
+		              <div class="artist-item" tal:repeat="director object.directors">
+						<div  
+				             class="artist-item-title"
+				             data-id="${director.get_id()}"
+				             data-url="${request.resource_url(request.root, 'creationculturelapi')}">
+				            <a target="_blank" tal:attributes="href request.resource_url(director, '@@index')">
+				              <span class="glyphicon glyphicon-star"></span> <span title="${director.description}">${director.title}</span>
+				            </a>
+				        </div>
+		            </div>
+		          </div>
+		        </dd>
+			    <dt tal:condition="artists" i18n:translate="">With</dt>
+			    <dd tal:condition="artists">
+			        <div >
+			          <div class="artist-item" tal:repeat="artist object.artists">
+			            <div  
+				             class="artist-item-title"
+				             data-id="${artist.get_id()}"
+				             data-url="${request.resource_url(request.root, 'creationculturelapi')}">
+				            <a target="_blank" tal:attributes="href request.resource_url(artist, '@@index')">
+				              <span class="glyphicon glyphicon-star"></span> <span title="${artist.description}">${artist.title}</span>
+				            </a>
+				        </div>
+			        </div>
+			      </div>
+			    </dd>
+			    <dt tal:condition="duration" i18n:translate="">Nationality</dt>
+			    <dd tal:condition="duration"> ${nationality}
+			    </dd>
+		    </dl>
+
+			<div class=" heterogeneous-content">
+		     <div class="footer-picture article-picture">
+		      <div class="footer-message" i18n:translate="">All rights reserved</div>
+		      <img  width="300" height="253" tal:condition="object.picture" src="${getattr(object.picture, 'large', object.picture).url}" class="pull-right img-thumbnail illustration" />
+		    </div>
+			  <div class="article-content">
+			     ${structure:getattr(object, 'abstract', '')}
+			  </div>
+			</div>
+			<div tal:condition="getattr(object, 'informations', '')">
+			  <blockquote >
+			  	<h4 style="color: #8d8d8d"><span class="glyphicon glyphicon-info-sign"></span> <span i18n:translate="">Informations</span></h4>
+			   	 <div class="article-informations"> ${structure:getattr(object, 'informations', '')}</div>
+			  </blockquote>
+			</div>
+		    <div tal:condition="films_body">
+		      <h4 class="section-title"><span class="glyphicon glyphicon-calendar"></span> <span i18n:translate="">Film schedules</span></h4>
+		      <div>${structure:films_body}</div>
+		    </div>
+        	</div>
+        <div tal:condition="services_body" role="tabpanel" class="tab-pane" id="services">
+            <div tal:replace="structure services_body"/>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<div tal:replace="structure footer_body"/>
+${panel('promotions_panel')}
+${panel('social_share_toggle')}
+${panel('labels', context=object)}

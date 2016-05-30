@@ -1,0 +1,12 @@
+<div tal:condition="not_published_artists" class="alert alert-warning" i18n:domain="lac" i18n:translate="">
+     <p><strong>Des fiches artistes non publiées!</strong> Des fiches artistes sont enregistrées et ne sont pas encore publiées. La publication de la critique engendre la publication, automatique, des fiches non publiées. La publication d'une fiche artiste engendre le remplacement définitif de la fiche originale par la nouvelle fiche. Les fiches artistes concernées sont:</p>
+     <ul class="list-unstyled">
+     	<li tal:repeat="artist not_published_artists">
+          <a target="_blank" tal:attributes="href request.resource_url(artist, '@@index')" class="alert-link"><span class="glyphicon glyphicon-star"></span> ${artist.title}</a>
+     	</li>
+     </ul>
+     Nous vous invitons à vérifier et compléter les différentes fiches afin d'avoir l'information la plus complète possible.
+</div>
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+ Cette action est irréversible. En cliquant sur Continuer, la critique sera visible par tous les utilisateurs du site.
+</div>

@@ -1,0 +1,6 @@
+<div tal:condition="context.original" class="alert alert-warning" i18n:domain="lac" i18n:translate="">
+     <p><strong>Attention!</strong> Ceci est une version d'une fiche existante (<a target="_blank" tal:attributes="href request.resource_url(context.original, '@@index')" class="alert-link"><span class="glyphicon glyphicon-star"></span> ${context.original.title}</a>). Le rejet de cette version remplacera automatiquement cette version par la version originale.</p>
+</div>
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+ En cliquant sur Continuer...
+</div>

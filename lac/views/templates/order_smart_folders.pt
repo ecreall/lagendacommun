@@ -1,0 +1,7 @@
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+Vous pouvez ordonner les dossier dynamiques en cliquant sur le bouton suivant
+	<a tal:attributes="href action.url" 
+	   class="btn btn-primary btn-sm">
+	    <span class="glyphicon glyphicon-option-vertical"></span> ${action.action.title}        
+	</a>
+</div>

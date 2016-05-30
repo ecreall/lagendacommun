@@ -1,0 +1,40 @@
+<span tal:define="name name|field.name;
+                  css_class css_class|field.widget.css_class;
+                  oid oid|field.oid;
+                  mask mask|field.widget.mask;
+                  mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                  placeholder placeholder|getattr(field.widget, 'placeholder', None);
+                  style style|field.widget.style;
+                  levels getattr(field.widget, 'levels', []);
+                  can_create getattr(field.widget, 'can_create', 2);
+                  min_len getattr(field.widget, 'min_len', 1);
+                  max_len getattr(field.widget, 'max_len', 1);
+                  source_tree getattr(field.widget, 'source_tree', '')"
+      tal:omit-tag="">
+  <div class="tree-container">
+    <div class="keyword-data hide-bloc" data-target="${oid}" data-min-len="${min_len}" data-max-len="${max_len}">
+          <span tal:condition="not levels" data-level="0" 
+             data-values=""
+             data-can-create="${(can_create <= 0) and 1 or 0}"></span>
+          <span tal:condition="levels" tal:repeat="(i, options) enumerate(levels)"  
+             data-level="${i}" 
+             data-values="${field.widget.dumps(options)}"
+             data-can-create="${(can_create <= i) and 1 or 0}"></span>
+    </div>
+    <div id="jstree-${oid}" class="tree"></div>
+  </div>
+    <input type="text" name="${name}" value="${cstruct}" 
+           tal:attributes="class string: form-control ${css_class} hide-bloc;
+                           style style"
+           id="${oid}"
+           placeholder="${placeholder}"
+           data-source_tree="${source_tree}"
+           data-selection_mode="${source_tree != '' and 1 or 0}"/>
+    <script type="text/javascript">
+      deform.addCallback(
+         '${oid}',
+         function (oid) {
+            create_tree(oid);
+         });
+    </script>
+</span>

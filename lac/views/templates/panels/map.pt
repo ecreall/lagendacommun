@@ -1,0 +1,50 @@
+<div tal:condition="condition|True" tal:omit-tag="" i18n:domain="lac">
+  <div class="collapse" id="collapse-map">
+    <div tal:define="su request.static_url;">
+      <link rel="stylesheet" type="text/css" href="${request.static_url('lac:static/css/map/styles.css')}">
+      <script src="${su('lac:static/MapIt/jquery.mapit.js')}"
+              type="text/javascript"></script>
+      <tal:block tal:repeat="jslink js_links">
+        <script src="${request.static_url(jslink)}"></script>
+      </tal:block>
+      <tal:block tal:repeat="csslink css_links">
+          <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+      </tal:block>
+
+      <div id="wrapper">
+      <a class="map-close-btn" role="button" data-toggle="collapse" href="#collapse-map" aria-expanded="false" aria-controls="collapse-map">
+        <span class="glyphicon glyphicon-map-marker"></span> <span i18n:translate="">Close the map</span>
+      </a>
+       <div class="route-info hide-bloc" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <span i18n:translate="">See more information about your route on</span> <a target="_blank" href="">Google maps</a></div>
+       <div class="map-form active">
+         <a href="javascript:void(0)" class="map-form-menu active" role="button" data-target="#nav_wrapper">
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+        </a>
+       </div>
+        <div id="nav_wrapper" style="display: block;">
+
+             <div class="geo-search-form" role="search">
+                  ${structure:search_body}
+          </div>
+            <div class="map-control" > 
+              <a class="btn btn-xs btn-default"
+                 i18n:translate=""
+                 onclick="javascript:$('#map_canvas').trigger('hide_all')">Hide all markers</a>
+              <a class="btn btn-xs btn-default"
+                 i18n:translate=""
+                 onclick="javascript:$('#map_canvas').trigger('reset')">Reset Map</a>
+            </div>
+        </div>
+        <div id="map_canvas"
+        data-options="${options}"
+        data-url="${url}"
+          ></div>
+
+      </div>
+    </div>
+  </div>
+</div>

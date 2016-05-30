@@ -1,0 +1,494 @@
+[
+	{"type":"smartfolder",
+	"title": "Cinéma",
+	"description": "Les annonces cinéma",
+	"add_as_a_block": true,
+	"view_type": "bloc",
+	"style":{"usual_color": "white, #3d85c6", "hover_color": "white, #3d85c6"},
+	"filters":[{"metadata_filter": {
+		    "negation": false,
+		    "content_types": ["review", "interview", "brief", "cinema_review"], 
+			"tree": {"Rubrique": {"Cinéma": {}}}, 
+			"states": ["published"]
+			}}],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles cinéma",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["review", "interview", "brief", "cinema_review"], 
+							"tree": {"Rubrique": {"Cinéma": {}}}, 
+							"states": ["published"]
+							}}],
+					"children": [],
+					"style":{"usual_color": "white, #3d85c6", "hover_color": "white, #3d85c6"}
+					},
+					{"title": "Séances",
+					"description": "Les articles cinéma",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["film_schedule"], 
+							"tree": {"Rubrique": {"Cinéma": {}}}, 
+							"states": ["published"]
+							}}],
+					"children": [],
+					"classifications": ["venue_classification"],
+					"style":{"usual_color": "white, #3d85c6", "hover_color": "white, #3d85c6"}
+					},
+					{"title": "Résumés",
+					"description": "Les résumés cinéma",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["film_synopses"], 
+							"tree": {"Rubrique": {"Cinéma": {}}}, 
+							"states": ["published"]
+							}}],
+					"children": [],
+					"style":{"usual_color": "white, #3d85c6", "hover_color": "white, #3d85c6"}
+					}
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Théâtre",
+	"description": "Les annonces théâtre",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #cc0000", "hover_color": "white, #cc0000"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Théâtre": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles théâtre",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Théâtre": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #cc0000", "hover_color": "white, #cc0000"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda théâtre",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["cultural_event"], 
+							"tree": {"Rubrique": {"Théâtre": {}}}, 
+							"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #cc0000", "hover_color": "white, #cc0000"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Jeunesse",
+	"description": "Les annonces jeunesse",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #e69138", "hover_color": "white, #e69138"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Jeunesse": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles jeunesse",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Jeunesse": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #e69138", "hover_color": "white, #e69138"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda jeunesse",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["cultural_event"], 
+							"tree": {"Rubrique": {"Jeunesse": {}}}, 
+							"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #e69138", "hover_color": "white, #e69138"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Sport",
+	"description": "Les annonces sport",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #783f04", "hover_color": "white, #783f04"},
+    "filters":[{"metadata_filter": {
+    	"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Sport": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles sport",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Sport": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #783f04", "hover_color": "white, #783f04"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda sport",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Sport": {}}}, 
+						"states": ["published"]
+						}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #783f04", "hover_color": "white, #783f04"}
+					}
+
+	           ]
+
+	},
+    {"type":"smartfolder",
+	"title": "Danse",
+	"description": "Les annonces danse",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #f1c232", "hover_color": "white, #f1c232"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Danse": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles danse",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Danse": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #f1c232", "hover_color": "white, #f1c232"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda danse",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Danse": {}}}, 
+						"states": ["published"]
+						}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #f1c232", "hover_color": "white, #f1c232"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Classique",
+	"description": "Les annonces classique",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #666666", "hover_color": "white, #666666"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Classique": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles classique",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Classique": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #666666", "hover_color": "white, #666666"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda classique",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Classique": {}}}, 
+						"states": ["published"]
+						}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #666666", "hover_color": "white, #666666"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Concerts",
+	"description": "Les annonces concerts",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #4c1130", "hover_color": "white, #4c1130"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Concerts": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles concerts",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["review", "interview", "brief"], 
+							"tree": {"Rubrique": {"Concerts": {}}}, 
+							"states": ["published"]
+							}}],
+					"style":{"usual_color": "white, #4c1130", "hover_color": "white, #4c1130"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda concerts",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						    "negation": false,
+						    "content_types": ["cultural_event"], 
+							"tree": {"Rubrique": {"Concerts": {}}}, 
+							"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #4c1130", "hover_color": "white, #4c1130"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Expositions",
+	"description": "Les annonces expositions",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #c27ba0", "hover_color": "white, #c27ba0"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Expos": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles expositions",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Expos": {}}}, 
+						"states": ["published"]
+							}}],
+					"style":{"usual_color": "white, #c27ba0", "hover_color": "white, #c27ba0"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda expositions",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Expos": {}}}, 
+						"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #c27ba0", "hover_color": "white, #c27ba0"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Loisirs",
+	"description": "Les annonces loisirs",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #38761d", "hover_color": "white, #38761d"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Loisirs": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles loisirs",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Loisirs": {}}}, 
+						"states": ["published"]
+							}}],
+					"style":{"usual_color": "white, #38761d", "hover_color": "white, #38761d"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda loisirs",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Loisirs": {}}}, 
+						"states": ["published"]
+							}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #38761d", "hover_color": "white, #38761d"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Conférences",
+	"description": "Les annonces conférences",
+	"add_as_a_block": true,
+	"view_type": "default",
+	"style":{"usual_color": "white, #93c47d", "hover_color": "white, #93c47d"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["cultural_event"], 
+		"tree": {"Rubrique": {"Conférence": {}}}, 
+		"states": ["published"]
+		}}],
+	"classifications": ["date_classification", "city_classification"],
+	"children": [
+				   {"title": "Articles",
+					"description": "Les articles conférences",
+					"add_as_a_block": false,
+					"view_type": "bloc",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["review", "interview", "brief"], 
+						"tree": {"Rubrique": {"Conférence": {}}}, 
+						"states": ["published"]
+						}}],
+					"style":{"usual_color": "white, #93c47d", "hover_color": "white, #93c47d"}
+					},
+					{"title": "Agenda",
+					"description": "L'agenda conférences",
+					"add_as_a_block": false,
+					"view_type": "default",
+					"children": [],
+					"filters":[{"metadata_filter": {
+						"negation": false,
+					    "content_types": ["cultural_event"], 
+						"tree": {"Rubrique": {"Conférence": {}}}, 
+						"states": ["published"]
+						}}],
+					"classifications": ["date_classification", "city_classification"],
+					"style":{"usual_color": "white, #93c47d", "hover_color": "white, #93c47d"}
+					}
+
+	           ]
+
+	},
+	{"type":"smartfolder",
+	"title": "Lire",
+	"description": "Lire",
+	"add_as_a_block": true,
+	"view_type": "bloc",
+	"style":{"usual_color": "white, #5f7f35", "hover_color": "white, #5f7f35"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["review", "interview", "brief"],
+	    "tree": {"Rubrique": {"Lire": {}}}, 
+		"states": ["published"]
+		}}],
+	"children": []
+
+	},
+	{"type":"smartfolder",
+	"title": "Brèves",
+	"description": "Les brèves",
+	"add_as_a_block": true,
+	"view_type": "bloc",
+	"style":{"usual_color": "white, #3a2714", "hover_color": "white, #3a2714"},
+	"filters":[{"metadata_filter": {
+		"negation": false,
+	    "content_types": ["brief"],
+	    "tree": {"Rubrique": {}}, 
+		"states": ["published"]
+		}}],
+	"children": []
+
+	}
+
+]

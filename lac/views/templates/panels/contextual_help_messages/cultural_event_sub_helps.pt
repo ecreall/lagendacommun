@@ -1,0 +1,101 @@
+<tal:block  i18n:domain="lac">
+    <!-- Short description -->
+    <div class="contextual-help-item description-help hide-bloc">
+      <p i18n:translate="">This description is published on the platform and in periodicals.</p>
+      <p i18n:translate="">The pages listing the various cultural events will display only this description.</p>
+    </div>
+
+    <!-- Detailed description -->
+    <div class="contextual-help-item details-help hide-bloc">
+      <p i18n:translate="">This description is only visible on the platform.</p>
+      <p i18n:translate="">It complements the short description when a visitor clicks on your announcement.</p>
+    </div>
+
+    <!-- Image -->
+    <div class="contextual-help-item image-help hide-bloc">
+      <p i18n:translate="">You see a square on the top left of the image if it exceeds the maximum size allowed. Move and enlarge it if necessary, to determine an area of interest. Several images will be generated from this area to illustrate your announcement.</p>
+    </div>
+
+    <!-- Artists names -->
+    <div class="contextual-help-item artists-help hide-bloc">
+      <p i18n:translate="">After entering an artist's name, you can edit its description by clicking on the brush.</p>
+      <p i18n:translate="">If you want to see the artists, collectives, companies... already registered on the platform, enter a *.</p>
+      <p ><span class="glyphicon glyphicon-warning-sign" style="font-size: 20px"></span> <span tal:omit-tag="" i18n:translate="">To avoid duplication, please first select an artist among those proposed.The first choice is the phrase you entered. When selected, you create a new entry.</span></p>
+    </div>
+
+    <!-- Categories -->
+    <div class="contextual-help-item categories-help hide-bloc">
+      <p i18n:translate="">Click on "Heading" and select one or more categories. For each category selected, you can add subcategories or select existing ones.</p>
+    </div>
+
+    <!-- Contacts -->
+    <div class="contextual-help-item contact-help hide-bloc">
+      <p i18n:translate="">Thank you to enter at least one information to contact you: telephone number, fax, email or website.</p>
+    </div>
+
+    <!-- Dates -->
+    <div class="contextual-help-item date-help hide-bloc">
+      <p i18n:translate="">Click on the button on the right of the "dates" field to use the entry aid.</p>
+      <p i18n:translate="">If you want to directly enter the dates (dates in french), follow these rules:</p>
+      <ul>
+        <li i18n:translate="">start with a capital,</li>
+        <li i18n:translate="">indicate the day in figures, the month in letters and the year (if necessary),</li>
+        <li i18n:translate="">enter the dates in chronological order if it's a several days event.</li>
+      </ul>
+      <p i18n:translate="">Examples:</p>
+      <p>Le 27 octobre à 20h, </p>
+      <p>Les 25, 26 et 27 octobre à 20h30</p>
+      <p>Le 25 octobre à 20h, le 26 à 18h et le 30 à 19h30</p>
+      <p>Du 25 octobre au 12 novembre, du lundi au vendredi de 9h à 12h et de 14h à 18h.</p>
+    </div>
+
+    <!-- Venue title -->
+    <div class="contextual-help-item venue-help hide-bloc">
+      <p i18n:translate="">If the event takes place in several locations, add a session by clicking the plus sign on the bottom of the block "Sessions".</p>
+      <p i18n:translate="">Vous pouvez activer la recherche des lieux dans votre historique d'utilisation en cliquant sur le bouton <span class="glyphicon glyphicon-time"></span> à gauche du champ "Nom du lieu".</p>
+      <p ><span class="glyphicon glyphicon-warning-sign" style="font-size: 20px"></span> <span tal:omit-tag="" i18n:translate="">To avoid duplication, please first select a venue among those proposed.The first choice is the phrase you entered. When selected, you create a new entry.</span></p>
+    </div>
+
+    <div class="contextual-help-item venue-description-help hide-bloc">
+      <p i18n:translate="">La description du lieu ne concerne que le lieu et non l'annonce.</p>
+      <p i18n:translate="">Le système d'amélioration des lieux est participatif permettant ainsi de détailler les fiches des lieux de notre site. Veuillez vérifier et compléter dans le cas échéant les informations associées au lieu de votre événement.</p>
+    </div>
+
+    <!-- Address title-->
+    <div class="contextual-help-item address-title-help hide-bloc">
+      <p i18n:translate="">The venue of the event can have several addresses, for instance the public reception address, the mailing address, etc. To add an address, click on the plus sign at the bottom of the "Addresses" block.</p>
+    </div>
+
+    <!-- Address country -->
+    <div class="contextual-help-item address-country-help hide-bloc">
+      <p i18n:translate="">
+        Please select the country of the venue from the list. If the country does not exist, you can enter it.</p>
+    </div>
+
+    <!-- Address zipcode -->
+    <div class="contextual-help-item address-zipcode-help hide-bloc">
+     <p i18n:translate="">
+      Please search and select the ZIP code of the venue from the list. If the ZIP code does not exist, you can enter it.
+     </p>
+    </div>
+
+    <!-- Address city -->
+    <div class="contextual-help-item address-city-help hide-bloc">
+     <p i18n:translate="">
+      Please search and select the city of the venue from the list. If the city does not exist, you can enter it.
+     </p>
+    </div>
+
+    <!-- Address department -->
+    <div class="contextual-help-item address-department-help hide-bloc">
+      <p i18n:translate="">
+        Please search and select the department of the venue from the list. If the department does not exist, you can enter it.
+      </p>
+    </div>
+
+    <!-- ticketing URL -->
+     <div class="contextual-help-item ticketing-url-help hide-bloc">
+      <p i18n:translate="">Insert the URL corresponding to the sale of tickets page.</p>
+    </div>
+
+</tal:block>

@@ -1,0 +1,79 @@
+<div tal:condition="not classification.__parent__" tal:omit-tag=""><?xml version='1.0' encoding='UTF-8'?></div>
+<office:document-content
+ xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+ xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+ xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+ xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+ xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+ xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+ xmlns:number="urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0"
+ xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+ xmlns:chart="urn:oasis:names:tc:opendocument:xmlns:chart:1.0"
+ xmlns:dr3d="urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0"
+ xmlns:math="http://www.w3.org/1998/Math/MathML"
+ xmlns:form="urn:oasis:names:tc:opendocument:xmlns:form:1.0"
+ xmlns:script="urn:oasis:names:tc:opendocument:xmlns:script:1.0"
+ xmlns:ooo="http://openoffice.org/2004/office"
+ xmlns:ooow="http://openoffice.org/2004/writer"
+ xmlns:oooc="http://openoffice.org/2004/calc"
+ xmlns:dom="http://www.w3.org/2001/xml-events"
+ xmlns:xforms="http://www.w3.org/2002/xforms"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ office:version="1.0"
+
+tal:define="isroot not classification.__parent__"
+tal:omit-tag="not isroot" 
+i18n:domain="lac">
+>
+  <office:scripts tal:condition="isroot" />
+  <office:font-face-decls tal:condition="isroot">
+    <style:font-face style:name="Lucidasans1" svg:font-family="Lucidasans"/>
+    <style:font-face style:name="Andale Sans UI" svg:font-family="'Andale Sans UI'" style:font-pitch="variable"/>
+    <style:font-face style:name="Bitstream Vera Sans" svg:font-family="'Bitstream Vera Sans'" style:font-pitch="variable"/>
+    <style:font-face style:name="Lucidasans" svg:font-family="Lucidasans" style:font-pitch="variable"/>
+    <style:font-face style:name="Times New Roman" svg:font-family="'Times New Roman'" style:font-family-generic="roman" style:font-pitch="variable"/>
+    <style:font-face style:name="Arial" svg:font-family="Arial" style:font-family-generic="swiss" style:font-pitch="variable"/>
+  </office:font-face-decls>
+  <office:automatic-styles tal:condition="isroot"/>
+  <office:body tal:omit-tag="not isroot">
+    <office:text tal:omit-tag="not isroot" >
+      <office:forms form:automatic-focus="false" form:apply-design-mode="false" tal:condition="isroot"/>
+      <text:sequence-decls tal:condition="isroot">
+        <text:sequence-decl text:display-outline-level="0" text:name="Illustration"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Table"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Text"/>
+        <text:sequence-decl text:display-outline-level="0" text:name="Drawing"/>
+      </text:sequence-decls>
+      <text:p text:style-name="Standard" tal:condition="isroot">Contenus extraits par <text:span tal:content="current_user.name"> NAME </text:span>
+        le <text:span tal:content="current_date"> Date </text:span>
+        Paramètres du filtre ayant produit ce fichier <text:span tal:content="filter_parameters">FILTER</text:span>
+      </text:p>
+      <div tal:repeat="(item, data_item) items" tal:define="folder_name folder.name.replace(' ', '-');" tal:omit-tag="">
+       <div tal:omit-tag="" tal:define="bodies data_item[0]; len_result data_item[1]">
+        <text:p tal:condition="item != 'None'" text:style-name="SalleNom"> 
+          ${item.title.title()} ${item.address_str(ignore_dep=True, ignore_country=True, ignore_zipcode=True)}
+          <div tal:omit-tag="" tal:condition="getattr(item, 'contacts', [])">
+            <div tal:omit-tag=""
+                 tal:define="contact item.contacts[0];
+                             phone_number contact.get('phone', '');
+                             web_site contact.get('website', '');
+                             email contact.get('email', '');
+                             surtax contact.get('surtax', '')"
+                 >
+              <span tal:omit-tag="" tal:condition="phone_number">Tel. ${layout.deserialize_phone(phone_number)} </span> 
+              <span tal:omit-tag="" tal:condition="surtax and (surtax not in (0, '0'))">${surtax}</span> 
+              <span tal:omit-tag="" tal:condition="email">${email}</span> 
+              <span tal:omit-tag="" tal:condition="web_site" tal:replace="web_site.replace('http://www','www')">Web site</span>
+            </div>
+          </div>
+        </text:p>
+        <div tal:omit-tag="" tal:repeat="body bodies">${structure:body}</div>
+       </div>
+      </div>
+    </office:text>
+  </office:body>
+</office:document-content>

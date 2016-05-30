@@ -1,0 +1,44 @@
+<div tal:omit-tag="" i18n:domain="lac">
+  <div tal:repeat="folder_data folders">
+      <div tal:define="folder folder_data['folder'];
+                                         class_name folder.name.replace(' ', '-')+'-city';
+                                         usual_color folder.style['usual_color'].split(',');">
+        <style>
+                  .${class_name}{
+                      color:${usual_color[1]};
+                   }
+
+                  .legend-${class_name}{
+                      background-color:${usual_color[1]};
+                  }
+        </style>
+        <div  class="search-item-title ${class_name}">
+          <div class="legend-search-item legend-${class_name}"></div> ${folder.title}
+        </div>
+        <hr style="margin-bottom: 8px; margin-top: 0px;" class="soften">
+        <div class="search-items-container">
+          <div tal:repeat="object folder_data['objects']">
+              <span class="search-icon ${getattr(object, 'icon', '')}"></span> <a href="${request.resource_url(object, '@@index')}">${object.title}</a>
+              <div>
+                <ul class="list-inline" style="margin: 0px">
+                  <li class="schedule-item-data" tal:repeat="schedule getattr(object, 'schedules', [])">
+                    <div tal:omit-tag="" tal:condition="schedule.venue">
+                      <small><span class="schedule-dates">${schedule.dates}</span>, <span class="schedule-venue-title"><span class="venue-title">${schedule.venue.title}</span> <span tal:condition="getattr(schedule.venue, 'addresses', [])">(${schedule.venue.addresses[0]['city']})</span></span></small>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div tal:condition="not folders" style="text-align: center; margin-bottom: 10px" i18n:translate="">No result found!</div>
+  <div>
+    <div style="display: inline;">
+      <a class="btn btn-primary btn-xs" onclick="submit_live_serach_form(this); return false;" ><span class="glyphicon glyphicon-th-list"></span> <span i18n:translate="">All results</span></a>
+    </div>
+    <div class="pull-right">
+      <a class="btn btn-primary btn-xs" href="${advenced_search_url}" i18n:translate=""><span class="glyphicon glyphicon-zoom-in"></span> <span i18n:translate="">Advanced search</span></a>
+    </div>
+  </div>
+</div>

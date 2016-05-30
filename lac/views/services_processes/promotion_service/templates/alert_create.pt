@@ -1,0 +1,8 @@
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+	<p>
+		Le service suivant permet de saisir et d'afficher les informations associées à la promotion du contenu. La durée de validité de ce service et de 30 jours renouvelable.
+	</p>
+    <p>
+	    Afin de compléter l'enregistrement du service sur votre site, il vous suffit de saisir un titre.
+    </p>
+</div>

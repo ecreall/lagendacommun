@@ -1,0 +1,23 @@
+<div class="thumbnail right-caption span4 search-item result-item" i18n:domain="lac"
+  tal:define="icon getattr(object, 'icon', '')">
+  <img tal:condition="object.picture is not None" tal:attributes="src object.picture.url"  width="100"/>
+  <div tal:condition="object.picture is None" id="person-image" class="content-image">
+    <span  class="hidden-xs icon ${icon}"></span>
+  </div>
+  <div class="media-body">
+    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+      <a tal:attributes="href request.resource_url(object, '@@index')"><h3><span class="visible-xs-inline-block icon ${icon}"></span> ${((object is current_user) and 'Vous') or getattr(object, 'title', object.name)} </h3></a>
+      <dl>
+        <dt tal:condition="getattr(object, 'keywords', [])" i18n:translate="">Preferences</dt>
+        <dd tal:condition="getattr(object, 'keywords', [])">
+          <tal:loop repeat="k object.keywords">
+            <a tal:attributes="href request.resource_url(request.root, '', query={'text_to_search':k})">${k}</a>
+            <tal:separator condition="not: repeat['k'].end">, </tal:separator> 
+          </tal:loop>
+        </dd>
+      </dl>
+      <span class="date">
+        <span i18n:translate="">Member since</span> <span tal:replace="layout.to_localized_time(object.created_at, date_only=True)"/>
+      </span>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<div tal:condition="questionnaire" class="questionnaire-container" i18n:domain="lac">
+  <tal:block tal:repeat="jslink js_links">
+            <script src="${request.static_url(jslink)}"></script>
+        </tal:block>
+        <tal:block tal:repeat="csslink css_links">
+            <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+  </tal:block>
+  <div tal:omit-tag="">
+      <a id="${questionnaire['action_id']}-btn" 
+            class="hide-bloc questionnaire-btn dace-action ${getattr(questionnaire['action'],'style_class','')}"
+            href="${questionnaire['action'].url(questionnaire['context'])}"   
+            data-toggle="modal"
+            data-actionid ="${questionnaire['action_id']}" 
+            data-target="#${questionnaire['action_id']}"
+            data-updateurl="${questionnaire['actionurl_update']}"
+            data-toreplay="${'toreplay' in questionnaire}"
+            data-quest_id="${current_questionnaire}">
+           <span class="${getattr(questionnaire['action'],'style_picto','')}" ></span> ${questionnaire['action'].title}
+      </a>
+  </div>
+
+  <!-- Modal -->
+  <div >
+    <script tal:condition="'toreplay' in questionnaire">       
+                          $(document).ready(function(){
+                               $(${'\'#'+questionnaire['action_id']+'-btn\''}).click();
+                          });
+                     </script>  
+                     <script>
+                          $(document).ready(function(){
+                              $(${'\'#'+questionnaire['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                                 //after_execution(${'\"'+questionnaire['actionurl_after']+'\"'})
+                                })
+                          });
+                     </script>
+   <div class="questionnaire-modal modal animated shake" 
+       id="${questionnaire['action_id']}-modal" 
+       role="dialog"  
+       aria-hidden="true"
+       style="padding-right: 13px; overflow: auto !important;"
+       data-backdrop="false"
+       >
+       <!-- data-backdrop="static" -->
+      <div class="modal-dialog">
+        <div class="modal-content">
+           <div class="modal-body">
+              ${structure:questionnaire['body']}
+           </div>
+         </div>
+      </div>
+   </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="contextual-help-item article-help hide-bloc">
+  <p>Vous pouvez améliorer le rendu de votre article en définissant les éléments qui le composent (Chapô, Intertitre, Article).</p>
+  <p>Exemple d'ajout d'un Chapô: <ul>
+    <li>Sélectionnez le ou les paragraphes de votre texte correspondants au chapô (les lignes sélectionnées doivent être suivies d'un retour à la ligne)</li>
+    <li>Cliquez sur l'élément « Chapô » de l'onglet « Style de l'article ».</li>
+    <li>L'élément est alors mise en forme. Tapez sur la touche Entrée, pour compléter le chapô. Pour ajouter du texte auquel vous souhaitez attribuer un autre style, cliquez sur « Insérer un nouveau paragraphe ».</li>
+    </ul></p>
+  <p></p>
+  <p></p>
+</div>

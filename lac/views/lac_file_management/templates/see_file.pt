@@ -1,0 +1,15 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption">
+    <h3 tal:define="parent object.__parent__" class="content-title">
+    	<a tal:condition="can_access_parent" tal:attributes="href request.resource_url(parent, '@@index')" >${parent.title}</a> <span tal:condition="can_access_parent">/</span> ${object.title} </h3>
+	<div class="object-description">
+	<small>
+		${structure:getattr(object, 'description', '')}
+	</small>
+	</div>
+    <div id="contenttext" class="content-text">
+      ${structure:getattr(object, 'text', '')}
+    </div>
+  </div>
+</div>

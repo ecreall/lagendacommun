@@ -1,0 +1,13 @@
+<div style="height: 20px; margin-bottom: -10px;">
+	<div class="labels-container">
+		<span tal:repeat="l labels" class="label">
+			<div tal:omit-tag="" tal:define="url l.get('url', None);
+				                             url_str str(url);
+				                             site_url url_str if url_str.startswith('http') else 'http://'+url_str ">
+				<a target="_blank" tal:omit-tag="url is None" href="${site_url}">
+				    <img class="img-label" src="${l['img']}" height="15px" alt="${l['title']}" title="${l['title']}"/>
+			    </a>
+            </div>
+		</span>
+	</div>
+</div>

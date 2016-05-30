@@ -1,0 +1,20 @@
+<div tal:condition="not_published_contents" class="alert alert-warning" i18n:domain="lac" i18n:translate="">
+     <p><strong>Des fiches artistes et\ou lieux non publiées!</strong> Des fiches artistes et\ou lieux sont enregistrées et ne sont pas encore publiées. La soumission de votre annonce engendre la soumission, automatique, à modération des fiches non publiées. Les fiches concernées sont:</p>
+     <ul class="list-unstyled">
+     	<li tal:repeat="content not_published_contents">
+          <a target="_blank" tal:attributes="href request.resource_url(content, '@@index')" class="alert-link"><span class="${content.icon}"></span> ${content.title}</a>
+     	</li>
+     </ul> 
+</div>
+<div class="alert alert-info" i18n:domain="lac">
+ En cliquant sur Continuer, votre annonce sera soumise sur les sites <a i18n:translate="" class="alert-link" role="button" data-toggle="collapse" href="#sites-info" aria-expanded="false" aria-controls="sites-info">partenaires</a>.
+</div>
+
+<div class="collapse" id="sites-info">
+     <div tal:omit-tag="" tal:repeat="data sites_data">
+     	<div style="margin-bottom: 15px" tal:condition="data[1]" tal:define="site data[0]; body data[1]">
+     		<h4><span class="${site.icon}"></span> ${site.title}</h4>
+     		${structure:body}
+     	</div>
+     </div>
+</div>

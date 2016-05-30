@@ -1,0 +1,4 @@
+<div tal:omit-tag="" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+  <text:p text:style-name="SeanceFilm">${object.title.upper()}</text:p>
+  <text:p text:style-name="SeanceInformations">${text_normalize(object.description)}</text:p>
+</div>

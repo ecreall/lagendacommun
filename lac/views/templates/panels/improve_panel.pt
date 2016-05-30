@@ -1,0 +1,50 @@
+<div tal:condition="improve" class="improve-container" i18n:domain="lac">
+  <tal:block tal:repeat="jslink js_links">
+            <script src="${request.static_url(jslink)}"></script>
+        </tal:block>
+        <tal:block tal:repeat="csslink css_links">
+            <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+  </tal:block>
+  <div tal:omit-tag="">
+       <a id="${improve['action_id']}-btn" 
+            class="improve-btn dace-action ${getattr(improve['action'],'style_class','')}"
+            href="${improve['action'].url(improve['context'])}"   
+            data-toggle="modal"
+            data-actionid ="${improve['action_id']}" 
+            data-target="#${improve['action_id']}"
+            data-updateurl="${improve['actionurl_update']}"
+            data-toreplay="${'toreplay' in improve}">
+           <span class="${getattr(improve['action'],'style_picto','')}" ></span> ${improve['action'].title}
+         </a>
+  </div>
+
+  <!-- Modal -->
+  <div>
+    <script tal:condition="'toreplay' in improve">       
+                          $(document).ready(function(){
+                               $(${'\'#'+improve['action_id']+'-btn\''}).click();
+                          });
+                     </script>  
+                     <script>
+                          $(document).ready(function(){
+                              $(${'\'#'+improve['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                                 //after_execution(${'\"'+improve['actionurl_after']+'\"'})
+                                })
+                          });
+                     </script>
+   <div class="modal fade" 
+       id="${improve['action_id']}-modal" 
+       role="dialog"  
+       aria-hidden="true"
+       >
+       <!-- data-backdrop="static" -->
+      <div class="modal-dialog">
+        <div class="modal-content">
+           <div class="modal-body">
+              ${structure:improve['body']}
+           </div>
+         </div>
+      </div>
+   </div>
+  </div>
+</div>

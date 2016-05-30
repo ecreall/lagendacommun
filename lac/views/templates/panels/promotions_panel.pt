@@ -1,0 +1,14 @@
+<div class="pull-right" tal:condition="promotions">
+	<div class="btn-group btn-group-sm" role="group" >
+		 <div tal:omit-tag="" tal:repeat="promotion promotions">
+			  <a type="button" class="btn btn-success" 
+			  	 target="_blank"
+			  	 tal:condition="promotion['url'].startswith('http')"
+			  	 href="${promotion['url']}">${promotion['title']}</a>
+			  <a type="button" class="btn btn-success" 
+			  	 target="_blank"
+			  	 tal:condition="not promotion['url'].startswith('http')"
+			  	 href="http://${promotion['url']}">${promotion['title']}</a>
+	     </div>
+   </div>
+</div>

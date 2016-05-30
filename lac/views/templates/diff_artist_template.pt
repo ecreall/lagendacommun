@@ -1,0 +1,16 @@
+<div tal:omit-tag="" i18n:domain="lac">
+  <div>
+    <img tal:condition="object.picture is not None" tal:attributes="src object.picture.url"  width="150" class="pull-left img-thumbnail" style="margin-right: 10px"/>
+    <div>
+      <h3 class="content-title">${getattr(object, 'title')}</h3>
+      <div class="artist-description">
+        <small style="color: gray;">
+           ${object.description}
+        </small>
+      </div>
+      <div tal:condition="getattr(object, 'biography', None)" class="">
+         ${structure:getattr(object, 'biography')}
+      </div>
+    </div>
+  </div>
+</div>

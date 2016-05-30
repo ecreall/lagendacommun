@@ -1,0 +1,23 @@
+<div >
+    <p tal:condition="has_extraction">
+    	Pour pouvoir déposer gratuitement une annonce sur notre site et la voir publiée dans notre magazine et sur internet, vous devez d'abord être <b>inscrit</b> comme membre.
+    </p>
+     <p tal:condition="not has_extraction">
+     	Pour pouvoir déposer gratuitement une annonce sur notre site et la voir publiée sur internet, vous devez d'abord être <b>inscrit</b> comme membre.
+    </p>
+
+    <p>
+    	Pour cela, cliquez sur le lien <b>'S'inscrire'</b> figurant à droite de la barre de navigation.
+    </p>
+
+    <p tal:condition="has_moderation">
+    	À l'issue de votre inscription vous pourrez saisir directement en ligne votre annonce qui devra être validée par la rédaction avant publication
+    </p>
+   
+    <p tal:condition="has_moderation">
+    	À l'issue de votre inscription vous pourrez saisir directement en ligne votre annonce.
+    </p>
+    
+    <p><br/></p>
+            
+</div>

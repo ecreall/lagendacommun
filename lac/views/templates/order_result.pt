@@ -1,0 +1,20 @@
+<div class="thumbnail right-caption span4 search-item result-item"  i18n:domain="lac">
+  <div class="media-body">
+    <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+    <a tal:attributes="href request.resource_url(object, '@@index')">
+    	<h4 class="content-title " >
+    		<span class='${object.icon}'></span> ${object.name}
+    	</h4>
+    </a>
+    <ul class="list-group">
+        <li class="list-group-item" tal:repeat="product object.products">
+            <span class="badge">${product.price_str}</span>
+            <span class="${getattr(product, 'icon', 'glyphicon glyphicon-th-large')}"></span> <a href="${request.resource_url(product, '@@index')}">${product.title}</a>
+        </li>
+    </ul>
+    <dl class="pull-right">
+        <dt  i18n:translate="">Total</dt>
+	    <dd class="content-description">${object.total}€</dd>
+    <dl>
+  </div>
+</div>

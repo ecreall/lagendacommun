@@ -1,0 +1,50 @@
+<div class="container-fluid ">
+  <div class="row" tal:repeat="row_index range(row_len)">
+    <div class="col-md-6" tal:repeat="folder folders[(row_index*2): (row_index*2)+2]">
+      <div tal:omit-tag=""
+        tal:define="folder_obj folder['folder'];
+                    source_folder folder_obj.get_folder_with_content(content_types, 'published');">
+         <div class="smart-folder-well"
+         	    tal:define="class_name folder_obj.name.replace(' ', '-')+'-well';
+         	                usual_color folder_obj.style['usual_color'].split(',');
+                          contents list(folder['contents'])">
+            <style>
+                  .${class_name}{
+                      color:${usual_color[1]};
+                   }
+
+                  .legend-${class_name}{
+                      background-color:${usual_color[1]};
+                  }
+            </style>
+            <div class="folder-title ${class_name}">
+               <div class="legend-folder legend-${class_name}"></div> ${folder['folder'].title}
+            </div>
+            <hr class="soften" style="margin-bottom: 8px; margin-top: 0px;">
+            <div tal:omit-tag="" tal:condition="contents" >
+              <div tal:omit-tag="" tal:define="content contents[0]">
+                <h5 class="item-title"><span class="${content.icon}"></span> 
+                <a href="${request.resource_url(content, '@@index')}">${content.title}</a></h5>
+                <p  class="critique_text">
+                      <img tal:condition="content.picture" tal:define="picture content.picture" alt="" src="${getattr(picture, 'small', picture).url}" class="critique_vignette img-thumbnail" style="width: 128px">
+                      ${content.presentation_text(300)}
+                      <a href="${request.resource_url(content, '@@index')}">Lire&nbsp;la&nbsp;suite...</a>
+                </p>
+              </div>
+            </div>
+            <ul tal:condition="len(contents) > 1" class="list-inline">
+                  <li tal:repeat="subcontent contents[1:]" class="">
+                    <a href="${request.resource_url(subcontent, '@@index')}">${subcontent.title}</a>
+                  </li>
+             </ul>
+         </div>
+          <a tal:condition="source_folder" href="${source_folder.get_url(request)}" class="folder-more-call">
+            <span class="pull-right glyphicon glyphicon-plus-sign"></span>
+          </a>
+      </div>
+    </div>
+  </div>
+  <script>
+    init_result_search();
+  </script>
+</div>

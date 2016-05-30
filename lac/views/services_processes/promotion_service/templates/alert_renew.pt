@@ -1,0 +1,5 @@
+<div class="alert alert-info" i18n:domain="lac" i18n:translate="">
+	<p>
+		Le service suivant permet de saisir et d'afficher les informations associées à la promotion du contenu. Ce service est expiré. En cliquant sur Continuer vous prolongez la validité de ce service de 30 jours.
+	</p>
+</div>

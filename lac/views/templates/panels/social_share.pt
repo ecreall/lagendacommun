@@ -1,0 +1,67 @@
+ <tal:block tal:condition="condition" tal:define="su request.static_url;">
+    <script type="text/javascript">
+        (function () {
+              var scripts = [
+                  '${request.static_url('lac:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.'+request.locale_name+'.js')}',
+
+                  '${request.static_url('lac:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.js')}',
+                  
+                  '${request.static_url('lac:static/panzi-SocialSharePrivacy/javascripts/jquery.socialshareprivacy.min.autoload.js')}'
+                     ];
+              for(var i = 0; i< scripts.length; i++){ 
+                var s = document.createElement('script');
+                var t = document.getElementsByTagName('script')[3];
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = scripts[i];
+                t.parentNode.insertBefore(s, t); 
+              };
+          })();
+    </script>
+    <script type="text/javascript">
+        function update_socialSharePrivacy_settings(){
+            var default_settings = {
+                                  "path_prefix":"${su('lac:static/panzi-SocialSharePrivacy/')}",
+                                  "layout":"line",
+                                  "services":{"buffer":{"status":false},
+                                              "delicious":{"status":false},
+                                              "disqus":{"status":false},
+                                              "flattr":{"status":false},
+                                              "hackernews":{"status":false},
+                                              "mail":{"status":false},
+                                              "pinterest":{"status":false},
+                                              "reddit":{"status":false},
+                                              "stumbleupon":{"status":false},
+                                              "tumblr":{"status":false},
+                                              "xing":{"status":false}
+                                              },
+                                 };
+            try{
+              jQuery.extend(!0, socialSharePrivacy_settings, default_settings);
+            }catch(err){
+              return default_settings
+            };
+
+            return socialSharePrivacy_settings
+        }
+    </script>
+    <script type="application/x-social-share-privacy-settings">
+        update_socialSharePrivacy_settings()
+    </script>
+    <div tal:omit-tag=""
+         tal:define="description object.presentation_text(300);
+                     url request.url.replace('https://ssl', 'http://www');">
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content="${object.title}" />
+        <meta property="og:description" content="${description}" />
+        <meta data-shortner_url="${shortner_url}" property="og:url" content="${url}" />
+        <meta property="og:site_name" content="${request.get_site_folder.title}" />
+        <meta property="og:image" tal:condition="getattr(object, 'picture', None)" content="${getattr(object.picture, 'large', object.picture).url}" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="${request.get_site_folder.title}" />
+        <meta name="twitter:title" content="${object.title}" />
+        <meta name="twitter:description" content="${description}" />
+        <meta name="twitter:image" tal:condition="getattr(object, 'picture', None)" content="${getattr(object.picture, 'large', object.picture).url}" />
+    </div>
+</tal:block>

@@ -1,0 +1,27 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption" tal:define="recurrence getattr(object, 'recurrence', False);
+                                   sending_date getattr(object, 'sending_date', None)">
+    <h3 class="content-title"><span class="${object.icon}"></span> ${object.title} 
+      <small tal:condition="recurrence"><span style="color: #d43f3a" class="glyphicon glyphicon-repeat"></span></small> 
+      <small style="color:gray" tal:condition="len_subscribed">(${len_subscribed} 
+        <span tal:condition="len_subscribed > 1" i18n:translate="">registrations</span>
+        <span tal:condition="len_subscribed == 1" i18n:translate="">registration</span>)
+      </small>
+    </h3>
+	<div class="object-description">
+    <small tal:condition="recurrence and sending_date is not None">
+      <span style="color: #d43f3a; display: block; ">
+         <span i18n:translate="">Next sending date:</span> <span tal:replace="layout.to_localized_time(sending_date)"/>
+      </span>
+    </small> 
+		<small>
+			${structure:getattr(object, 'description', '')}
+		</small>
+	</div>
+    <div tal:condition="getattr(object, 'content', '')">
+      <div>${structure:object.content}</div>
+    </div>
+  </div>
+  <div tal:replace="structure footer_body"/>
+</div>

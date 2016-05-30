@@ -1,0 +1,75 @@
+<div tal:omit-tag="" tal:define="filterbody filter_body|nothing" i18n:domain="lac">
+  <div tal:omit-tag="" tal:condition="filterbody">
+    ${structure: filterbody}
+    </div>
+</div>
+<div class="classification-result" i18n:domain="lac">
+    <div class="col-md-12" tal:define="class_name folder.name.replace(' ', '-')+'-date';
+                                       usual_color folder.style['usual_color'].split(',');
+                                        hover_color folder.style['hover_color'].split(',')">
+      <style>
+                .${class_name}{
+                    color:${usual_color[1]};
+                 }
+
+                .legend-${class_name}{
+                    background-color:${usual_color[1]};
+                }
+                .${class_name}.panel-heading{
+                    background-color: ${usual_color[0]} !important;
+                    background-image: none !important;
+                    color: ${usual_color[1]} !important;
+                }
+                .${class_name}.panel-heading:hover{
+                    background-color: ${hover_color[1]} !important;
+                    color: ${hover_color[0]} !important;
+                }
+      </style>
+      <div tal:condition="classification.__parent__" tal:omit-tag="" tal:repeat="(item, data_item) items"  >
+        <div tal:omit-tag="" tal:define="bodies data_item[0]; len_result data_item[1]" >
+          <div tal:condition="item != 'None'" class="search-item-title ${class_name}">
+             <span class="glyphicon glyphicon-home"></span> ${item.title.title()} 
+             <span class="pull-right badge">${len_result} 
+              <span tal:condition="len_result > 1" i18n:translate="">contents</span>
+             <span tal:condition="len_result == 1" i18n:translate="">content</span>
+            </span>
+          </div>
+          <div tal:condition="item == 'None'" class="search-item-title ${class_name}">
+             <div class="legend-search-item legend-${class_name}"></div> <span i18n:translate="">Unspecified value</span>
+          </div>
+          <div  class="col-md-12" tal:repeat="body bodies">${structure:body}</div>
+      </div>
+      </div>
+      <div tal:condition="classification.__parent__ is None" class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div tal:repeat="(i, value) enumerate(items)" class="panel classification-panel">
+          <div tal:omit-tag="" tal:define="(item, data_item) value" >
+            <div tal:omit-tag="" tal:define="bodies data_item[0]; len_result data_item[1]">
+              <div class="panel-heading ${class_name}" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a data-toggle="collapse" data-parent="#accordion" href="#folder-section${i}" aria-expanded="false" aria-controls="folder-section${i}" class="collapsed">
+                    <div tal:condition="item != 'None'" class="search-item-title">
+                       <span class="glyphicon glyphicon-home"></span> ${item.title.title()} <span class="pull-right badge">${len_result} 
+                       <span tal:condition="len_result > 1" i18n:translate="">contents</span>
+                       <span tal:condition="len_result == 1" i18n:translate="">content</span>
+                     </span>
+                    </div>
+                    <div tal:condition="item == 'None'" class="search-item-title">
+                       <span class="glyphicon glyphicon-film"></span> <span i18n:translate="">Unspecified value</span>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="folder-section${i}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false">
+                <div class="panel-body">
+                  <div  class="col-md-12" tal:repeat="body bodies">${structure:body}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+

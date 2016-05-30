@@ -1,0 +1,26 @@
+<div class="thumbnail search-item result-item folder-item ${object.style}"
+     tal:define="expire getattr(object, 'end_date', None)"
+     i18n:domain="lac">
+	<div style="height: 15px">
+	    <div style="padding:0px 5px; margin-top: -8px;" class=" pull-right">${state}</div>
+	</div>
+  <span class="${object.icon}" ></span>
+  <div class="caption">
+    <h4 title="${object.type_title}">
+      <a  style="margin-top: 10px; display: inline-block" class="alert-link" tal:attributes="href request.resource_url(object, '@@index')" >${object.title}
+        <span style="display: block">${object.price_str}</span>
+    </a></h4>
+    <div tal:condition="expire"><small class="service-date">
+      <span tal:condition="not expired" i18n:translate="">Expire on</span>
+      <span tal:condition="expired" i18n:translate="">Expired on</span> 
+      <span tal:replace="layout.to_localized_time(expire)"/></small>
+    </div>
+  
+    <small style="color: gray">${object.service_description}</small>
+    <div>
+      <large tal:condition="object.perimeter" tal:define="k object.perimeter">
+        <span class="${getattr(k, 'icon', '')}"></span> <a tal:attributes="href request.resource_url(k, '@@index')">${k.title}</a>
+      </large>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="smart-folder-well result-item" tal:define="appreciation getattr(object, 'appreciation', None)">
+    <div class="bloc-title">
+       <h4 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h4>
+       <h4 tal:condition="getattr(object, 'surtitle', '')" class='content-surtitle'><a href="${request.resource_url(object, '@@index')}"><span class="${object.icon}"></span> ${getattr(object, 'surtitle')}</a></h4>
+       <h4 tal:condition="not getattr(object, 'surtitle', '')" class='content-surtitle'><a href="${request.resource_url(object, '@@index')}"><span class="${object.icon}"></span> ${getattr(object, 'title')}</a></h4>
+    </div>
+    <hr style="margin-bottom: 12px; margin-top: 6px;" class="soften">
+    <div  tal:condition="appreciation"
+          title="${object.appreciation_title}" 
+          class="smileyface ${appreciation+'-smileyface'} small"  
+          style="display: inline-flex; top: 5px; margin-left: 2px"
+          i18n:attributes="title">
+      <p class="eyes lefteye"></p>
+      <p class="eyes righteye"></p>
+      <div class="${appreciation}">
+      </div>
+    </div>
+    <h4 tal:condition="getattr(object, 'surtitle', '')" class="content-title content-title-review" style="display: ${(appreciation and 'inline-flex') or 'block'}">${object.title}</h4>
+    <p  class="critique_text">
+        <div tal:omit-tag="" tal:define="picture getattr(object.picture, 'small', object.picture)">
+            <img  tal:condition="picture" alt="" src="${picture.url}" class="critique_vignette img-thumbnail" style="width: 128px">
+        </div>
+                    ${object.presentation_text(300)}
+        <a href="${request.resource_url(object, '@@index')}">Lire&nbsp;la&nbsp;suite...</a>
+    </p>
+    <div class="article-signature" style=" margin-bottom: 0;">
+      ${getattr(object, 'signature', '')}
+      <div class="pull-right" >
+        <span tal:replace="layout.to_localized_time(object.get_release_date(), date_only=True)"/>
+      </div>
+    </div>
+</div>

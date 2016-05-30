@@ -1,0 +1,25 @@
+<span tal:define="name name|field.name;
+                  css_class css_class|field.widget.css_class;
+                  oid oid|field.oid;
+                  mask mask|field.widget.mask;
+                  mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                  style style|field.widget.style;
+"
+      tal:omit-tag="">
+    <button tal:condition="not cstruct" data-oid="${oid}" class="btn btn-default icon-input" data-iconset="glyphicon" data-icon="" role="iconpicker">
+    </button>
+    <button tal:condition="cstruct" data-oid="${oid}" class="btn btn-default icon-input" data-iconset="glyphicon" data-icon="${cstruct.split(',')[1]}" role="iconpicker">
+    </button>
+    <input type="hidden" name="${name}" value="${cstruct}" 
+             tal:attributes="class string: form-control ${css_class or ''};
+                             style style"
+             id="${oid}"/>
+    <script tal:condition="mask" type="text/javascript">
+      deform.addCallback(
+         '${oid}',
+         function (oid) {
+            $("#" + oid).mask("${mask}", 
+                 {placeholder:"${mask_placeholder}"});
+         });
+    </script>
+</span>

@@ -1,0 +1,22 @@
+<div tal:replace="structure navbar_body"/>
+<div class="right-caption span4"  i18n:domain="lac">
+  <div class="caption"
+  	   tal:define="source object.get_content_data()">
+    <h3 tal:condition="state"><span class="label label-basic pull-right" i18n:translate="" tal:content="state"/></h3> 
+    <h2 class="content-title"><span class="lac-icon icon-periodic-advertising"></span> ${object.title}</h2>
+    <h4 class="section-title" i18n:translate="">File</h4>
+    <div tal:condition="source['type'] == 'pdf'" class="periodic-advertising">
+      <object data="${source['url']}" type="application/pdf" width="100%" height="100%">
+	  </object>
+	  <a href="${source['url']}">${source['filename']}</a>
+   </div>
+    <div tal:condition="source['type'] == 'xpress'">
+	  <a href="${source['url']}">${source['filename']}</a>
+   </div>
+   <h4 class="section-title" i18n:translate="">Dates</h4>
+   ${object.visibility_dates}
+   <tal:block tal:condition="getattr(object,'positions', [])">
+     <h4 class="section-title" i18n:translate="">Positions</h4>
+   </tal:block>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div i18n:domain="lac"
+     tal:omit-tag="" tal:define="duplicates object.get_duplicates();
+                                 icon getattr(object, 'icon', '')">
+<tr tal:condition="duplicates" class="search-item result-item" style="display: table-row">
+  <th scope="row">
+    <a tal:attributes="href request.resource_url(object, '@@index')">
+      <span class="icon ${icon}"></span> ${object.title} 
+    </a>
+  </th>
+  <td><span tal:condition="state" class="label label-basic" i18n:translate="" tal:content="state"/></td>
+  <td>${object.presentation_text(400)}</td>
+  <td>${len(duplicates)}</td>
+  <td>
+    <a class="btn btn-danger btn-xs" tal:attributes="href request.resource_url(object, '@@potentialduplicatesvenue')" target="_blank" i18n:translate="" style="display: inline-block">
+      <span class="octicon octicon-git-compare"></span> <span i18n:translate="">Manage duplicates</span>
+    </a>
+  </td>
+</tr>
+</div>

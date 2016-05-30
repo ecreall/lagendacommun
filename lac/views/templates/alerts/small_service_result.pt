@@ -1,0 +1,17 @@
+<div i18n:domain="lac"
+     tal:condition="object.subjects"
+     tal:define="icon 'glyphicon glyphicon-wrench';
+                 alert_kind getattr(object, 'alert_kind', '')">
+  <div tal:define="subject object.subjects[0]">
+    <h4>
+    	<span class="icon ${icon}"></span>
+    	<span style="color: orange;" tal:condition="alert_kind == 'deadline'" class="glyphicon glyphicon-time"></span>
+    	<span style="color: red" tal:condition="alert_kind == 'expired'" class="glyphicon glyphicon-off"></span>
+    	<span tal:replace="layout.to_localized_time(object.modified_at)"/> (UTC)
+    </h4>
+    <span tal:condition="alert_kind == 'deadline'">Votre service <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> arrive à son échéance . N'oubliez pas de renouveler votre service avant <span tal:replace="layout.to_localized_time(subject.end_date)"/>.
+    </span>
+    <span tal:condition="alert_kind == 'expired'">Votre service <a href="${request.resource_url(subject, '@@index')}"><span class="${getattr(subject, 'icon')}"></span> ${subject.title}</a> est expiré. Veuillez renouveler votre service.
+    </span>
+  </div>
+</div>

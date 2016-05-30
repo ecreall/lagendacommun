@@ -1,0 +1,29 @@
+<tal:def tal:define="title title|field.title;
+                     description description|field.description;
+                     errormsg errormsg|field.errormsg;
+                     item_template item_template|field.widget.item_template;
+                     ajax ajax|field.widget.ajax"
+         i18n:domain="lac">
+   <div tal:omit-tag="not ajax" class="ajax-form">
+    <div tal:condition="ajax" class="control-form-button ${getattr(field.widget, 'control_css_class', '')}"><span class="${field.widget.activator_css_class}"></span> ${field.widget.activator_title}</div>
+    <div class="${getattr(field.widget, 'mapping_css_class', '')}">
+      <div tal:condition="errormsg" 
+           class="clearfix alert alert-message alert-danger error">
+        <p i18n:translate="">
+           There was a problem with this section
+        </p>
+        <p>${errormsg}</p>
+      </div>
+
+      <div tal:condition="description">
+        ${description}
+      </div>
+
+      ${field.start_mapping()}
+      <div tal:repeat="child field.children"
+           tal:replace="structure child.render_template(item_template)" >
+      </div>     
+      ${field.end_mapping()}
+  </div>
+ </div>
+</tal:def>

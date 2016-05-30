@@ -1,0 +1,7 @@
+<div tal:omit-tag="" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+  <text:p text:style-name="SalleNom">${object.title.upper()}</text:p>
+  <div tal:omit-tag="" tal:repeat="schedule object.film_schedules" tal:condition="hasattr(object,'film_schedules')">
+    <text:p text:style-name="SeanceFilm">${schedule.title.upper()}</text:p>
+    <text:p text:style-name="SeanceInformations">${text_normalize(schedule.description)}</text:p>
+  </div>
+</div>

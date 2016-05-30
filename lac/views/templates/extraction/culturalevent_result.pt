@@ -1,0 +1,43 @@
+<div tal:omit-tag="" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+<text:p text:style-name="Annonce" tal:define="schedules object.get_valid_schedules()">
+  <text:tab />
+  <text:span text:style-name="AnnonceTitre">${object.title.upper()}</text:span>
+  <text:span text:style-name="AnnonceDescription">${text_normalize(object.description)}</text:span>
+  <div tal:omit-tag="" tal:repeat="schedule schedules" tal:define="nb_schedules len(schedules)">
+     <text:span text:style-name="AnnonceSeance" tal:attributes="text:style-name python:'AnnonceSeance' if has_only_one_date(dates, object) else 'AnnonceSeances'" tal:define="dates schedule.dates">
+       ${date_normalize(dates, schedule, site, filter_parameters, not has_date_classification)}</text:span>
+     <text:span text:style-name="AnnonceInformations" tal:define="venue schedule.venue" tal:condition="schedule.venue">
+        <span tal:omit-tag="">
+          <span tal:omit-tag="" tal:condition="nb_schedules > 1"> 
+            <text:span text:style-name="AnnonceVilles">
+              ${venue.city.capitalize()}
+            </text:span> : 
+          </span>
+          ${text_normalize(venue.title+', '+venue.address_str(ignore_dep=True, ignore_country=True, ignore_zipcode=True))}
+        </span>
+        <div tal:omit-tag="" tal:define="ticket_type  schedule.ticket_type">
+          <span tal:omit-tag="" tal:define="price schedule.price" tal:condition="ticket_type == 'Paying admission'">
+            Tarif: ${price.replace(".",",")}<span tal:omit-tag='' tal:condition="price.find('€') == -1 and price.find('euro') == -1"> €. </span>
+          </span>
+          <span tal:omit-tag="" tal:condition="ticket_type != 'Paying admission'" tal:content="ticket_type" i18n:translate="" i18n:domain="lac"/>
+        </div>
+     </text:span>
+  </div>
+  
+  <p tal:condition="object.get_contacts()" tal:omit-tag="">
+
+    <text:span text:style-name="AnnonceInformations"
+       tal:define="contact object.get_contacts()[0];
+                   phone_number contact.get('phone', '');
+                   web_site contact.get('website', '');
+                   email contact.get('email', '');
+                   surtax contact.get('surtax', '')"
+       >
+      <span tal:omit-tag="" tal:condition="phone_number">Tel. ${layout.deserialize_phone(phone_number)} </span>
+      <span tal:omit-tag="" tal:condition="surtax and (surtax not in (0, '0'))">${surtax}</span>
+      <span tal:omit-tag="" tal:condition="email">${email}</span>
+      <span tal:omit-tag="" tal:condition="web_site" tal:replace="web_site.replace('http://www','www')">Web site</span>
+    </text:span>
+  </p>
+</text:p>
+</div>

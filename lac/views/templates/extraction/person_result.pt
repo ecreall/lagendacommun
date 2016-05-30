@@ -1,0 +1,7 @@
+<div tal:omit-tag="" xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">
+<text:p text:style-name="Annonce">
+  <text:tab />
+  <text:span text:style-name="AnnonceTitre">${object.title.upper()}:</text:span>
+  <text:span text:style-name="AnnonceSeances"> ${object.email}</text:span>
+</text:p>
+</div>

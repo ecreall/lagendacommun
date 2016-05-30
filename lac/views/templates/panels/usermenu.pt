@@ -1,0 +1,186 @@
+<html xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="lac"
+      tal:define="mp request.sdiapi.mgmt_path;
+                  sites_group request.get_site_folder.get_group();
+                  hasalerts hasattr(request.user, 'alerts');
+                  len_alerts len(alerts);
+                  alerts_url request.resource_url(request.root, 'creationculturelapi', query={'op': 'get_user_alerts'});
+                  all_alerts_url request.resource_url(request.root, '@@seealerts');
+                  progress_url request.static_url('lac:static/images/progress.gif')"
+
+      tal:omit-tag="">
+<div class="navbar navbar-default navbar-fixed-top navbar-top" role="navigation">
+  <div class="container">
+      <tal:block tal:repeat="jslink js_links">
+          <script src="${request.static_url(jslink)}"></script>
+      </tal:block>
+      <tal:block tal:repeat="csslink css_links">
+          <link href="${request.static_url(csslink)}" rel="stylesheet"></link>
+      </tal:block>
+      <div class="navbar-header" >
+          <button data-target=".navbar-user-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+             <span class="glyphicon glyphicon-user"></span>
+           </button>
+           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-search-collapse">
+             <span class="glyphicon glyphicon-search"></span>
+           </button>
+           <button data-target=".navbar-bottom-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+             <span class="glyphicon glyphicon-menu-hamburger"></span>
+           </button>
+           <button tal:condition="sites_group" data-target=".navbar-sites-collapse" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+             <span class="glyphicon glyphicon-globe"></span>
+           </button>
+           <span tal:condition="hasalerts"
+              class="visible-xs-inline-block alert-block ${len_alerts==0 and 'off'}"
+              data-url="${alerts_url}">
+                <a href="${all_alerts_url}"><span class="icon glyphicon glyphicon-bell"></span></a>
+                <span class="alert-nb" >${len_alerts}</span>
+                <div class="alerts-content hide-bloc">
+                  <img class="loading-indicator hide-bloc" src="${progress_url}"/>
+                  <div class="content"></div>
+                </div>
+            </span>
+
+          <a class="navbar-brand" href="/" tal:define="logo getattr(request.get_site_folder, 'picture', None)">
+            <img tal:condition="logo" src="${logo.url}" class="globe-logo">
+            <div tal:omit-tag=""
+              tal:condition="logo is None"
+              tal:define="haslogo request.get_site_folder.urls_ids[0].endswith('lille.sortir.eu')">
+              <img  tal:condition="haslogo"
+                    src="${request.static_url('lac:static/images/sortirlogo.png')}"
+                    class="globe-logo">
+              <div tal:omit-tag="" tal:condition="not haslogo">
+                  <img alt="L'agenda commun" src="${request.static_url('lac:static/images/lac_logo.png')}" class="globe-logo"> L' agenda commun
+              </div>
+            </div></a>
+            <ul class="nav navbar-nav navbar-left navbar-sites" tal:condition="sites_group">
+              <li >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true" style="padding-bottom: 5px; padding-top: 11px; z-index: 1">
+                  <i class="glyphicon glyphicon-globe" style="margin-right: 5px; font-size: 18px"></i>
+                  <span i18n:translate="" class="visible-lg-inline-block">Other sites</span><span class="caret" style="margin-left: 8px;"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li class="account-link" tal:repeat="site sites_group">
+                    <div tal:omit-tag="" tal:define="url site.urls_ids[0]">
+                      <a target="_blank" tal:condition="url.startswith('http')" href="${url}">${site.title}</a>
+                      <a target="_blank" tal:condition="not url.startswith('http')" href="http://${url}">${site.title}</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+          </ul>
+      </div>
+
+      <div class="user-nav-top" >
+        <div class="search-nav-top">
+          <div class=" collapse navbar-collapse navbar-search-collapse">
+            <div class="search-form-container">
+              <div class="search-form navbar-form" role="search">
+                      ${structure:search_body}
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class=" collapse navbar-collapse navbar-user-collapse">
+        <ul class="nav navbar-nav navbar-right" tal:condition="request.user">
+          <li>
+            <span tal:condition="hasalerts"
+              class="hidden-xs alert-block ${len_alerts==0 and 'off'}"
+              data-url="${alerts_url}">
+                <a href="${all_alerts_url}"><span class="icon glyphicon glyphicon-bell"></span></a>
+                <span class="alert-nb" >${len_alerts}</span>
+                <div class="alerts-content hide-bloc">
+                  <img class="loading-indicator hide-bloc" src="${progress_url}"/>
+                  <div class="content"></div>
+                </div>
+            </span>
+            <a href="#" class="dropdown-toggle"
+                    data-toggle="dropdown" style="padding-bottom: 5px">
+              <i class="glyphicon glyphicon-user" style="margin-right: 5px;"></i>${getattr(request.user, 'title', request.user.name)}<span class="caret" style="margin-left: 8px;"></span>
+            </a>
+
+            <ul class="dropdown-menu" role="menu">
+              <li class="account-link">
+                <a href="${request.resource_url(request.user, '@@index')}" i18n:translate="">
+                  <i i18n:name="icon" class="glyphicon glyphicon-eye-open"></i> Account</a>
+              </li>
+              <li tal:condition="getattr(request.user, 'customeraccount', None)" class="account-link">
+                <a href="${request.resource_url(request.user.customeraccount, '@@index')}" i18n:translate="">
+                  <i i18n:name="icon" class="glyphicon glyphicon-shopping-cart"></i> Customer account</a>
+              </li>
+              <li class="account-link">
+                <a href="${request.resource_url(request.user, '@@edit')}" i18n:translate="">
+                  <i i18n:name="icon" class="glyphicon glyphicon-pencil"></i> Edit my account</a>
+              </li>
+              <li class="logout-link">
+                <a href="${request.resource_url(request.root, '@@logout')}" i18n:translate="">
+                  <i i18n:name="icon" class="glyphicon glyphicon-off"></i> Log Out</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+        <div tal:condition="request.user is None" class="btn-group navbar-right">
+                <!-- <div> login</div> -->
+          <a href="${request.resource_url(request.root, '@@login')}" class="btn btn-warning " id="registration" >
+              <i class="glyphicon glyphicon-log-in"> </i> <span  i18n:translate="">Log in</span>
+           </a>
+           <a href="${request.resource_url(request.root, '@@registration')}" class="btn btn-warning " id="registration" >
+              <i class="glyphicon glyphicon-pencil"> </i> <span  i18n:translate="">Registration</span>
+           </a>
+        </div>
+      </div>
+      <div class="collapse navbar-collapse navbar-sites-collapse">
+        <ul class="nav navbar-nav navbar-right" tal:condition="sites_group">
+              <li >
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 5px">
+                  <i class="glyphicon glyphicon-globe" style="margin-right: 5px; font-size: 18px"></i>
+                  <span i18n:translate="">Other sites</span><span class="caret" style="margin-left: 8px;"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li class="account-link" tal:repeat="site sites_group">
+                    <div tal:omit-tag="" tal:define="url site.urls_ids[0]">
+                      <a target="_blank" tal:condition="url.startswith('http')" href="${url}">${site.title}</a>
+                      <a target="_blank" tal:condition="not url.startswith('http')" href="http://${url}">${site.title}</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+          </ul>
+      </div>
+    </div>
+ </div>
+</div>
+</html>
+<!-- Modal -->
+<div tal:condition="login_action">
+  <script tal:condition="'toreplay' in login_action">       
+                        $(document).ready(function(){
+                             $(${'\'#'+login_action['action_id']+'-btn\''}).click();
+                        });
+                   </script>  
+                   <script>
+                        $(document).ready(function(){
+                            $(${'\'#'+login_action['action_id']+'-modal\''}).on('hidden.bs.modal', function (e) {
+                               //after_execution(${'\"'+login_action['actionurl_after']+'\"'})
+                              })
+                        });
+                   </script>
+ <div class="modal fade" 
+     id="${login_action['action_id']}-modal" 
+     role="dialog"  
+     aria-hidden="true"
+     >
+     <!-- data-backdrop="static" -->
+    <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-body">
+            ${structure:login_action['body']}
+         </div>
+       </div>
+    </div>
+ </div>
+</div>
+

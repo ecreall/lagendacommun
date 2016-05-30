@@ -1,0 +1,55 @@
+<span tal:define="name name|field.name;
+                  country_name name+'_country';
+                  css_class css_class|field.widget.css_class;
+                  oid oid|field.oid;
+                  country_oid oid+'_country';
+                  mask mask|field.widget.mask;
+                  mask_placeholder mask_placeholder|field.widget.mask_placeholder;
+                  placeholder placeholder|getattr(field.widget, 'placeholder', None);
+                  style style|field.widget.style;
+                  countries getattr(field.widget, 'countries', []);
+"
+      tal:omit-tag="">
+
+   ${field.start_mapping()}
+    <div class="row form-control-associated">
+      <div class="col-md-2" style="padding-right: 0px">
+        <select tal:attributes="
+                name country_name;
+                id country_oid;
+                class string: form-control;
+                multiple False;">
+          <tal:loop tal:repeat="item countries">
+            <option tal:attributes="
+                    selected (item[0] == cstruct[country_name]) and 'selected';
+                    value item[0]">${item[1]}</option>
+          </tal:loop>
+        </select>
+      </div>
+       <div class="col-md-10" style="padding-left: 0px">
+        <input type="text" name="${name}" value="${cstruct[name]}" 
+             tal:attributes="class string: form-control phone-input ${css_class};
+                             style style"
+             id="${oid}"
+             placeholder="${placeholder}"/>
+        </div>
+    </div><!-- /input-group -->   
+    ${field.end_mapping()}
+
+    <script type="text/javascript">
+      deform.addCallback(
+         '${country_oid}',
+         function (country_oid) {
+            $('#' + country_oid).select2({containerCssClass: 'form-control'});
+         });
+    </script>
+
+    <script tal:condition="mask" type="text/javascript">
+      deform.addCallback(
+         '${oid}',
+         function (oid) {
+            $("#" + oid).mask("${mask}", 
+                 {placeholder:"${mask_placeholder}"});
+         });
+    </script>
+</span>

@@ -1,0 +1,96 @@
+
+p.eyes {
+    background: none repeat scroll 0 0 #222;
+    border-radius: 100px / 160px;
+    height: 25%;
+    position: absolute;
+    top: 25%;
+    width: 15%;
+    } 
+
+div.excellent {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: -moz-use-text-color #222 #222;
+    border-radius: 0 0 210px 210px / 0 0 105px 105px;
+    border-style: none solid solid;
+    border-width: 0 0 5px;
+    bottom: 15%;
+    height: 20%;
+    left: 13%;
+    position: absolute;
+    width: 75%;
+    border-image: none;
+}
+    
+div.good {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: -moz-use-text-color #222 #222;
+    border-radius: 0 0 210px 210px / 0 0 105px 105px;
+    border-style: none solid solid;
+    border-width: 0 0 2px;
+    bottom: 15%;
+    height: 20%;
+    left: 17%;
+    position: absolute;
+    width: 65%;
+    border-image: none;
+}
+
+div.passable{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: -moz-use-text-color #222 #222;
+    border-image: none;
+    border-radius: 0 0 45px 45px;
+    border-style: none solid solid;
+    border-width: 0 0 3px;
+    bottom: 22%;
+    left: 30%;
+    position: absolute;
+    width: 40%;
+}
+
+div.prettybad{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: -moz-use-text-color #222 #222;
+    border-image: none;
+    border-radius: 0 0 210px 210px / 0 0 105px 105px;
+    border-style: none solid solid;
+    border-width: 0 0 2px;
+    bottom: 15%;
+    height: 25%;
+    left: 20%;
+    position: absolute;
+    transform: rotate(180deg);
+    width: 60%;
+}
+
+div.bad{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border-color: -moz-use-text-color #222 #222;
+    border-image: none;
+    border-radius: 0 0 210px 210px / 0 0 105px 105px;
+    border-style: none solid solid;
+    border-width: 0 0 5px;
+    bottom: 15%;
+    height: 25%;
+    left: 20%;
+    position: absolute;
+    transform: rotate(180deg);
+    width: 60%;
+}
+
+.footer-message {
+    background-color: gray;
+    color: white;
+    display: none;
+    height: 20px;
+    opacity: 0.5;
+    padding-right: 5px;
+    position: absolute;
+    right: 36px;
+    text-align: end;
+    z-index: 1;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: bold;
+}

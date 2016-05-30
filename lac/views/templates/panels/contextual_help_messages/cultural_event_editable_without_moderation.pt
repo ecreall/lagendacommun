@@ -1,0 +1,5 @@
+<div class="contextual-help-item principal-help" i18n:domain="lac">
+    <p i18n:translate="">Your announcement is in a private state.</p>
+    <p i18n:translate="">To validate your publication request, click on the button "Publish" at the top right.</p>
+    <p i18n:translate="">You can find your announcement by clicking on "my content" in the "view" section of the dashboard.</p>
+</div>
