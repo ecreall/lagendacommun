@@ -36,7 +36,7 @@ def get_current_user(args):
 def get_venues_by_location(args):
     location = args.get('geo_location', None)
     if location:
-        lat_lon = location.split('_')
+        lat_lon = location.split(',')
         body = {
             "query": {
                 "filtered": {
