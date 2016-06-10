@@ -196,6 +196,9 @@ class Contact(Node):
     fax = graphene.String()
     website = graphene.String()
 
+    def __getattr__(self, name):
+        return self.__dict__.get(name, '')
+
     def resolve_phone(self, args, info):
         return deserialize_phone(self.phone)
 
