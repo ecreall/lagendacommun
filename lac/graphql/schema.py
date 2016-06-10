@@ -23,6 +23,7 @@ from lac import log
 from lac.content.processes import get_states_mapping
 from lac.content.cultural_event import (
     CulturalEvent as CulturalEventOrigin)
+from lac.layout import deserialize_phone
 
 
 DEFAULT_RADIUS = 15
@@ -194,6 +195,9 @@ class Contact(Node):
     surtax = graphene.String()
     fax = graphene.String()
     website = graphene.String()
+
+    def resolve_phone(self, args, info):
+        return deserialize_phone(self.phone)
 
 
 class Venue(Node):

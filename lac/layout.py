@@ -12,6 +12,19 @@ from lac.utilities.utils import to_localized_time
 from lac import PHONE_PATTERNS
 
 
+def deserialize_phone(phone, add_country=False):
+    if isinstance(phone, dict):
+        if add_country:
+            country_id = phone.get('country', 'fr')
+            country = PHONE_PATTERNS.get(country_id, (None, None))[0]
+            if country:
+                return phone.get('number', '') + ' ('+country+')'
+
+        return phone.get('number', '')
+
+    return phone
+
+
 @layout_config(template='views/templates/master.pt')
 class GlobalLayout(object):
 
@@ -31,13 +44,4 @@ class GlobalLayout(object):
             add_day_name=add_day_name, translate=True)
 
     def deserialize_phone(self, phone, add_country=False):
-        if isinstance(phone, dict):
-            if add_country:
-                country_id = phone.get('country', 'fr')
-                country = PHONE_PATTERNS.get(country_id, (None, None))[0]
-                if country:
-                    return phone.get('number', '') + ' ('+country+')'
-
-            return phone.get('number', '')
-
-        return phone
+        return deserialize_phone(phone, add_country)
