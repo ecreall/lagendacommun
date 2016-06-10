@@ -1,5 +1,5 @@
 elasticsearch:
-  image: elasticsearch:1.7
+  image: elasticsearch:2.3
 #  ports:
 #    - "29200:9200"
   volumes:

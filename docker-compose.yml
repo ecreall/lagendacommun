@@ -1,6 +1,6 @@
 elasticsearch:
   restart: always
-  image: elasticsearch:1.7
+  image: elasticsearch:2.3
   volumes:
     - ./volumes/elasticsearch:/usr/share/elasticsearch/data
   command: elasticsearch -Des.cluster.name="lac" -Des.node.name=node1 -Des.discovery.zen.ping.multicast.enabled=false
