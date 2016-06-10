@@ -35,45 +35,45 @@ def get_current_user(args):
 
 
 def get_venues_by_location(args):
-    location = args.get('geo_location', None)
-    if location:
-        lat_lon = location.split(',')
-        body = {
-            "query": {
-                "filtered": {
-                    "query": {"match_all": {}},
-                    "filter": {
-                        "geo_distance": {
-                            "distance": str(args.get('radius', DEFAULT_RADIUS)) + 'km',
-                            "location": {
-                                "lat": float(lat_lon[0]),
-                                "lon": float(lat_lon[1])
-                            }
+    location = args.get('geo_location')
+    lat_lon = location.split(',')
+    body = {
+        "query": {
+            "filtered": {
+                "query": {"match_all": {}},
+                "filter": {
+                    "geo_distance": {
+                        "distance": str(args.get('radius', DEFAULT_RADIUS)) + 'km',
+                        "location": {
+                            "lat": float(lat_lon[0]),
+                            "lon": float(lat_lon[1])
                         }
                     }
                 }
-            },
-            "_source": {
-                "include": ["oid"]
             }
+        },
+        "_source": {
+            "include": ["oid"]
         }
-        try:
-            result = scan(
-                es,
-                index='lac',
-                doc_type='geo_location',
-                query=body,
-                size=500)
-            return [v['_source']['oid'] for v in result]
-        except Exception as e:
-            log.exception(e)
-            return []
+    }
+    try:
+        result = scan(
+            es,
+            index='lac',
+            doc_type='geo_location',
+            query=body,
+            size=500)
+        return [v['_source']['oid'] for v in result]
+    except Exception as e:
+        log.exception(e)
+        return []
 
 
 def get_location_query(args):
-    venues = get_venues_by_location(args)
     query = None
-    if venues:
+    location = args.get('geo_location', None)
+    if location:
+        venues = get_venues_by_location(args)
         lac_catalog = find_catalog('lac')
         object_venue_index = lac_catalog['object_venue']
         query = object_venue_index.any(venues)
