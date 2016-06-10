@@ -65,7 +65,7 @@ def get_venues_by_location(args):
                 size=500)
             return [v['_source']['oid'] for v in result]
         except Exception as e:
-            log.warning(e)
+            log.exception(e)
             return []
 
 
@@ -163,6 +163,14 @@ class Node(relay.Node):
     def id(self):
         return self.__oid__
 
+    def __getattr__(self, name):
+        try:
+            return super(Node, self).__getattr__(name)
+        except Exception:
+            log.exception("Error in node %s id:%s attr:%s",
+                self.__class__.__name__, self.id, name)
+            raise
+
 
 class Artist(Node):
     title = graphene.String()
@@ -235,7 +243,7 @@ class Schedule(Node):
     ticketing_url = graphene.String()
 
     def resolve_venue(self, args, info):
-        return [self.venue]
+        return [Venue(_root=self.venue)]
 
     def resolve_ticketing_url(self, args, info):
         return self.get_ticketing_url()
@@ -282,7 +290,7 @@ class CulturalEvent(Node):
             [self], pytz.timezone('Europe/Paris'))
 
     def resolve_url(self, args, info):
-        return get_current_request().resource_url(self, '@@index')
+        return get_current_request().resource_url(self._root, '@@index')
 
     def resolve_categories(self, args, info):
         return self.sections
@@ -297,29 +305,39 @@ class User(Node):
     my_events = relay.ConnectionField(CulturalEvent)
 
     def resolve_my_events(self, args, info):
-        return [contribution for contribution in self.all_contributions
+        return [CulturalEvent(_root=contribution)
+                for contribution in self.all_contributions
                 if isinstance(contribution, CulturalEventOrigin)]
 
 
 class ResolverLazyList(LazyList):
 
-    def __init__(self, origin):
+    def __init__(self, origin, object_type):
         super(ResolverLazyList, self).__init__(origin, state=None)
         objectmap = find_objectmap(get_current_request().root)
         self.resolver = objectmap.object_for
+        self.object_type = object_type
 
     def __next__(self):
         try:
             if not self._origin_iter:
                 self._origin_iter = self._origin.__iter__()
             oid = next(self._origin_iter)
-            n = self.resolver(oid)
+            n = self.object_type(_root=self.resolver(oid))
         except StopIteration as e:
             self._finished = True
             raise e
         else:
             self._state.append(n)
             return n
+
+    def __getitem__(self, key):
+        item = self._origin[key]
+        if isinstance(key, slice):
+            return self.__class__(item, object_type=self.object_type)
+
+        return item
+
 
 
 class Query(graphene.ObjectType):
@@ -339,11 +357,11 @@ class Query(graphene.ObjectType):
         if not current:
             return []
 
-        return [current]
+        return [User(_root=current)]
 
     def resolve_cultural_events(self, args, info):
         oids = get_cultural_events(args, info)
-        return ResolverLazyList(oids)
+        return ResolverLazyList(oids, CulturalEvent)
 
 
 schema = graphene.Schema(query=Query)
