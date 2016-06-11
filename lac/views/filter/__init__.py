@@ -1486,6 +1486,9 @@ def find_entities(user=None,
                   filter_op='and',
                   **args):
     """intersect is a list or LFSet of oids.
+    Parameter force_publication_date can be None, False or True.
+    True forces the date to today, False force it to today only if the user
+    has not the PortalManager role. None disable the index completely.
     """
     if intersect is not None and len(intersect) == 0:
         return ResultSet([], 0, None)
@@ -1543,8 +1546,10 @@ def find_entities(user=None,
         query = and_op(query, access_keys.any(keys))
 
     #add publication interval
-    if force_publication_date or \
-       not has_any_roles(roles=(('PortalManager', site), 'PortalManager')):
+    if force_publication_date is not None and (
+            force_publication_date or \
+            not has_any_roles(
+                roles=(('PortalManager', site), 'PortalManager'))):
         start_date = end_date = datetime.datetime.now()
         start_date = datetime.datetime.combine(
             start_date,

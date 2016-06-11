@@ -151,7 +151,9 @@ def get_cultural_events(args, info):
         interfaces=[ICulturalEvent],
         metadata_filter={'states': ['published']},
         text_filter={'text_to_search': args.get('text', '')},
-        keywords=args.get('categories', ''))
+        keywords=args.get('categories', ''),
+        force_publication_date=None  # None to avoid intersect with publication_start_date index
+    )
     return list(rs.ids)
 
 
