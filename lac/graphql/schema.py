@@ -1,3 +1,4 @@
+from functools import lru_cache
 import pytz
 import graphene
 from graphene import relay
@@ -33,9 +34,8 @@ def get_current_user(args):
     request = get_current_request()
     return request.user
 
-
-def get_venues_by_location(args):
-    location = args.get('geo_location')
+@lru_cache(maxsize=64)
+def get_venues_by_location(location, radius):
     lat_lon = location.split(',')
     body = {
         "query": {
@@ -43,7 +43,7 @@ def get_venues_by_location(args):
                 "query": {"match_all": {}},
                 "filter": {
                     "geo_distance": {
-                        "distance": str(args.get('radius', DEFAULT_RADIUS)) + 'km',
+                        "distance": str(radius) + 'km',
                         "location": {
                             "lat": float(lat_lon[0]),
                             "lon": float(lat_lon[1])
@@ -73,7 +73,8 @@ def get_location_query(args):
     query = None
     location = args.get('geo_location', None)
     if location:
-        venues = get_venues_by_location(args)
+        radius = args.get('radius', DEFAULT_RADIUS)
+        venues = get_venues_by_location(location, radius)
         lac_catalog = find_catalog('lac')
         object_venue_index = lac_catalog['object_venue']
         query = object_venue_index.any(venues)
