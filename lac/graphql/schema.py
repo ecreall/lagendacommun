@@ -155,6 +155,21 @@ def get_cultural_events(args, info):
     except Exception:
         limit = None
 
+    # For the scrolling of the results, it's important that the sort is stable.
+    # release_date is set to datetime.datetime.now(tz=pytz.UTC) when the event
+    # is published, so we have microsecond resolution and so have a stable sort
+    # even with not stable sort algorithms like nbest (because it's unlikely
+    # we have several events with the same date).
+    # When we specify limit in the query, the sort algorithm chosen will
+    # most likely be nbest instead of stable timsort (python sorted).
+    # The sort is ascending, meaning we will get new events published during
+    # the scroll, it's ok.
+    # The only issue we can found here is if x events are removed or unpublished
+    # during the scroll, we will skip x new events during the scroll.
+    # A naive solution is to implement our own graphql arrayconnection to slice
+    # from the last known oid + 1, but the last known oid may not be in the
+    # array anymore, so it doesn't work. It's not too bad we skip x events, in
+    # reality it should rarely happen.
     rs = find_entities(
         add_query=query,
         sort_on="release_date",
