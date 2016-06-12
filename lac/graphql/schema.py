@@ -161,9 +161,21 @@ def get_dates_range(args):
 def get_start_end_dates(args):
     dates = args.get('dates')
     if dates:
-        return dates[0], dates[-1]
+        start, end = dates[0], dates[-1]
+    else:
+        start, end = get_dates_range(args)
 
-    return get_dates_range(args)
+    if start:
+        start = datetime.datetime.combine(
+            start,
+            datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+
+    if end:
+        end = datetime.datetime.combine(
+            end,
+            datetime.time(23, 59, 59, tzinfo=pytz.UTC))
+
+    return start, end
 
 
 def get_dates_range_query(args):
@@ -399,16 +411,6 @@ class Schedule(Node):
 
         if start is None:
             start = current_date()
-
-        if start:
-            start = datetime.datetime.combine(
-                start,
-                datetime.time(0, 0, 0, tzinfo=pytz.UTC))
-
-        if end:
-            end = datetime.datetime.combine(
-                end,
-                datetime.time(23, 59, 59, tzinfo=pytz.UTC))
 
         dates = occurences_start(self._root, 'dates', from_=start, until=end)
         return dates[0].date() if dates else None
