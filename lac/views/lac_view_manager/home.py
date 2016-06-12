@@ -9,7 +9,8 @@ import math
 import datetime
 import pytz
 from pyramid.view import view_config
-
+from pyramid.threadlocal import get_current_request
+from substanced.objectmap import find_objectmap
 from substanced.util import get_oid
 
 from dace.processinstance.core import DEFAULTMAPPING_ACTIONS_VIEWS
@@ -22,8 +23,7 @@ from lac.content.processes.lac_view_manager.behaviors import (
     SeeHome)
 from lac.content.lac_application import (
     CreationCulturelleApplication)
-from lac.content.interface import (
-    IBaseReview, ISmartFolder, IBrief)
+from lac.content.interface import ISmartFolder
 from lac.utilities.smart_folder_utility import get_folder_content
 from lac.utilities.utils import get_site_folder
 from lac.content.smart_folder import SmartFolder
@@ -33,7 +33,7 @@ from lac.views.filter import find_entities
 from lac.views.user_management.login import LoginView
 
 
-MORE_NB = 2
+MORE_NB = 3
 
 
 @view_config(
@@ -99,30 +99,27 @@ class SeeHomeView(BasicView):
         for folder in folders:
             all_folders = [folder]
             all_folders.extend(folder.all_sub_folders('published'))
-            contents = []
+            contents_oids = set()
             for sub_folder in all_folders:
                 result_set = get_folder_content(
                     sub_folder, user,
                     sort_on='release_date',
                     reverse=True,
+                    limit=MORE_NB,
                     add_query=query,
                     metadata_filter={'content_types': content_types,
                                      'states': ['published']}
                     )
+                contents_oids |= set(result_set.ids)
 
-                for index, content in enumerate(result_set):
-                    contents.append(content)
-                    if index >= MORE_NB:
-                        break
-
-            if contents:
-                contents = list(set(contents))
-                contents = sorted(
-                    contents,
-                    key=lambda e: getattr(
-                        e, 'release_date', e.modified_at), reverse=True)
+            if contents_oids:
+                contents_oids = release_date_index.sort(
+                    contents_oids, reverse=True, limit=MORE_NB)
+                objectmap = find_objectmap(get_current_request().root)
+                resolver = objectmap.object_for
+                contents = [resolver(oid) for oid in contents_oids]
                 foldersdata.append({'folder': folder,
-                                    'contents': contents[:(MORE_NB + 1)],
+                                    'contents': contents,
                                     'order': folder.get_order(site_id)})
 
         foldersdata = sorted(foldersdata, key=lambda e: e['order'])
