@@ -7,6 +7,7 @@
 import calendar
 import pytz
 import datetime
+from itertools import dropwhile, takewhile
 
 from persistent import Persistent
 from BTrees.Length import Length
@@ -15,6 +16,11 @@ from hypatia.keyword import KeywordIndex
 from hypatia.field import FieldIndex
 from hypatia.query import InRange
 from hypatia._compat import string_types
+from hypatia.field import ASC, nbest_ascending_wins
+from hypatia.exc import Unsortable
+from hypatia import interfaces
+import bisect
+from itertools import islice
 from plone.event.recurrence import recurrence_sequence_ical
 
 from substanced.catalog.factories import IndexFactory
@@ -24,6 +30,24 @@ from substanced.content import content
 from . import log
 
 _marker = None
+
+
+def get_first_occurence(occurences, from_=None, until=None):
+    results = occurences
+    if until is not None:
+        results = takewhile(lambda x: x <= until, results)
+    if from_ is not None:
+        results = dropwhile(lambda x: x < from_, results)
+    return list(results)[0]
+
+
+def nsort(docids, rev_index, missing, from_, until):
+    for docid in docids:
+        try:
+            yield (get_first_occurence(
+                rev_index[docid], from_=from_, until=until), docid)
+        except KeyError:
+            yield (missing, docid)
 
 
 class InRangeWithNotIndexed(InRange):
@@ -223,6 +247,167 @@ class HypatiaDateRecurringIndex(KeywordIndex, FieldIndex):
             excludemax=False):
         return InRangeWithNotIndexed(self, start, end, excludemin, excludemax)
 
+    def sort(
+        self,
+        docids,
+        reverse=False,
+        limit=None,
+        sort_type=None,
+        raise_unsortable=True,
+        from_=None,
+        until=None
+        ):
+        if from_ is not None:
+            from_ = dt2int(from_)
+
+        if until is not None:
+            until = dt2int(until)
+
+        if limit is not None:
+            limit = int(limit)
+            if limit < 1:
+                raise ValueError('limit must be 1 or greater')
+
+        if not docids:
+            return []
+
+        numdocs = self._num_docs.value
+        if not numdocs:
+            if raise_unsortable:
+                raise Unsortable(docids)
+            return []
+
+        if sort_type == interfaces.STABLE:
+            sort_type = interfaces.TIMSORT
+
+        elif sort_type == interfaces.OPTIMAL:
+            sort_type = None
+
+        if reverse:
+            raise NotImplementedError
+        else:
+            return self.sort_forward(
+                docids,
+                limit,
+                numdocs,
+                from_=from_,
+                until=until,
+                sort_type=sort_type,
+                raise_unsortable=raise_unsortable
+                )
+
+    def sort_forward(
+        self,
+        docids,
+        limit,
+        numdocs,
+        from_,
+        until,
+        sort_type=None,
+        raise_unsortable=True
+        ):
+
+        rlen = len(docids)
+
+        # See http://www.zope.org/Members/Caseman/ZCatalog_for_2.6.1
+        # for an overview of why we bother doing all this work to
+        # choose the right sort algorithm.
+
+        if sort_type is None:
+            if limit and nbest_ascending_wins(limit, rlen, numdocs):
+                # nbest beats timsort reliably if this is true
+                sort_type = interfaces.NBEST
+
+            else:
+                sort_type = interfaces.TIMSORT
+
+        if sort_type == interfaces.NBEST:
+            if limit is None:
+                raise ValueError('nbest requires a limit')
+            return self.nbest_ascending(docids, limit,
+                from_=from_, until=until, raise_unsortable=raise_unsortable)
+        elif sort_type == interfaces.TIMSORT:
+            return self.timsort_ascending(docids, limit,
+                from_=from_, until=until, raise_unsortable=raise_unsortable)
+        else:
+            raise ValueError('Unknown sort type %s' % sort_type)
+
+    def nbest_ascending(self, docids, limit,
+                        from_, until, raise_unsortable=False):
+        if limit is None: #pragma NO COVERAGE
+            raise RuntimeError('n-best used without limit')
+
+        # lifted from heapq.nsmallest
+
+        h = nsort(docids, self._rev_index, ASC, from_, until)
+        it = iter(h)
+        result = sorted(islice(it, 0, limit))
+        if not result: #pragma NO COVERAGE
+            raise StopIteration
+        insort = bisect.insort
+        pop = result.pop
+        los = result[-1]    # los --> Largest of the nsmallest
+        for elem in it:
+            if los <= elem:
+                continue
+            insort(result, elem)
+            pop()
+            los = result[-1]
+
+        missing_docids = []
+
+        for value, docid in result:
+            if value is ASC:
+                missing_docids.append(docid)
+            else:
+                yield docid
+
+        if raise_unsortable and missing_docids:
+            raise Unsortable(missing_docids)
+
+    def timsort_ascending(self, docids, limit,
+                          from_, until, raise_unsortable=True):
+        return self._timsort(
+            docids,
+            from_=from_,
+            until=until,
+            limit=limit,
+            reverse=False,
+            raise_unsortable=raise_unsortable,
+            )
+
+    def _timsort(
+        self,
+        docids,
+        from_,
+        until,
+        limit=None,
+        reverse=False,
+        raise_unsortable=True,
+        ):
+
+        n = 0
+        missing_docids = []
+
+        def get(k, rev_index=self._rev_index):
+            v = rev_index.get(k, ASC)
+            if v is ASC:
+                missing_docids.append(k)
+            else:
+                v = get_first_occurence(v, from_=from_, until=until)
+            return v
+
+        for docid in sorted(docids, key=get, reverse=reverse):
+            if docid in missing_docids:
+                # skip docids not in this index
+                continue
+            n += 1
+            yield docid
+            if limit and n >= limit:
+                raise StopIteration
+
+        if raise_unsortable and missing_docids:
+            raise Unsortable(missing_docids)
 
 
 @content(

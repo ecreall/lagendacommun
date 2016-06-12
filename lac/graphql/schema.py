@@ -8,6 +8,7 @@ from graphene.utils import LazyList
 from graphql.core.language import ast
 from graphql_relay.connection.arrayconnection import cursor_to_offset
 import graphene.core.types.custom_scalars
+from hypatia.interfaces import NBEST, STABLE
 from elasticsearch.helpers import scan
 from pyramid.threadlocal import get_current_request
 from substanced.objectmap import find_objectmap
@@ -17,6 +18,7 @@ from dace.util import get_obj, find_catalog
 from lac.views.filter import find_entities
 from lac.content.interface import ICulturalEvent
 from lac.utilities.ical_date_utility import (
+    occurences_start,
     get_events_ical_calendar, get_schedules_ical_calendar)
 from lac.views.filter.util import or_op, and_op
 from lac.views.filter import (
@@ -156,6 +158,14 @@ def get_dates_range(args):
     return None, None
 
 
+def get_start_end_dates(args):
+    dates = args.get('dates')
+    if dates:
+        return dates[0], dates[-1]
+
+    return get_dates_range(args)
+
+
 def get_dates_range_query(args):
     dates = args.get('datesRange')
     if not dates:
@@ -211,15 +221,27 @@ def get_cultural_events(args, info):
     # reality it should rarely happen.
     rs = find_entities(
         add_query=query,
-        sort_on="release_date",
-        limit=limit,
+        # sort_on="release_date",
+        # limit=limit,
+        sort_on=None,
         interfaces=[ICulturalEvent],
         metadata_filter={'states': ['published']},
         text_filter={'text_to_search': args.get('text', '')},
         keywords=args.get('categories', ''),
         force_publication_date=None  # None to avoid intersect with publication_start_date index
     )
-    return list(rs.ids)
+    lac_catalog = find_catalog('lac')
+    sort_on = args.get('sort_on', 'release_date')
+    if sort_on == 'start_date':
+        start_date_index = lac_catalog['start_date']
+        from_, until = get_start_end_dates(args)
+        return list(start_date_index.sort(
+            list(rs.ids), limit=limit, from_=from_, until=until,
+            sort_type=STABLE))
+    else:
+        release_date_index = lac_catalog['release_date']
+        return list(release_date_index.sort(
+            list(rs.ids), limit=limit, sort_type=NBEST))
 
 
 class Date(Scalar):
@@ -373,12 +395,7 @@ class Schedule(Node):
     def resolve_next_date(self, args, info):
         """cost: 10ms for 50 events
         """
-        dates = args.get('dates')
-        if dates:
-            start = dates[0]
-            end = dates[-1]
-        else:
-            start, end = get_dates_range(args)
+        start, end = get_start_end_dates(args)
 
         if start is None:
             start = current_date()
@@ -491,7 +508,9 @@ class Query(graphene.ObjectType):
         categories=graphene.List(graphene.String()),
         dates=graphene.List(DateTime()),
         datesRange=graphene.List(DateTime()),
-        text=graphene.String())
+        text=graphene.String(),
+        sort_on=graphene.String(),
+    )
     current_user = relay.ConnectionField(User)
 
     def resolve_current_user(self, args, info):
