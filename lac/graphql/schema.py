@@ -3,7 +3,9 @@ from functools import lru_cache
 import pytz
 import graphene
 from graphene import relay
+from graphene.core.classtypes.scalar import Scalar
 from graphene.utils import LazyList
+from graphql.core.language import ast
 from graphql_relay.connection.arrayconnection import cursor_to_offset
 import graphene.core.types.custom_scalars
 from elasticsearch.helpers import scan
@@ -36,10 +38,14 @@ def get_current_user(args):
     return request.user
 
 
+def current_date():
+    return datetime.datetime.now(tz=pytz.UTC)
+
+
 def get_current_hour():
-    now = datetime.datetime.now()
+    now = current_date()
     return datetime.datetime.combine(
-        now, datetime.time(now.hour, 0, 0)).isoformat()
+        now, datetime.time(now.hour, 0, 0, tzinfo=pytz.UTC)).isoformat()
 
 
 @lru_cache(maxsize=64)
@@ -125,8 +131,8 @@ def get_dates_query(args):
         temporal_filter = {
             'temporal_filter': {
                 'start_end_dates': {
-                    'start_date': date,
-                    'end_date': date
+                    'start_date': date,  # will be transformed to 00:00:00 UTC
+                    'end_date': date  # will be transformed to 23:59:59 UTC
                     }
                 }
             }
@@ -137,11 +143,44 @@ def get_dates_query(args):
     return query
 
 
+def get_dates_range(args):
+    dates = args.get('datesRange')
+    if not dates:
+        return None, None
+
+    if len(dates) == 2:
+        return dates[0], dates[1]
+    elif len(dates) == 1:
+        return dates[0], None
+
+    return None, None
+
+
+def get_dates_range_query(args):
+    dates = args.get('datesRange')
+    if not dates:
+        return None
+
+    start, end = get_dates_range(args)
+    temporal_filter = {
+        'temporal_filter': {
+            'start_end_dates': {
+                'start_date': start,  # will be transformed to 00:00:00 UTC
+                'end_date': end  # will be transformed to 23:59:59 UTC
+                }
+            }
+        }
+    query = start_end_date_query(None, **temporal_filter)
+    return query
+
+
 def get_cultural_events(args, info):
     cities_query = get_cities_query(args)
     dates_query = get_dates_query(args)
+    dates_range_query = get_dates_range_query(args)
     location_query = get_location_query(args)
     query = and_op(location_query, dates_query)
+    query = and_op(query, dates_range_query)
     query = and_op(query, cities_query)
     try:
         after = cursor_to_offset(args.get('after'))
@@ -181,6 +220,43 @@ def get_cultural_events(args, info):
         force_publication_date=None  # None to avoid intersect with publication_start_date index
     )
     return list(rs.ids)
+
+
+class Date(Scalar):
+    '''Date in ISO 8601 format'''
+
+    @staticmethod
+    def serialize(date):
+        return date.isoformat()
+
+    @staticmethod
+    def parse_literal(node):
+        if isinstance(node, ast.StringValue):
+            return datetime.datetime.strptime(
+                node.value, "%Y-%m-%d").date()
+
+    @staticmethod
+    def parse_value(value):
+        return datetime.datetime.strptime(value, "%Y-%m-%d").date()
+
+
+class DateTime(Scalar):
+    '''DateTime in ISO 8601 format'''
+
+    @staticmethod
+    def serialize(dt):
+        return dt.isoformat()
+
+    @staticmethod
+    def parse_literal(node):
+        if isinstance(node, ast.StringValue):
+            return datetime.datetime.strptime(
+                node.value, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=pytz.UTC)
+
+    @staticmethod
+    def parse_value(value):
+        return datetime.datetime.strptime(
+            value, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=pytz.UTC)
 
 
 class Node(relay.Node):
@@ -260,14 +336,14 @@ class Venue(Node):
             geoLocation=geoLocation)]
 
 
-class TimeInterval(graphene.ObjectType):
-    start = graphene.core.types.custom_scalars.DateTime()
-    end = graphene.core.types.custom_scalars.DateTime()
-
-
-class ScheduleDate(graphene.ObjectType):
-    date = graphene.core.types.custom_scalars.DateTime()
-    time_intervals = graphene.List(TimeInterval)
+# class TimeInterval(graphene.ObjectType):
+#     start = graphene.core.types.custom_scalars.DateTime()
+#     end = graphene.core.types.custom_scalars.DateTime()
+#
+#
+# class ScheduleDate(graphene.ObjectType):
+#     date = graphene.core.types.custom_scalars.DateTime()
+#     time_intervals = graphene.List(TimeInterval)
 
 
 class Schedule(Node):
@@ -277,6 +353,7 @@ class Schedule(Node):
     price = graphene.String()
     ticket_type = graphene.String()
     ticketing_url = graphene.String()
+    next_date = Date()
 
     def resolve_venue(self, args, info):
         return [Venue(_root=self.venue)]
@@ -288,8 +365,36 @@ class Schedule(Node):
         return self.dates
 
     def resolve_calendar(self, args, info):
+        """cost: 50ms for 50 events
+        """
         return get_schedules_ical_calendar(
             [self], pytz.timezone('Europe/Paris'))
+
+    def resolve_next_date(self, args, info):
+        """cost: 10ms for 50 events
+        """
+        dates = args.get('dates')
+        if dates:
+            start = dates[0]
+            end = dates[-1]
+        else:
+            start, end = get_dates_range(args)
+
+        if start is None:
+            start = current_date()
+
+        if start:
+            start = datetime.datetime.combine(
+                start,
+                datetime.time(0, 0, 0, tzinfo=pytz.UTC))
+
+        if end:
+            end = datetime.datetime.combine(
+                end,
+                datetime.time(23, 59, 59, tzinfo=pytz.UTC))
+
+        dates = occurences_start(self._root, 'dates', from_=start, until=end)
+        return dates[0].date() if dates else None
 
 
 class CulturalEvent(Node):
@@ -384,7 +489,8 @@ class Query(graphene.ObjectType):
         geo_location=graphene.String(),
         radius=graphene.Int(),
         categories=graphene.List(graphene.String()),
-        dates=graphene.List(graphene.core.types.custom_scalars.DateTime()),
+        dates=graphene.List(DateTime()),
+        datesRange=graphene.List(DateTime()),
         text=graphene.String())
     current_user = relay.ConnectionField(User)
 
