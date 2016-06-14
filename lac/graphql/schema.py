@@ -197,6 +197,10 @@ def get_dates_range_query(args):
 
 
 def get_cultural_events(args, info):
+    start, end = get_start_end_dates(args)
+    request = get_current_request()
+    request.start_end =(start, end)  # used in resolve_next_state
+
     cities_query = get_cities_query(args)
     dates_query = get_dates_query(args)
     dates_range_query = get_dates_range_query(args)
@@ -246,9 +250,8 @@ def get_cultural_events(args, info):
     sort_on = args.get('sort_on', 'release_date')
     if sort_on == 'start_date':
         start_date_index = lac_catalog['start_date']
-        from_, until = get_start_end_dates(args)
         return list(start_date_index.sort(
-            list(rs.ids), limit=limit, from_=from_, until=until,
+            list(rs.ids), limit=limit, from_=start, until=end,
             sort_type=STABLE))
     else:
         release_date_index = lac_catalog['release_date']
