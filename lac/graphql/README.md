@@ -12,14 +12,12 @@ Example:
           first: 30,
           after: $after,
           text: "",
-          dates: ["2016-05-21T00:00:00.000000", "2016-06-02T00:00:00.000000", "2016-07-23T00:00:00.000000"],
+          dates: ["2016-05-21", "2016-06-02", "2016-07-23"],
           categories: ["Théâtre", "Loisirs"],
           cities: ["France@59650"]) {
         pageInfo{
           endCursor,
-          hasPreviousPage,
           hasNextPage,
-          startCursor
         },
         edges{
           node{
@@ -31,9 +29,7 @@ Example:
             artists(first: 2){
               pageInfo{
                 endCursor,
-                hasPreviousPage,
                 hasNextPage,
-                startCursor
               },
               edges{
                 node{

@@ -508,7 +508,7 @@ class Query(graphene.ObjectType):
         geo_location=graphene.String(),
         radius=graphene.Int(),
         categories=graphene.List(graphene.String()),
-        dates=graphene.List(DateTime()),
+        dates=graphene.List(Date()),
         datesRange=graphene.List(DateTime()),
         text=graphene.String(),
         sort_on=graphene.String(),
