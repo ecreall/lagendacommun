@@ -88,16 +88,10 @@ def get_venues_by_location(location, radius, hour_for_cache):
         return []
 
 
-def get_location_query(args):
-    query = None
-    location = args.get('geo_location', None)
-    if location:
-        radius = args.get('radius', DEFAULT_RADIUS)
-        venues = get_venues_by_location(location, radius, get_current_hour())
-        lac_catalog = find_catalog('lac')
-        object_venue_index = lac_catalog['object_venue']
-        query = object_venue_index.any(venues)
-
+def get_location_query(venues):
+    lac_catalog = find_catalog('lac')
+    object_venue_index = lac_catalog['object_venue']
+    query = object_venue_index.any(venues)
     return query
 
 
@@ -200,11 +194,18 @@ def get_cultural_events(args, info):
     start, end = get_start_end_dates(args)
     request = get_current_request()
     request.start_end =(start, end)  # used in resolve_next_state
+    location = args.get('geo_location', None)
+    venues = []
+    if location:
+        radius = args.get('radius', DEFAULT_RADIUS)
+        venues = get_venues_by_location(location, radius, get_current_hour())
+        if not venues:
+            return []
 
     cities_query = get_cities_query(args)
     dates_query = get_dates_query(args)
     dates_range_query = get_dates_range_query(args)
-    location_query = get_location_query(args)
+    location_query = get_location_query(venues)
     query = and_op(location_query, dates_query)
     query = and_op(query, dates_range_query)
     query = and_op(query, cities_query)
@@ -410,7 +411,8 @@ class Schedule(Node):
     def resolve_next_date(self, args, info):
         """cost: 10ms for 50 events
         """
-        start, end = get_start_end_dates(args)
+        request = get_current_request()
+        start, end = request.start_end
 
         if start is None:
             start = current_date()
