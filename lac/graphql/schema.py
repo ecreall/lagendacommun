@@ -297,11 +297,12 @@ class DateTime(Scalar):
             value, "%Y-%m-%dT%H:%M:%S.%fZ").replace(tzinfo=pytz.UTC)
 
 
-class Node(relay.Node):
+class Node(object):
 
     @classmethod
     def get_node(cls, id, info):
-        return get_obj(id)
+        oid = int(id)
+        return cls(_root=get_obj(oid))
 
     @property
     def id(self):
@@ -316,11 +317,11 @@ class Node(relay.Node):
             raise
 
 
-class Artist(Node):
+class Artist(relay.Node, Node):
     title = graphene.String()
 
 
-class Address(Node):
+class Address(relay.Node, Node):
     title = graphene.String()
     address = graphene.String()
     country = graphene.String()
@@ -331,7 +332,7 @@ class Address(Node):
     geoLocation = graphene.String()
 
 
-class Contact(Node):
+class Contact(relay.Node, Node):
     title = graphene.String()
     email = graphene.String()
     phone = graphene.String()
@@ -346,7 +347,7 @@ class Contact(Node):
         return deserialize_phone(self.phone)
 
 
-class Venue(Node):
+class Venue(relay.Node, Node):
     title = graphene.String()
     description = graphene.String()
     address = relay.ConnectionField(Address)
@@ -384,7 +385,7 @@ class Venue(Node):
 #     time_intervals = graphene.List(TimeInterval)
 
 
-class Schedule(Node):
+class Schedule(relay.Node, Node):
     dates_str = graphene.String()
     calendar = graphene.String()
     venue = relay.ConnectionField(Venue)
@@ -412,7 +413,7 @@ class Schedule(Node):
         """cost: 10ms for 50 events
         """
         request = get_current_request()
-        start, end = request.start_end
+        start, end = getattr(request, 'start_end', (None, None))
 
         if start is None:
             start = current_date()
@@ -421,7 +422,7 @@ class Schedule(Node):
         return dates[0].date() if dates else None
 
 
-class CulturalEvent(Node):
+class CulturalEvent(relay.Node, Node):
     title = graphene.String()
     calendar = graphene.String()
     description = graphene.String()
@@ -461,7 +462,7 @@ class CulturalEvent(Node):
         return self.sections
 
 
-class User(Node):
+class User(relay.Node, Node):
     title = graphene.String()
     first_name = graphene.String()
     last_name = graphene.String()
