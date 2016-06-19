@@ -26,6 +26,7 @@ from lac.views.filter import (
     zipcode_query, countries_query)
 from lac.content.resources import es
 from lac import log
+from lac.content.interface import ISmartFolder
 from lac.content.processes import get_states_mapping
 from lac.content.cultural_event import (
     CulturalEvent as CulturalEventOrigin)
@@ -530,6 +531,7 @@ class Query(graphene.ObjectType):
         sort_on=graphene.String(),
     )
     current_user = relay.ConnectionField(User)
+    categories = graphene.List(graphene.String())
 
     def resolve_current_user(self, args, info):
         current = get_current_user(args)
@@ -541,6 +543,26 @@ class Query(graphene.ObjectType):
     def resolve_cultural_events(self, args, info):
         oids = get_cultural_events(args, info)
         return ResolverLazyList(oids, CulturalEvent)
+
+    def resolve_categories(self, args, info):
+        root_folders = [folder for folder in find_entities(
+            interfaces=[ISmartFolder],
+            metadata_filter={'states': ['published']},
+            force_local_control=False) if not folder.parents]
+
+        sections = set()
+        for folder in root_folders:
+            for filter in folder.filters: #pylint: disable=W0622
+                if 'cultural_event' in filter[
+                        'metadata_filter'].get('content_types', ()) and \
+                    'Rubrique' in filter['metadata_filter']['tree']:
+                    keywords = list(filter['metadata_filter']['tree'][
+                        'Rubrique'].keys())
+                    for keyword in keywords:
+                        sections.add(keyword)
+
+        sections = sorted(sections)
+        return sections
 
 
 schema = graphene.Schema(query=Query)
