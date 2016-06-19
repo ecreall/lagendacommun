@@ -385,6 +385,17 @@ class Venue(relay.Node, Node):
 #     time_intervals = graphene.List(TimeInterval)
 
 
+def resolve_next_date(self, args, info):
+    request = get_current_request()
+    start, end = getattr(request, 'start_end', (None, None))
+
+    if start is None:
+        start = current_date()
+
+    dates = occurences_start(self._root, 'dates', from_=start, until=end)
+    return dates[0].date() if dates else None
+
+
 class Schedule(relay.Node, Node):
     dates_str = graphene.String()
     calendar = graphene.String()
@@ -412,14 +423,7 @@ class Schedule(relay.Node, Node):
     def resolve_next_date(self, args, info):
         """cost: 10ms for 50 events
         """
-        request = get_current_request()
-        start, end = getattr(request, 'start_end', (None, None))
-
-        if start is None:
-            start = current_date()
-
-        dates = occurences_start(self._root, 'dates', from_=start, until=end)
-        return dates[0].date() if dates else None
+        return resolve_next_date(self, args, info)
 
 
 class CulturalEvent(relay.Node, Node):
@@ -434,6 +438,7 @@ class CulturalEvent(relay.Node, Node):
     url = graphene.String()
     categories = graphene.List(graphene.String())
     contacts = relay.ConnectionField(Contact)
+    next_date = Date()
 
     def resolve_contacts(self, args, info):
         contacts = self.get_contacts()
@@ -460,6 +465,11 @@ class CulturalEvent(relay.Node, Node):
 
     def resolve_categories(self, args, info):
         return self.sections
+
+    def resolve_next_date(self, args, info):
+        """cost: 10ms for 50 events
+        """
+        return resolve_next_date(self, args, info)
 
 
 class User(relay.Node, Node):
