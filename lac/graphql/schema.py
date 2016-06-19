@@ -32,7 +32,6 @@ from lac.content.cultural_event import (
     CulturalEvent as CulturalEventOrigin)
 from lac.layout import deserialize_phone
 
-
 DEFAULT_RADIUS = 15
 
 
@@ -405,6 +404,7 @@ class Schedule(relay.Node, Node):
     ticket_type = graphene.String()
     ticketing_url = graphene.String()
     next_date = Date()
+    is_expired = graphene.Boolean()
 
     def resolve_venue(self, args, info):
         return [Venue(_root=self.venue)]
@@ -425,6 +425,9 @@ class Schedule(relay.Node, Node):
         """cost: 10ms for 50 events
         """
         return resolve_next_date(self, args, info)
+
+    def resolve_is_expired(self, args, info):
+        return 'archived' in self.state
 
 
 class CulturalEvent(relay.Node, Node):
