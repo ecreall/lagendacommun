@@ -551,7 +551,7 @@ class Query(graphene.ObjectType):
         root_folders = [folder for folder in find_entities(
             interfaces=[ISmartFolder],
             metadata_filter={'states': ['published']},
-            force_local_control=False) if not folder.parents]
+            force_local_control=True) if not folder.parents]
 
         sections = set()
         for folder in root_folders:
