@@ -138,9 +138,15 @@ def set_recurrence(dates, dates_str):
         # handle the case where we recatalog in june a date "Jusqu'au 20 mai"
         # getDatesFromPeriode raises an AttributeError if date_fin < date_debut
         # be careful, [2012, 1, 2] < (2011, 9, 25) is True!
+        localtime = time.localtime()
         if date_debut is None and\
-           tuple(date_fin[:3]) < tuple(time.localtime()[:3]):
+           tuple(date_fin[:3]) < tuple(localtime[:3]):
             date_debut = date_fin
+        elif date_debut is None:
+            # Set the time to end date time (probably empty, so will be 00:00)
+            # instead of indexation time
+            date_debut = list(localtime[:3])
+            date_debut.append(date_fin[3])
         # TODO instead of the following line, we should generate
         # the equivalent in ical rule
         l_dates_ouvertures = Parser.getDatesFromPeriode(
@@ -319,6 +325,8 @@ def get_schedule_ical_events(schedule, event=None, tzinfo=pytz.UTC):
            tuple(date_fin[:3]) < tuple(localtime[:3]):
             date_debut = date_fin
         elif date_debut is None:
+            # Set the time to end date time (probably empty, so will be 00:00)
+            # instead of indexation time
             date_debut = list(localtime[:3])
             date_debut.append(date_fin[3])
 
