@@ -281,7 +281,7 @@ def generate_ical_rec(event, schedule, start_date,
     periods = list_date_to_dates(start_date, True, tzinfo)[1]
     end_dates = list_date_to_dates(end_date, True, tzinfo)[1]
     until = end_dates[-1]['end']
-    exdate = [datetime.datetime(l[0], l[1], l[2], 0, 0, 0, 0, 0, 0)
+    exdate = [datetime.datetime(l[0], l[1], l[2], tzinfo=tzinfo)
               for l in to_exclude]
     for index, period in enumerate(periods):
         ical_event = Event()
