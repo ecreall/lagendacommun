@@ -99,7 +99,7 @@ def int2dt(dtint, hours=None, minutes=None):
 
 
 def dt2int(date):
-    return calendar.timegm(date.timetuple())
+    return calendar.timegm(date.astimezone(tz=pytz.UTC).timetuple())
 
 
 class HypatiaDateRecurringIndex(KeywordIndex, FieldIndex):
