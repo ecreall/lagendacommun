@@ -81,32 +81,32 @@ def list_date_to_dates(l_date, include_date_only=False, tzinfo=pytz.UTC):
             end_time = time_[1]
             start_date_time = None
             if start_time:
-                start_date_time = datetime.datetime(
+                start_date_time = tzinfo.localize(datetime.datetime(
                     *(l_date[0], l_date[1], l_date[2],
-                      start_time[0] or 0, start_time[1] or 0, 0)).replace(tzinfo=tzinfo)
+                      start_time[0] or 0, start_time[1] or 0, 0)))
             else:
-                start_date_time = datetime.datetime(
+                start_date_time = tzinfo.localize(datetime.datetime(
                     *(l_date[0], l_date[1], l_date[2],
-                      0, 0, 0)).replace(tzinfo=tzinfo)
+                      0, 0, 0)))
 
             end_date_time = None
             if end_time:
-                end_date_time = datetime.datetime(
+                end_date_time = tzinfo.localize(datetime.datetime(
                     *(l_date[0], l_date[1], l_date[2],
-                      end_time[0] or 0, end_time[1] or 0, 0)).replace(tzinfo=tzinfo)
+                      end_time[0] or 0, end_time[1] or 0, 0)))
             else:
-                end_date_time = datetime.datetime(
+                end_date_time = tzinfo.localize(datetime.datetime(
                     *(l_date[0], l_date[1], l_date[2],
-                      23, 59, 59)).replace(tzinfo=tzinfo)
+                      23, 59, 59)))
 
             dates.append(dict(start=start_date_time, end=end_date_time))
     elif include_date_only:
-        start_date_time = datetime.datetime(
+        start_date_time = tzinfo.localize(datetime.datetime(
             *(l_date[0], l_date[1], l_date[2],
-              0, 0, 0)).replace(tzinfo=tzinfo)
-        end_date_time = datetime.datetime(
+              0, 0, 0)))
+        end_date_time = tzinfo.localize(datetime.datetime(
             *(l_date[0], l_date[1], l_date[2],
-              23, 59, 59)).replace(tzinfo=tzinfo)
+              23, 59, 59)))
         dates.append(dict(start=start_date_time, end=end_date_time))
 
 
