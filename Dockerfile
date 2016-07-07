@@ -4,7 +4,7 @@ MAINTAINER Vincent Fretin <vincentfretin@ecreall.com>
 ARG userid=1000
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y varnish netcat && \
     rm -rf /var/lib/apt/lists/*
 
 RUN addgroup --quiet --gid $userid "u1000" && \

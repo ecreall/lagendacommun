@@ -21,8 +21,8 @@ chmod 700 var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 chown u1000 var var/log var/filestorage var/blobstorage var/tmp_uploads var/tmp
 sed -e 's@dace$@dace.wosystem@' -e 's@^substanced.catalogs.autosync = .*@substanced.catalogs.autosync = false@' production-heroku.ini > production-script.ini
 /usr/sbin/varnishd -P /app/var/varnishd.pid -a 0.0.0.0:5000 -f /app/etc/varnish.vcl -s malloc,256m -t 0
-# wait 5s arangodb to start
-sleep 5s
+# wait for arangodb to start
+while ! nc -q 1 arango 8529 </dev/null; do sleep 10; done
 if [ "$ENV" == "development" ]; then
   exec gosu u1000 ./start_all_dev.bash production-heroku.ini $TIMEOUT
 else
