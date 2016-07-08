@@ -405,7 +405,7 @@ class Person(VisualisableElement, SearchableEntity, User):
         def exclude(result_set, docids):
             filtered_ids = list(result_set.ids)
             for _id in docids:
-                if _id in docids:
+                if _id in docids and _id in filtered_ids:
                     filtered_ids.remove(_id)
 
             return result_set.__class__(
