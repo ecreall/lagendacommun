@@ -15,6 +15,7 @@ from deform.compat import uppercase, string
 from persistent.list import PersistentList
 from persistent.dict import PersistentDict
 from zope.interface import providedBy
+from plone.event.recurrence import recurrence_sequence_ical
 
 from pyramid.threadlocal import get_current_registry
 
@@ -135,6 +136,32 @@ def sub_object_serialize(obj, name, multiplicity, fileds={}):
         return get_obj_value(sub_obj, fileds)
 
     return None, []
+
+
+def _get_ical_dates(obj, name, date_type):
+    attr_recurdef = name + '_recurrence'
+    recurdef = getattr(obj, attr_recurdef, None)
+    date = getattr(obj, name + date_type)
+    if callable(recurdef):
+        recurdef = recurdef()
+
+    if date:
+        if not recurdef:
+            dates = [date]
+        else:
+            dates = recurrence_sequence_ical(date, recrule=recurdef)
+
+        return dates
+
+    return []
+
+
+def ical_date_serializer(obj, name, multiplicity, fileds={}):
+    return {
+        'period': {
+            'dates': getattr(obj, name),
+            'start_dates': list(_get_ical_dates(obj, name, '_start_date')),
+            'end_dates': list(_get_ical_dates(obj, name, '_end_date'))}}, []
 
 
 def object_deserializer(args):
@@ -265,7 +292,8 @@ INTERFACES_CONFIG = {OBJECTTYPE: {'serializer': object_serialize,
                                'deserializer': file_deserializer},
                     IMAGETYPE: {'serializer': sub_object_serialize,
                                 'interface': IImage,
-                                'deserializer': file_deserializer}}
+                                'deserializer': file_deserializer},
+                    ICALTTYPE: {'serializer': ical_date_serializer}}
 
 
 class interface(object):
@@ -324,7 +352,8 @@ def normalize_value(value):
         return {a: normalize_value(value[a]) for a in value if value[a]}
 
     if isinstance(value, datetime.datetime):
-        return value.strftime('%d/%m/%Y %H:%M')
+        # return value.strftime('%d/%m/%Y %H:%M')
+        return value.isoformat()
 
     return value
 

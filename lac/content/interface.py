@@ -14,6 +14,7 @@ from lac.utilities.data_manager import (
     # OBJECTTYPE,
     IMAGETYPE,
     FILETYPE,
+    ICALTTYPE,
     file_deserializer,
     cultural_event_deserializer,
     review_deserializer,
@@ -155,7 +156,7 @@ class IParticipativeEntity(IEntity):
                   serializer=sub_object_serialize)
 class ISchedule(IVisualisableElement, IEntity):
 
-    dates = Attribute('dates')
+    dates = Attribute('dates', type=ICALTTYPE)
 
     ticket_type = Attribute('ticket_type')
 
@@ -274,7 +275,7 @@ class IFilmSynopses(IVisualisableElement, ISearchableEntity):
 @interface(True)
 class IAdvertising(IVisualisableElement, ISearchableEntity):
 
-    dates = Attribute('dates')
+    dates = Attribute('dates', type=ICALTTYPE)
 
     request_quotation = Attribute('request_quotation')
 
