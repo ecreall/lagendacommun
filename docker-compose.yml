@@ -33,7 +33,7 @@ lac:
     - postfix:mail
 nginx:
   restart: always
-  image: nginx
+  image: undownding/nginx-http2
   environment:
     LOGSPOUT: ignore
   volumes:

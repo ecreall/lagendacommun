@@ -39,7 +39,7 @@ lac:
     - ./lac:/app/lac
     - ./cache:/app/cache
 nginx:
-  image: nginx
+  image: undownding/nginx-http2
   environment:
     LOGSPOUT: ignore
   volumes:
