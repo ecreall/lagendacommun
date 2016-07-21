@@ -116,8 +116,9 @@ def validate_user(context, request, appstruct):
         )
     if adapter is None:
         adapter = DefaultUserLocator(context, request)
+
     user = adapter.get_user_by_email(login)
-    valid = user.check_password(password) and \
+    valid = user and user.check_password(password) and \
                 (has_role(user=user, role=('Admin', )) or \
                  'active' in getattr(user, 'state', []))
     headers = None
