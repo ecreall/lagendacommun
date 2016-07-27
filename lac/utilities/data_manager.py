@@ -157,9 +157,13 @@ def _get_ical_dates(obj, name, date_type):
 
 
 def ical_date_serializer(obj, name, multiplicity, fileds={}):
+    dates = getattr(obj, name, None)
+    if dates is None:
+        return None, []
+
     return {
         'period': {
-            'dates': getattr(obj, name),
+            'dates': dates,
             'start_dates': list(_get_ical_dates(obj, name, '_start_date')),
             'end_dates': list(_get_ical_dates(obj, name, '_end_date'))}}, []
 
