@@ -53,11 +53,14 @@ class FindEntitiesJsonAPI(WebServicesJsonView):
         filter_schema = FindEntitiesJson(self.context, self.request)
         try:
             appstruct = filter_schema.calculate_posted_filter()
-        except:
-            return {'items': [], 'total_count': 0, 'error': True}
+        except Exception as e:
+            return {'items': [], 'total_count': 0, 'error': True,
+                    'message': '{}: {}'.format(
+                            e.__class__.__name__, e.args[0])}
 
         if appstruct is None:
-            return {'items': [], 'total_count': 0, 'error': True}
+            return {'items': [], 'total_count': 0, 'error': True,
+                    'message': 'appstruct is None'}
 
         content_types_tree = appstruct['metadata_filter'].get('content_types', {}).copy()
         content_types = list(content_types_tree.keys())
