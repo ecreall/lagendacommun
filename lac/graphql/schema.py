@@ -242,7 +242,7 @@ def get_cultural_events(args, info):
         # limit=limit,
         sort_on=None,
         interfaces=[ICulturalEvent],
-        metadata_filter={'states': ['published']},
+        metadata_filter={'states': ['published', 'archived']},
         text_filter={'text_to_search': args.get('text', '')},
         keywords=args.get('categories', ''),
         force_publication_date=None  # None to avoid intersect with publication_start_date index
