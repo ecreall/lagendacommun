@@ -193,7 +193,7 @@ def get_dates_range_query(args):
 def get_cultural_events(args, info):
     start, end = get_start_end_dates(args)
     request = get_current_request()
-    request.start_end =(start, end)  # used in resolve_next_state
+    request.start_end = (start, end)  # used in resolve_next_date
     location = args.get('geo_location', None)
     venues = []
     if location:
@@ -386,12 +386,10 @@ class Venue(relay.Node, Node):
 
 
 def resolve_next_date(self, args, info):
+    """Return first date in the start_end interval.
+    """
     request = get_current_request()
     start, end = getattr(request, 'start_end', (None, None))
-
-    if start is None:
-        start = current_date()
-
     dates = occurences_start(self._root, 'dates', from_=start, until=end)
     return dates[0].date() if dates else None
 
