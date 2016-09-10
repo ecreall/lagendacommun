@@ -1,0 +1,7 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : {
+        "namespace": "android_app",
+        "package_name": "com.lacnative",
+        "sha256_cert_fingerprints": ["A3:D9:FB:DD:54:52:21:41:D0:A4:D1:B6:C4:F5:FC:EE:CB:34:A0:C9:DB:E4:27:B7:A0:0C:CF:7D:7B:65:5E:46"] }
+}]
